@@ -1,46 +1,48 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" style="height: 100%" >
       <el-card class="box-card">
       <el-table
         :data="tableData"
+        border
+        height="450px"
         style="width: 100%">
-        <el-table-column :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <a href="#" style="color: blue">{{scope.row.name}}</a>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.theme}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   prop="state"  :label="$t('table.material_name')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="state"  :label="$t('table.material_name')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.state}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   prop="tasksType"  :label="$t('table.model_specification')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="tasksType"  :label="$t('table.model_specification')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.tasksType}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   prop="allocated"  :label="$t('table.project_name')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="allocated"  :label="$t('table.project_name')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.allocated}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   sortable prop="context"  :label="$t('table.state')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   sortable prop="context"  :label="$t('table.state')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.context}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"   prop="role"  :label="$t('table.sission_deadline')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="role"  :label="$t('table.sission_deadline')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.role}}</span>
@@ -48,11 +50,18 @@
         </el-table-column>
       </el-table>
       </el-card>
+      <userInfoEdit ref="userinfoDialog"></userInfoEdit>
     </div>
 </template>
-<script>export default {
+<script>
+import userInfoEdit from '../../components/UserinfoEdit/index'
+export default {
   name: 'HelloWorld',
   mounted: function () {
+    this.$refs.userinfoDialog.dialogVisibleChange(true)
+  },
+  components: {
+    userInfoEdit
   },
   methods: {},
   data () {
