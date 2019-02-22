@@ -4,43 +4,43 @@
       <el-table
         :data="tableData"
         style="width: 100%">
-        <el-table-column show-overflow-tooltip="true"  prop="name"  :label="$t('table.name')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true"  prop="theme"  :label="$t('table.theme')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.theme}}</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip="true"  sortable prop="state"  :label="$t('table.state')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="state"  :label="$t('table.material_name')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.state}}</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip="true" prop="tasksType"  :label="$t('table.tasksType')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="tasksType"  :label="$t('table.model_specification')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.tasksType}}</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip="true"  sortable prop="allocated"  :label="$t('table.allocated')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="allocated"  :label="$t('table.project_name')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.allocated}}</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip="true"  prop="context"  :label="$t('table.context')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   sortable prop="context"  :label="$t('table.state')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.context}}</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip="true"  prop="role"  :label="$t('table.role')" width="180">
+        <el-table-column :show-overflow-tooltip="true"   prop="role"  :label="$t('table.sission_deadline')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.role}}</span>

@@ -8,8 +8,6 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  * @return {Array} realRoutes 过滤后的路由
  */
 function recursionRouter (userRouter = [], allRouter = []) {
-  console.log('userRouter', userRouter)
-  console.log('allRouter', allRouter)
   var realRoutes = []
   allRouter.forEach((v, i) => {
     if (v.meta) {
@@ -17,7 +15,6 @@ function recursionRouter (userRouter = [], allRouter = []) {
         // if (item.title === '问题管理' && v.meta.title === '问题管理') {
         //   debugger
         // }
-        console.log('-------------------->', v.meta.title + '----' + item.title)
         if (item.title === v.meta.title) {
           if (item.children && item.children.length > 0) {
             v.children = recursionRouter(item.children, v.children)
@@ -29,7 +26,6 @@ function recursionRouter (userRouter = [], allRouter = []) {
       realRoutes.push(v)
     }
   })
-  console.log('end realRoutes', realRoutes)
   // debugger
   return realRoutes
 }
@@ -134,7 +130,6 @@ const permission = {
         } else {
           accessedRouters = recursionRouter(dynamicRouter2, asyncRouterMap)
         }
-        console.log('accessedRouters', accessedRouters)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
         // }).catch(error => {

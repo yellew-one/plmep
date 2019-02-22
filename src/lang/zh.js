@@ -13,10 +13,16 @@ export default {
     tasksType: '状况',
     context: '上下文',
     role: '角色',
-    allocated: '已分配'
+    allocated: '已分配',
+    task_name: '任务名',
+    material_number: '物料编号',
+    material_name: '物料名称',
+    model_specification: '型号规格',
+    project_name: '项目名',
+    sission_deadline: '任务期限'
   },
   fengyangRoute: {
-    myTasks: '我的任务',
+    myTasks: '待提交物料封样',
     under_review: '正在审阅',
     sealed_Sample: '已封样'
   },

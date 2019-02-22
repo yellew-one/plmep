@@ -68,8 +68,7 @@ export default {
             this.loading = false
             return
           }
-
-          this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type})
+          this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: '封样'})
           this.$store.commit('SET_ISLOGIN', true)
           this.$router.push({ path: '/home' })
           this.loading = false

@@ -13,10 +13,16 @@ export default {
     tasksType: 'Type',
     context: 'Context',
     role: 'Role',
-    allocated: 'Already allocated'
+    allocated: 'Already allocated',
+    task_name: 'Task name',
+    material_name: 'Material name',
+    material_number: 'Material number',
+    model_specification: 'Model specification',
+    project_name: 'Project name',
+    sission_deadline: 'Mission deadline'
   },
   fengyangRoute: {
-    myTasks: 'My Tasks',
+    myTasks: 'Sample sealing of materials to be submitted',
     under_review: 'Under review',
     sealed_Sample: 'Sealed Sample'
   },

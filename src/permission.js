@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
   console.log('getUserInfo', getUserInfo())
   if (getUserInfo() && getUserInfo() !== 'false') { // determine if there has tokena
     if (!store.getters.permission_routers) {
-      store.dispatch('GenerateRoutes', store.getters.userInfo)
+      store.dispatch('GenerateRoutes', JSON.parse(getUserInfo()))
       router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
       next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
     } else {
