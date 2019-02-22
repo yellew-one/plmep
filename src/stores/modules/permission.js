@@ -63,6 +63,63 @@ const permission = {
               funurl: '/fMytasks',
               meta: { title: 'fengyangRoute.myTasks', icon: 'permission' }
             }]
+        }, {
+          cfunid: '2002',
+          fun_code: '2002',
+          redirect: '/fengyang_seacher',
+          fun_level: 1,
+          fun_name: '',
+          // funurl: '/fengyang',
+          title: 'fengyangRoute.fengyang_seacher',
+          meta: { title: 'fengyangRoute.fengyang_seacher', icon: 'permission' },
+          children: [
+            {
+              cfunid: '200010',
+              title: 'fengyangRoute.fengyang_seacher',
+              fun_level: 2,
+              parent_id: '2002',
+              name: 'fengyang_seacher',
+              funurl: '/fengyang_seacher',
+              meta: { title: 'fengyangRoute.fengyang_seacher', icon: 'permission' }
+            }]
+        }, {
+          cfunid: '2003',
+          fun_code: '2003',
+          redirect: '/ypdq_task',
+          fun_level: 1,
+          fun_name: '',
+          // funurl: '/fengyang',
+          title: 'fengyangRoute.ypdq_task',
+          meta: { title: 'fengyangRoute.ypdq_task', icon: 'permission' },
+          children: [
+            {
+              cfunid: '200010',
+              title: 'fengyangRoute.ypdq_task',
+              fun_level: 2,
+              parent_id: '2003',
+              name: 'ypdq_task',
+              funurl: '/ypdq_task',
+              meta: { title: 'fengyangRoute.ypdq_task', icon: 'permission' }
+            }]
+        }, {
+          cfunid: '2004',
+          fun_code: '2005',
+          redirect: '/funder_review',
+          fun_level: 1,
+          fun_name: '',
+          // funurl: '/fengyang',
+          title: 'fengyangRoute.under_review',
+          meta: { title: 'fengyangRoute.under_review', icon: 'permission' },
+          children: [
+            {
+              cfunid: '200010',
+              title: 'fengyangRoute.under_review',
+              fun_level: 2,
+              parent_id: '2005',
+              name: 'funder_review',
+              funurl: '/funder_review',
+              meta: { title: 'fengyangRoute.under_review', icon: 'permission' }
+            }]
         }]
         const dynamicRouter2 = [{
           cfunid: '1000',
