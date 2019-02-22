@@ -28,8 +28,50 @@ export default {
   },
   huanbaoRoute: {
     myTasks: '我的任务',
+    third_report: '第三方报告到期任务',
     Material_submitted: '待提交物料环保',
     Material_Search: '物料环保搜索'
+  },
+  huanbaoTable: {
+    third: {
+      taskName: '任务名',
+      theme: '主题',
+      status: '状态',
+      task_deadlines: '任务最后期限'
+    },
+    submitted: {
+      taskName: '任务名',
+      material_number: '物料编号',
+      material_name: '物料名称',
+      model_specification: '型号规格',
+      item_code: '项目代号',
+      fmd: 'FMD',
+      msds: 'MSDS/专利证明',
+      rohs: 'RoHS',
+      hf: 'HF',
+      reach: 'REACH',
+      others: '其他',
+      customer_Special_Needs: '客户特殊需求',
+      environmental_attributes: '环保属性'
+    },
+    search: {
+      platform: '平台',
+      applying_for: '申请项目',
+      bom_number: 'BOM料号',
+      material_number: '物料编号',
+      escape_clause: '豁免条款',
+      bom_classify: 'BOM分类',
+      status: '状态',
+      cas_no: 'CAS No.',
+      search: '查询',
+      number: '编号',
+      name: '名称',
+      version: '版本',
+      material_name: '物料名称',
+      model_specification: '型号规格',
+      supplier: '供应商',
+      manufacturer: '生产厂家'
+    }
   },
   tagsView: {
     close: '关闭',

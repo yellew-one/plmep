@@ -143,7 +143,6 @@ export default {
           model1.userPassword = this.changePassword.newPassword
           this.logout()
         } else {
-          console.log('error submit!!')
           return false
         }
       })

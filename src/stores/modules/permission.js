@@ -71,17 +71,17 @@ const permission = {
           fun_level: 1,
           fun_name: '',
           // funurl: '/fengyang',
-          title: 'huanbaoRoute.myTasks',
-          meta: { title: 'huanbaoRoute.myTasks', icon: 'permission' },
+          title: 'huanbaoRoute.third_report',
+          meta: { title: 'huanbaoRoute.third_report', icon: 'permission' },
           children: [
             {
               cfunid: '100010',
-              title: 'huanbaoRoute.myTasks',
+              title: 'huanbaoRoute.third_report',
               fun_level: 2,
               parent_id: '1000',
               name: 'hMytasks',
               funurl: '/hMytasks',
-              meta: { title: 'huanbaoRoute.myTasks', icon: 'permission' }
+              meta: { title: 'huanbaoRoute.third_report', icon: 'permission' }
             }]
         },
         {

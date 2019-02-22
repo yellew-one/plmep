@@ -28,8 +28,43 @@ export default {
   },
   huanbaoRoute: {
     myTasks: 'My Tasks',
+    third_report: 'Third party report due task',
     Material_submitted: 'Material to be submitted',
     Material_Search: 'Material Environmental Search'
+  },
+  huanbaoTable: {
+    third: {
+      taskName: 'TaskName',
+      theme: 'Theme',
+      status: 'Status',
+      task_deadlines: 'Task Deadlines'
+    },
+    submitted: {
+      taskName: 'TaskName',
+      material_number: 'Material Number',
+      material_name: 'Material Name',
+      model_specification: 'Model Specification',
+      item_code: 'Item Code',
+      fmd: 'FMD',
+      msds: 'MSDS/Patent',
+      rohs: 'RoHS',
+      hf: 'HF',
+      reach: 'REACH',
+      others: 'Other',
+      customer_Special_Needs: 'Customer Special Needs',
+      environmental_attributes: 'Environmental Attributes'
+    },
+    search: {
+      platform: 'Platform',
+      applying_for: 'Applying For',
+      bom_number: 'Bom Number',
+      material_number: 'Material Number',
+      escape_clause: 'Escape Clause',
+      bom_classify: 'Bom Classify',
+      status: 'Status',
+      cas_no: 'CAS No.',
+      search: 'Search'
+    }
   },
   tagsView: {
     close: 'Close',

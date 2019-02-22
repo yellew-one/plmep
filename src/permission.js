@@ -11,7 +11,6 @@ const whiteList = ['/login']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-  console.log('getUserInfo', getUserInfo())
   if (getUserInfo() && getUserInfo() !== 'false') { // determine if there has tokena
     if (!store.getters.permission_routers) {
       store.dispatch('GenerateRoutes', JSON.parse(getUserInfo()))

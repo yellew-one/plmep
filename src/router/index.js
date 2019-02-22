@@ -38,18 +38,6 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/hMytasks',
-    component: Layout,
-    redirect: '/hMytasks',
-    meta: { title: 'huanbaoRoute.myTasks', icon: 'user' },
-    children: [{
-      path: 'hMytasks',
-      component: () => import('@/views/huanbao/Mytasks'),
-      name: 'hMytasks',
-      meta: { title: 'huanbaoRoute.myTasks', icon: 'user', noCache: true }
-    }]
-  },
-  {
     path: '/submitted',
     component: Layout,
     redirect: '/submitted',
@@ -59,6 +47,18 @@ export const asyncRouterMap = [
       component: () => import('@/views/huanbao/Material_submitted'),
       name: 'submitted',
       meta: { title: 'huanbaoRoute.Material_submitted', icon: 'issue', noCache: true }
+    }]
+  },
+  {
+    path: '/hMytasks',
+    component: Layout,
+    redirect: '/hMytasks',
+    meta: { title: 'huanbaoRoute.third_report', icon: 'user' },
+    children: [{
+      path: 'hMytasks',
+      component: () => import('@/views/huanbao/Mytasks'),
+      name: 'hMytasks',
+      meta: { title: 'huanbaoRoute.third_report', icon: 'user', noCache: true }
     }]
   },
   {
