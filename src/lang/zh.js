@@ -24,7 +24,9 @@ export default {
   fengyangRoute: {
     myTasks: '待提交物料封样',
     under_review: '正在审阅',
-    sealed_Sample: '已封样'
+    sealed_Sample: '已封样',
+    ypdq_task: '样品到期任务',
+    fengyang_seacher: '物料封样搜索'
   },
   huanbaoRoute: {
     myTasks: '我的任务',

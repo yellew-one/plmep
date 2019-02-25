@@ -22,9 +22,11 @@ export default {
     sission_deadline: 'Mission deadline'
   },
   fengyangRoute: {
-    myTasks: 'Sample sealing of materials to be submitted',
+    myTasks: 'Materials to be submitted',
     under_review: 'Under review',
-    sealed_Sample: 'Sealed Sample'
+    sealed_Sample: 'Sealed Sample',
+    ypdq_task: 'Sample Maturity Task',
+    fengyang_seacher: 'Search for Material Seal Samples'
   },
   huanbaoRoute: {
     myTasks: 'My Tasks',
