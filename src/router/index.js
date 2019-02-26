@@ -122,5 +122,18 @@ export const asyncRouterMap = [
       meta: { title: 'huanbaoRoute.details', icon: 'dashboard', noCache: true }
     }]
   },
+  {
+    path: '/fdetailTask',
+    component: Layout,
+    redirect: '/fdetailTask',
+    meta: { title: 'fengyangRoute.details', icon: 'dashboard' },
+    hidden: true,
+    children: [{
+      path: 'fdetailTask',
+      component: () => import('@/views/fengyang/detailPage/detailTask'),
+      name: 'fdetailTask',
+      meta: { title: 'fengyangRoute.details', icon: 'dashboard', noCache: true }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -120,6 +120,16 @@ const permission = {
               funurl: '/funder_review',
               meta: { title: 'fengyangRoute.under_review', icon: 'permission' }
             }]
+        }, {
+          redirect: '/fdetailTask',
+          title: 'fengyangRoute.details',
+          meta: { title: 'fengyangRoute.details', icon: 'permission' },
+          children: [
+            {
+              title: 'fengyangRoute.details',
+              name: 'fdetailTask',
+              meta: { title: 'fengyangRoute.details', icon: 'permission' }
+            }]
         }]
         const dynamicRouter2 = [{
           redirect: '/third',

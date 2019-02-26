@@ -27,7 +27,8 @@ export default {
     under_review: '正在审阅',
     sealed_Sample: '已封样',
     ypdq_task: '样品到期任务',
-    fengyang_seacher: '物料封样搜索'
+    fengyang_seacher: '物料封样搜索',
+    details: '封样详细信息'
   },
   huanbaoRoute: {
     myTasks: '我的任务',
@@ -136,5 +137,35 @@ export default {
   formButton: {
     cancel: '取消',
     submit: '提交'
+  },
+  fengyangTable: {
+    detail: {
+      version: '版本',
+      materialNumber: '物料编号',
+      materialName: '物料名称',
+      lq_classification: '物料分类',
+      lq_project: '申请项目',
+      lq_model_name: '规格型号',
+      lq_request_cause: '申请原因',
+      lq_manufacturer: '生产厂家',
+      lq_supplier: '供应商',
+      lq_supplier_number: '供应商编码',
+      lq_environmental_protection_status: '环保属性',
+      approveddate: '封样承认时间',
+      lq_supplier_rank: '供应商等级',
+      lq_class_category: '物料类别',
+      lq_size: '尺寸(长*宽*高 单位：mm，公差±)',
+      lq_monomers_weight: '单体净重(单位：g，公差±3%)',
+      lq_fiction_preston: '拟制者',
+      lq_fiction_time: '拟制日期',
+      lq_reviewer: '审核者',
+      lq_review_time: '审核日期',
+      lq_approve: '批准',
+      lq_approve_time: '批准日期',
+      lq_courier_number: '快递单号',
+      lq_courier_number_time: '快递发出日期',
+      lq_sender: '发件人',
+      lq_tel: '电话',
+      lq_deadline_sign: '最后期限标识'}
   }
 }

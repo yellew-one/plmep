@@ -27,7 +27,8 @@ export default {
     under_review: 'Under review',
     sealed_Sample: 'Sealed Sample',
     ypdq_task: 'Sample Maturity Task',
-    fengyang_seacher: 'Search for Material Seal Samples'
+    fengyang_seacher: 'Search for Material Seal Samples',
+    details: 'Sample details'
   },
   huanbaoRoute: {
     myTasks: 'My Tasks',
@@ -136,5 +137,35 @@ export default {
   formButton: {
     cancel: 'Cancel',
     submit: 'Submit'
+  },
+  fengyangTable: {
+    detail: {
+      version: 'Version',
+      materialNumber: 'Material Number',
+      materialName: 'Material Name',
+      lq_classification: 'Material Type',
+      lq_project: 'Application Project',
+      lq_model_name: 'Specification Type',
+      lq_request_cause: 'Application Reason',
+      lq_manufacturer: 'Manufacturer',
+      lq_supplier: 'Supplier',
+      lq_supplier_number: 'Supplier Number',
+      lq_environmental_protection_status: 'Environmental attributes',
+      approveddate: 'Seal recognition time',
+      lq_supplier_rank: 'Supplier Level',
+      lq_class_category: 'Material category',
+      lq_size: 'Dimensions (length * width * height unit: mm, tolerance *)',
+      lq_monomers_weight: 'Net weight of monomer (g, tolerance (+3%)',
+      lq_fiction_preston: 'Fiction maker',
+      lq_fiction_time: 'Tentative date',
+      lq_reviewer: 'Auditor',
+      lq_review_time: 'Audit date',
+      lq_approve: 'Approval',
+      lq_approve_time: 'Approval date',
+      lq_courier_number: 'Courier number',
+      lq_courier_number_time: 'Express Delivery Date',
+      lq_sender: 'Sender',
+      lq_tel: 'Telephone',
+      lq_deadline_sign: 'Deadline marking'}
   }
 }

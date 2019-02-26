@@ -9,10 +9,10 @@
         <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
           <template
             slot-scope="scope">
-            <a href="#" style="color: blue">{{$t(scope.row.taskName)}}</a>
+            <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
+        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
           <template
             slot-scope="scope">
             <span>{{scope.row.materialNumber}}</span>
@@ -62,9 +62,13 @@ export default {
   methods: {
     getDataList () {
       showSealedSampleTasks().then(r => {
-        console.log(r)
+        // console.log(r)
         this.tableData = r.data
       })
+    },
+    goDetail (data) {
+      // console.log('data', data)
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid}})
     }
   },
   data () {
