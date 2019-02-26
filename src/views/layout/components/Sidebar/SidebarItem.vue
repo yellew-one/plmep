@@ -34,15 +34,16 @@
 </template>
 
 <script>
-// import { showSealedSampleTasks } from '@/api/index'
 export default {
   name: 'SidebarItem',
   filters: {
     titlefilters: function (value) {
       if (value === 'fengyangRoute.myTasks') {
-        value = '(4)'
+        value = '(2)'
       } else if (value === 'fengyangRoute.ypdq_task') {
-        value = '(0)'
+        value = '(3)'
+      } else if (value === 'huanbaoRoute.Material_submitted') {
+        value = '(5)'
       } else {
         value = ''
       }

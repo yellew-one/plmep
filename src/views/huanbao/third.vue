@@ -8,7 +8,7 @@
         <el-table-column align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.third.taskName')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.taskName}}</span>
+            <a href="#" style="color: blue">{{scope.row.taskName}}</a>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true"  prop="theme"  :label="$t('huanbaoTable.third.theme')" width="180">

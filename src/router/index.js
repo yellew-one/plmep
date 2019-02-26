@@ -86,14 +86,14 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/hMytasks',
+    path: '/third',
     component: Layout,
-    redirect: '/hMytasks',
+    redirect: '/third',
     meta: { title: 'huanbaoRoute.third_report', icon: 'user' },
     children: [{
-      path: 'hMytasks',
-      component: () => import('@/views/huanbao/Mytasks'),
-      name: 'hMytasks',
+      path: 'third',
+      component: () => import('@/views/huanbao/third'),
+      name: 'third',
       meta: { title: 'huanbaoRoute.third_report', icon: 'user', noCache: true }
     }]
   },
@@ -107,6 +107,19 @@ export const asyncRouterMap = [
       component: () => import('@/views/huanbao/Material_Search'),
       name: 'search',
       meta: { title: 'huanbaoRoute.Material_Search', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '/detailTask',
+    component: Layout,
+    redirect: '/detailTask',
+    meta: { title: 'huanbaoRoute.details', icon: 'dashboard' },
+    hidden: true,
+    children: [{
+      path: 'detailTask',
+      component: () => import('@/views/huanbao/detailPage/detailTask'),
+      name: 'detailTask',
+      meta: { title: 'huanbaoRoute.details', icon: 'dashboard', noCache: true }
     }]
   },
   { path: '*', redirect: '/404', hidden: true }

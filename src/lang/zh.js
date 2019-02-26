@@ -33,7 +33,8 @@ export default {
     myTasks: '我的任务',
     third_report: '第三方报告到期任务',
     Material_submitted: '待提交物料环保',
-    Material_Search: '物料环保搜索'
+    Material_Search: '物料环保搜索',
+    details: '任务详情'
   },
   huanbaoTable: {
     third: {
@@ -67,13 +68,24 @@ export default {
       status: '状态',
       cas_no: 'CAS No.',
       search: '查询',
+      mail: '催邮',
       number: '编号',
       name: '名称',
       version: '版本',
       material_name: '物料名称',
       model_specification: '型号规格',
       supplier: '供应商',
-      manufacturer: '生产厂家'
+      manufacturer: '生产厂家',
+      time: '环保创建时时间',
+      result: '物料环保搜索结果'
+    },
+    escapeClause: {
+      title: '选择RoHS豁免条款',
+      number: '豁免条款编号',
+      category: '豁免条款类别',
+      describe: '豁免条款描述',
+      range: '失效范围',
+      result: '豁免条款搜索结果'
     }
   },
   tagsView: {

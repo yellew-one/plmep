@@ -33,7 +33,8 @@ export default {
     myTasks: 'My Tasks',
     third_report: 'Third party report due task',
     Material_submitted: 'Material to be submitted',
-    Material_Search: 'Material Environmental Search'
+    Material_Search: 'Material Environmental Search',
+    details: 'Detailed Information'
   },
   huanbaoTable: {
     third: {
@@ -66,7 +67,25 @@ export default {
       bom_classify: 'Bom Classify',
       status: 'Status',
       cas_no: 'CAS No.',
-      search: 'Search'
+      search: 'Search',
+      mail: 'E-mail',
+      number: 'Number',
+      name: 'Name',
+      version: 'Version',
+      material_name: 'Material Name',
+      model_specification: 'Model Specification',
+      supplier: 'Supplier',
+      manufacturer: 'Manufacturer',
+      time: 'Create Time',
+      result: 'Material Environmental Search Results'
+    },
+    escapeClause: {
+      title: 'Optional RoHS exemption clause',
+      number: 'Number',
+      category: 'Categories ',
+      describe: 'Description ',
+      range: 'Failure scope',
+      result: 'Search results for exemption clauses'
     }
   },
   tagsView: {

@@ -4,11 +4,12 @@
         <el-table
           :data="tableData"
           border
-          style="width: 100%">
+          style="width: 100%"
+          @cell-click="cellClick">
           <el-table-column  align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.taskName}}</span>
+              <span  style="color: blue">{{scope.row.taskName}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip="true" prop="material_number"  :label="$t('huanbaoTable.submitted.material_number')" width="180">
@@ -113,7 +114,6 @@ export default {
   name: 'HelloWorld',
   mounted: function () {
   },
-  methods: {},
   data () {
     return {
       tableData: [{
@@ -173,6 +173,11 @@ export default {
         customer_Special_Needs: '已发布',
         environmental_attributes: '环保属性'
       }]
+    }
+  },
+  methods: {
+    cellClick (row, column, cell, event) {
+      this.$router.push({name: 'detailTask'})
     }
   }
 }

@@ -6,57 +6,71 @@
             <div class="boxtext">
               <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
                        style=' margin-left:0px;'>
-                <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
-                  <el-col :span="6">
-                    <el-form-item prop="demand_name"  :label="$t('huanbaoTable.search.platform')">
-                      <el-input :disabled="disFlag" style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.applying_for')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.bom_number')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6">
+                <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
+                  <el-col :span="8">
                     <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.material_number')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
+                      <el-input   v-model="temp.demand_name"></el-input>
                     </el-form-item>
                   </el-col>
-                </el-row>
-                <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
-                  <el-col :span="6">
-                    <el-form-item prop="demand_name"  :label="$t('huanbaoTable.search.escape_clause')">
-                      <el-input style="width: 250px" v-model="temp.demand_name"></el-input>
+                  <el-col :span="8">
+                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.material_name')">
+                      <el-input   v-model="temp.demand_name"></el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="6">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.bom_classify')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.status')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.cas_no')">
-                      <el-input  style="width: 250px" v-model="temp.demand_name"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20" type="flex" class="row-bg" style="height: 20px;margin-top: 10px">
-                  <el-col :span="22">
+                  <el-col :span="8">
                     <el-form-item >
                     </el-form-item>
                   </el-col>
-                  <el-col :span="2">
+                </el-row>
+                <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
+                  <el-col :span="8">
+                    <el-form-item prop="demand_name"  :label="$t('huanbaoTable.search.escape_clause')">
+                      <el-input disabled="true" v-model="temp.demand_name">
+                        <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.status')">
+                      <el-input   v-model="temp.demand_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item >
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
+                  <el-col :span="8">
+                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.search.cas_no')">
+                      <el-input   v-model="temp.demand_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item prop="dateValue" :label="$t('huanbaoTable.search.time')">
+                      <el-date-picker
+                        style="width: 100%"
+                        v-model="dateValue"
+                        type="daterange"
+                        start-placeholder="Start Time"
+                        end-placeholder="End Time"
+                        value-format="yyyy-MM-dd">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item >
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20" type="flex" class="row-bg" >
+                  <el-col :span="8">
                     <el-button size="mini" type="primary" plain>{{$t('huanbaoTable.search.search')}}</el-button>
+                    <!--<el-button size="mini" type="primary" plain>{{$t('huanbaoTable.search.mail')}}</el-button>-->
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item >
+                    </el-form-item>
                   </el-col>
                 </el-row>
               </el-form>
@@ -64,11 +78,25 @@
           </el-col>
         </el-row>
       </el-card>
-      <el-card class="box-card" style="margin-top: 20px">
+      <el-card class="box-card" style="margin-top: 0px">
+        <el-row :gutter="30" type="flex" class="row-bg" style="height: 30px;margin-top: -20px">
+          <el-col :span="8">
+            <el-form style="margin-left: 2%" >
+              <el-form-item :label="$t('huanbaoTable.search.result')">
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="16">
+            <el-form >
+              <el-form-item>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
         <el-table
           :data="tableData"
           border
-          style="width: 100%">
+          style="width: 100%;margin-top: 10px">
           <el-table-column  align="center" show-overflow-tooltip="true"  prop="number"  :label="$t('huanbaoTable.search.number')" width="180">
             <template
               slot-scope="scope">
@@ -81,13 +109,13 @@
               <span>{{scope.row.material_number}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="version"  :label="$t('huanbaoTable.search.version')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="version"  :label="$t('huanbaoTable.search.version')" width="80">
             <template
               slot-scope="scope">
               <span>{{scope.row.material_name}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.search.status')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.search.status')" width="80">
             <template
               slot-scope="scope">
               <span>{{scope.row.model_specification}}</span>
@@ -132,7 +160,7 @@
               <el-button v-if="scope.row.fmd === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="msds"  :label="$t('huanbaoTable.submitted.msds')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="msds"  :label="$t('huanbaoTable.submitted.msds')" width="150">
             <template
               slot-scope="scope">
               <el-button v-if="scope.row.msds === '已发布'" title="已发布" type="success" circle></el-button>
@@ -177,7 +205,7 @@
               <el-button v-if="scope.row.others === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="customer_Special_Needs"  :label="$t('huanbaoTable.submitted.customer_Special_Needs')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="customer_Special_Needs"  :label="$t('huanbaoTable.submitted.customer_Special_Needs')" width="150">
             <template
               slot-scope="scope">
               <el-button v-if="scope.row.customer_Special_Needs === '已发布'" title="已发布" type="success" circle></el-button>
@@ -188,17 +216,23 @@
           </el-table-column>
         </el-table>
       </el-card>
+      <escape-clause
+                      ref="myChild"
+                      :setTest = 'setTest'
+                      v-on:childByValue="childByValue"></escape-clause>
     </div>
 </template>
 <script>
+import EscapeClause from '../../components/EscapeClause/escapeClause'
 export default {
-  components: {},
+  components: {EscapeClause},
   name: 'HelloWorld',
   mounted: function () {
   },
-  methods: {},
   data () {
     return {
+      dialogVisible: false,
+      dateValue: '',
       temp: {
         demand_name: 'PLM'
       },
@@ -259,6 +293,21 @@ export default {
         customer_Special_Needs: '已发布',
         environmental_attributes: '环保属性'
       }]
+    }
+  },
+  methods: {
+    // 父组件调用
+    setTest (e) {
+      this.temp.demand_name = e
+    },
+    // 父子组件传值
+    escapeClick () {
+      this.dialogVisible = true
+      this.$refs.myChild.setDialogFormVisible(this.dialogVisible)
+    },
+    // 父组件回调
+    childByValue (childValue) {
+      this.dialogVisible = childValue
     }
   }
 }

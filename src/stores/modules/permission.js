@@ -122,63 +122,47 @@ const permission = {
             }]
         }]
         const dynamicRouter2 = [{
-          cfunid: '1000',
-          fun_code: '1001',
-          redirect: '/hMytasks',
-          fun_level: 1,
-          fun_name: '',
-          // funurl: '/fengyang',
+          redirect: '/third',
           title: 'huanbaoRoute.third_report',
           meta: { title: 'huanbaoRoute.third_report', icon: 'permission' },
           children: [
             {
-              cfunid: '100010',
               title: 'huanbaoRoute.third_report',
-              fun_level: 2,
-              parent_id: '1000',
-              name: 'hMytasks',
-              funurl: '/hMytasks',
+              name: 'third',
               meta: { title: 'huanbaoRoute.third_report', icon: 'permission' }
             }]
         },
         {
-          cfunid: '1004',
-          fun_code: '1005',
           redirect: '/submitted',
-          fun_level: 1,
-          fun_name: '',
-          // funurl: '/fengyang',
           title: 'huanbaoRoute.Material_submitted',
           meta: { title: 'huanbaoRoute.Material_submitted', icon: 'permission' },
           children: [
             {
-              cfunid: '100012',
               title: 'huanbaoRoute.Material_submitted',
-              fun_level: 2,
-              parent_id: '1000',
               name: 'submitted',
-              funurl: '/submitted',
               meta: { title: 'huanbaoRoute.Material_submitted', icon: 'permission' }
             }]
         },
         {
-          cfunid: '1002',
-          fun_code: '1003',
           redirect: '/search',
-          fun_level: 1,
-          fun_name: '',
-          // funurl: '/fengyang',
           title: 'huanbaoRoute.Material_Search',
           meta: { title: 'huanbaoRoute.Material_Search', icon: 'permission' },
           children: [
             {
-              cfunid: '100011',
               title: 'huanbaoRoute.Material_Search',
-              fun_level: 2,
-              parent_id: '1002',
               name: 'search',
-              funurl: '/search',
               meta: { title: 'huanbaoRoute.Material_Search', icon: 'permission' }
+            }]
+        },
+        {
+          redirect: '/detailTask',
+          title: 'huanbaoRoute.details',
+          meta: { title: 'huanbaoRoute.details', icon: 'permission' },
+          children: [
+            {
+              title: 'huanbaoRoute.details',
+              name: 'detailTask',
+              meta: { title: 'huanbaoRoute.details', icon: 'permission' }
             }]
         }]
         var accessedRouters
