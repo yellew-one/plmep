@@ -4,7 +4,8 @@
 export default {
   error: {
     username_not_exist: '账号不存在',
-    password_error: '密码错误'
+    password_error: '密码错误',
+    required: '必填'
   },
   table: {
     name: '名称',
@@ -84,7 +85,10 @@ export default {
     music: '音乐',
     login: '登录',
     loginTitle: '环保封样系统',
-    homepage: '首页'
+    homepage: '首页',
+    Logout: '注销',
+    back_home: '返回首页',
+    editUserInfo: '编辑接口人信息'
   },
   placeholder: {
     date: '选择日期',
@@ -94,5 +98,31 @@ export default {
   validate: {
     username: '请输入账号',
     password: '请输入密码'
+  },
+  editUserInfo: {
+    Supplier: '供应商',
+    User_name: '用户名',
+    Password: ' 密码',
+    Verify_password: ' 确认密码',
+    Name: '接口人姓名',
+    Email: '接口人邮箱',
+    Telephone: '接口人办公电话',
+    Handset: '接口人手机',
+    Manager_name: '管理者姓名',
+    Manager_email: '管理者邮箱',
+    Manager_telephone: '管理者办公电话',
+    Manager_handset: '管理者手机'
+  },
+  taskName: {
+    submitSample: '待提交物料封样'
+  },
+  state: {
+    REWORK: '驳回',
+    INWORK: '正在工作',
+    SAMPLE_EXPIRE: '封样到期'
+  },
+  formButton: {
+    cancel: '取消',
+    submit: '提交'
   }
 }

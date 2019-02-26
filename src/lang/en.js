@@ -4,7 +4,8 @@
 export default {
   error: {
     username_not_exist: 'account is not exist',
-    password_error: 'password error'
+    password_error: 'password error',
+    required: 'is required'
   },
   table: {
     name: 'Name',
@@ -77,7 +78,10 @@ export default {
     music: 'Music',
     login: 'Login',
     loginTitle: 'Environmental Protection',
-    homepage: 'Home Page'
+    homepage: 'Home Page',
+    Logout: 'Logout',
+    back_home: 'Back to home page',
+    editUserInfo: 'Editing  Person Information'
   },
   placeholder: {
     date: 'select date',
@@ -87,5 +91,31 @@ export default {
   validate: {
     username: 'Please enter your login account',
     password: 'Please enter your login password'
+  },
+  editUserInfo: {
+    Supplier: 'Supplier',
+    User_name: 'User name',
+    Password: ' Password',
+    Verify_password: ' Verify password',
+    Name: 'Name of interface person',
+    Email: 'Interface person Email',
+    Telephone: 'Interface Personal Office Telephone',
+    Handset: 'Interface Personal handset',
+    Manager_name: "Manager's name",
+    Manager_email: "Manager's email",
+    Manager_telephone: "Manager's telephone",
+    Manager_handset: "Manager's handset"
+  },
+  taskName: {
+    submitSample: 'submitSample'
+  },
+  state: {
+    REWORK: 'REWORK',
+    INWORK: 'INWORK',
+    SAMPLE_EXPIRE: 'SAMPLE_EXPIRE'
+  },
+  formButton: {
+    cancel: 'Cancel',
+    submit: 'Submit'
   }
 }
