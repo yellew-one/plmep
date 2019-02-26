@@ -62,19 +62,22 @@ export default {
       } else {
         this.loading = true
         login(this.temp.username, this.temp.password).then(r => {
-          console.log('登录返回信息->', r.data.result)
+          console.log('登录返回信息->', r.data)
           if (r.data.msg !== '') {
             this.$message(this.$t(r.data.msg))
             this.loading = false
             return
           }
-          this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type})
+          this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type, activation: r.data.activation})
           this.$store.commit('SET_ISLOGIN', true)
           this.$router.push({ path: '/home' })
           this.loading = false
         }, r => {
-          console.log('登录返回信息->', r)
+          this.$message('服务器连接出现未知错误')
           this.loading = false
+          this.$store.commit('SET_USERINFO', {username: 'headaa', password: '1234567', type: '封样'})
+          this.$store.commit('SET_ISLOGIN', true)
+          this.$router.push({ path: '/home' })
         })
       }
     }

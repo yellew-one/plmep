@@ -10,37 +10,18 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            返回首页
+            {{$t('m.back_home')}}
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span  @click="changePdUI" style="display:block;">修改密码</span>
+          <span  @click="changePdUI" style="display:block;">{{$t('m.editUserInfo')}}</span>
         </el-dropdown-item>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">用户注销</span>
+          <span @click="logout" style="display:block;">{{$t('m.Logout')}}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-
-    <el-dialog v-dragDialog :title="textMap" :visible.sync="dialogFormVisible" width = "600px">
-      <el-form  :rules="rules" status-icon ref="changePassword" :model="changePassword" label-position="left" label-width="90px" style='width: 400px; margin-left:50px;'>
-        <el-form-item label="原密码" prop="originalPassword">
-          <el-input type="password" v-model="changePassword.originalPassword" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPassword">
-          <el-input type="password" v-model="changePassword.newPassword" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPassword" >
-          <el-input type="password" v-model="changePassword.confirmPassword" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="changePd('changePassword')">确认</el-button>
-      </div>
-    </el-dialog>
-
+    <userInfoEdit ref="userinfoDialog"></userInfoEdit>
   </el-menu>
 </template>
 
@@ -53,10 +34,12 @@ import dragDialog from '@/directive/el-dragDialog'
 import waves from '@/directive/waves'
 // import user from '@/store/modules/user'
 // import user from '@/store/modules/user'
+import userInfoEdit from '../../../components/UserInfoEdit/index'
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    userInfoEdit
   },
   directives: {
     waves,
@@ -86,7 +69,7 @@ export default {
       loginName: '',
       textMap: '',
       avatarImage: 'https://pic.qqtn.com/up/2014-7/14065364718533842.gif',
-      dialogFormVisible: false,
+      dialogFormVisibledialogFormVisible: false,
       users: [],
       changePassword: {
         originalPassword: '',
@@ -106,6 +89,14 @@ export default {
           { validator: validatePass2, required: true, trigger: 'blur' }
         ]
       }
+    }
+  },
+  mounted: function () {
+    // console.log('xxoo', this.$store.getters.userInfo)
+    var user = this.$store.getters.userInfo
+    // console.log('user.activation', user)
+    if (user.activation === '该用户并未被激活!') {
+      this.$refs.userinfoDialog.dialogVisibleChange(true)
     }
   },
   created () {
@@ -131,8 +122,9 @@ export default {
       location.reload()
     },
     changePdUI () {
-      this.textMap = '修改密码'
-      this.dialogFormVisible = true
+      // this.textMap = '修改密码'
+      // this.dialogFormVisible = true
+      this.$refs.userinfoDialog.dialogVisibleChange(true)
     },
     changePd (formName) {
       this.$refs[formName].validate((valid) => {

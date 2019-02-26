@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 
 const user = {
   state: {
-    userInfo: localStorage.getItem('userInfo') || {},
+    userInfo: JSON.parse(localStorage.getItem('userInfo')) || {},
     token: JSON.parse(localStorage.getItem('token')) || '',
     islogin: localStorage.getItem('userInfo') || false
   },
