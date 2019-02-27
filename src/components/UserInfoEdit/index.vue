@@ -44,20 +44,16 @@
     </el-scrollbar>
     <div style="margin-top: 10px;text-align:right">
     <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
-    <el-button  size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
+    <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
-import Dhr from '../utils/Dhr'
-import { userInfo } from '@/api/index'
+import { userInfo, updateUser } from '@/api/index'
 export default {
   name: 'userInfoEdit',
   // this.$props.data
   props: ['data'],
-  components: {
-    Dhr
-  },
   mounted: function () {
   },
   methods: {
@@ -76,7 +72,24 @@ export default {
     submit () {
       this.$refs['editUserform'].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$store.commit('SET_LOADING', true)
+          updateUser(this.userInfoModel).then(r => {
+            console.log('r->', r)
+            if (r.data.msg === '修改成功') {
+              this.dialogFormVisible = false
+              this.$message({
+                message: this.$t('success.update_success'),
+                type: 'success',
+                duration: 5 * 1000
+              })
+            } else {
+              this.$message({
+                message: 'Submit Error',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            }
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -85,9 +98,29 @@ export default {
     }
   },
   data () {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        /* if (this.userInfoModel.Verify_password !== '') {
+          this.$refs.editUserform.validateField('Verify_password')
+        } */
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value && value !== this.userInfoModel.passWord) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       dialogFormVisible: false,
       userInfoModel: {},
+      loading: false,
       rules: {
         supplier: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
@@ -118,6 +151,12 @@ export default {
         ],
         managerMobile: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        passWord: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        Verify_password: [
+          { validator: validatePass2, trigger: 'blur' }
         ]
       }
     }

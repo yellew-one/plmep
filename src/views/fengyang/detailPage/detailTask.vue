@@ -2,10 +2,13 @@
     <div class="app-container">
       <el-row>
         <el-col :span="24">
-          <div class="card_title">物料封样&nbsp;-&nbsp;MS7015AA000745, 物料封样_7015AA000745,LXF_T400_A01_彩盒防拆标签(无LOGO)_01, 1.4</div>
+          <div class="card_title">物料封样&nbsp;-&nbsp;{{model.materialNumber}}, {{model.materialName}}, {{model.version}}</div>
           <el-card shadow="hover" class="card">
             <div class="longcheer_hr">
-              <span>属性</span>
+              <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
+              <div class="longcheer_hr_reight">
+                <el-button @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit')}}</el-button>
+              </div>
             </div>
             <el-row class="card_row">
               <el-col :span="4" class="card_lable">
@@ -107,10 +110,10 @@
             </el-row>
             <el-row class="card_row">
               <el-col :span="4" class="card_lable">
-                {{$t('fengyangTable.detail.lq_class_category')}}:
+                {{$t('fengyangTable.detail.lq_monomers_weight')}}:
               </el-col>
               <el-col :span="7" class="card_value">&nbsp;
-                {{model.lq_class_category}}
+                {{model.lq_monomers_weight}}
               </el-col>
               <el-col :span="4" class="card_lable">
                 {{$t('fengyangTable.detail.lq_size')}}:
@@ -121,10 +124,10 @@
             </el-row>
             <el-row class="card_row">
               <el-col :span="4" class="card_lable">
-                {{$t('fengyangTable.detail.lq_monomers_weight')}}:
+                {{$t('fengyangTable.detail.lq_class_category')}}:
               </el-col>
               <el-col :span="7" class="card_value">&nbsp;
-                {{model.lq_monomers_weight}}
+                {{model.lq_class_category}}
               </el-col>
               <el-col :span="4" class="card_lable">
                 {{$t('fengyangTable.detail.lq_fiction_preston')}}:
@@ -203,16 +206,26 @@
                 {{model.lq_deadline_sign}}
               </el-col>
             </el-row>
+            <div class="longcheer_hr" style="margin-top: 20px">
+              <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_Sealed_document')}}</span>
+            </div>
+            <el-row class="card_row">
+              <el-col :span="24" class="card_lable">
+              </el-col>
+            </el-row>
           </el-card>
         </el-col>
       </el-row>
+      <sealeInfoEdit ref="infoEdit"></sealeInfoEdit>
     </div>
 </template>
 <script>
+import { showTaskDetails, editSealedSampleDocInfo } from '@/api/index'
+import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 export default {
   name: 'detailTask',
   mounted: function () {
-    this.model = {
+    /* this.model = {
       version: '1',
       materialNumber: 'MT1102X22',
       materialName: '萨德反导系统',
@@ -239,16 +252,34 @@ export default {
       lq_courier_number_time: 'lq_courier_number_time',
       lq_sender: 'lq_sender',
       lq_tel: 'lq_tel',
-      lq_deadline_sign: 'lq_deadline_sign'}
+      lq_deadline_sign: 'lq_deadline_sign'} */
+  },
+  components: {
+    sealeInfoEdit
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
+    this.oid = this.$route.params.oid
+    if (this.oid) this.getDetailInfo(this.oid)
   },
-  methods: {},
+  methods: {
+    getDetailInfo (oid) {
+      showTaskDetails(oid).then(r => {
+        this.model = r.data[0]
+      })
+    },
+    editSealedSampleDocInfo (oid) {
+      editSealedSampleDocInfo(oid).then()
+    },
+    editInfo () {
+      this.$refs.infoEdit.openDialog(true, this.model)
+    }
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      model: {}
+      model: {},
+      oid: ''
     }
   }
 }
@@ -260,6 +291,7 @@ export default {
   }
   .card_row{
     margin-top: 15px;
+    padding-left: 15px;
   }
   .card_lable{
     font-weight: bold;
@@ -284,7 +316,7 @@ export default {
     border-bottom: 2px solid #D13139;
     margin-bottom: 10px;
   }
-  .longcheer_hr span{
+  .longcheer_hr_span{
     display: inline-block;
     background-image: url(../../../assets/image/tab2.png);
     background-repeat: no-repeat;
@@ -293,5 +325,11 @@ export default {
     padding: 5px 15px;
     height: 27px;
     color: #ffffff;
+  }
+  .longcheer_hr_reight {
+    position: relative;
+    top: -8px;
+    float: right;
+    height: 27px;
   }
 </style>

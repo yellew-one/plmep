@@ -7,6 +7,9 @@ export default {
     password_error: 'password error',
     required: 'is required'
   },
+  success: {
+    update_success: 'update info success'
+  },
   table: {
     name: 'Name',
     theme: 'Theme',
@@ -101,7 +104,8 @@ export default {
     homepage: 'Home Page',
     Logout: 'Logout',
     back_home: 'Back to home page',
-    editUserInfo: 'Editing  Person Information'
+    editUserInfo: 'Editing  Person Information',
+    SealedInfoEdit: 'Sealed Info Edit'
   },
   placeholder: {
     date: 'select date',
@@ -136,7 +140,8 @@ export default {
   },
   formButton: {
     cancel: 'Cancel',
-    submit: 'Submit'
+    submit: 'Submit',
+    edit: 'Edit'
   },
   fengyangTable: {
     detail: {
@@ -155,7 +160,7 @@ export default {
       lq_supplier_rank: 'Supplier Level',
       lq_class_category: 'Material category',
       lq_size: 'Dimensions (length * width * height unit: mm, tolerance *)',
-      lq_monomers_weight: 'Net weight of monomer (g, tolerance (+3%)',
+      lq_monomers_weight: 'This Net weight of monomer ( g, tolerance (+3%) )',
       lq_fiction_preston: 'Fiction maker',
       lq_fiction_time: 'Tentative date',
       lq_reviewer: 'Auditor',
@@ -166,6 +171,10 @@ export default {
       lq_courier_number_time: 'Express Delivery Date',
       lq_sender: 'Sender',
       lq_tel: 'Telephone',
-      lq_deadline_sign: 'Deadline marking'}
+      lq_deadline_sign: 'Deadline marking',
+      title_attribute: 'Attribute',
+      title_Sealed_document: 'Sealed document',
+      lq_desc: 'Explain'
+    }
   }
 }

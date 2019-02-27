@@ -7,6 +7,9 @@ export default {
     password_error: '密码错误',
     required: '必填'
   },
+  success: {
+    update_success: '修改成功'
+  },
   table: {
     name: '名称',
     theme: '主题',
@@ -101,7 +104,8 @@ export default {
     homepage: '首页',
     Logout: '注销',
     back_home: '返回首页',
-    editUserInfo: '编辑接口人信息'
+    editUserInfo: '编辑接口人信息',
+    SealedInfoEdit: '编辑封样详细信息'
   },
   placeholder: {
     date: '选择日期',
@@ -136,7 +140,8 @@ export default {
   },
   formButton: {
     cancel: '取消',
-    submit: '提交'
+    submit: '提交',
+    edit: '编辑'
   },
   fengyangTable: {
     detail: {
@@ -166,6 +171,10 @@ export default {
       lq_courier_number_time: '快递发出日期',
       lq_sender: '发件人',
       lq_tel: '电话',
-      lq_deadline_sign: '最后期限标识'}
+      lq_deadline_sign: '最后期限标识',
+      title_attribute: '属性',
+      title_Sealed_document: '封样文档',
+      lq_desc: '说明'
+    }
   }
 }

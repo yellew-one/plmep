@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Message } from 'element-ui'
+import store from '../stores'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.API_BASEURL, // api的base_url
@@ -46,15 +48,17 @@ service.interceptors.response.use(
   //   return response.data
   // }
   function (response) {
+    store.commit('SET_LOADING', false)
     return response
   },
   error => {
-    console.log('err' + error)// for debug
-    /* Message({
-      message: error.message,
+    console.log('error', error)
+    store.commit('SET_LOADING', false)
+    Message({
+      message: '出现服务器连接错误, 请联系管理员! \n\r ' + error,
       type: 'error',
       duration: 5 * 1000
-    }) */
+    })
     return Promise.reject(error)
   }
 )

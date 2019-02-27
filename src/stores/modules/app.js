@@ -7,9 +7,13 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    guojihua: localStorage.getItem('guojihua') || 'zh'
+    guojihua: localStorage.getItem('guojihua') || 'zh',
+    loading: false
   },
   mutations: {
+    SET_LOADING: (state, loading) => {
+      state.loading = loading
+    },
     SET_GUOJIHUA: (state, guojihua) => {
       localStorage.setItem('guojihua', guojihua)
       state.guojihua = guojihua
