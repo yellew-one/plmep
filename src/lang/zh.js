@@ -44,23 +44,27 @@ export default {
     third: {
       taskName: '任务名',
       theme: '主题',
-      status: '状态',
-      task_deadlines: '任务最后期限'
+      state: '状态',
+      specification: '任务最后期限'
     },
     submitted: {
       taskName: '任务名',
-      material_number: '物料编号',
-      material_name: '物料名称',
-      model_specification: '型号规格',
-      item_code: '项目代号',
-      fmd: 'FMD',
-      msds: 'MSDS/专利证明',
-      rohs: 'RoHS',
-      hf: 'HF',
-      reach: 'REACH',
-      others: '其他',
-      customer_Special_Needs: '客户特殊需求',
-      environmental_attributes: '环保属性'
+      materialNumber: '物料编号',
+      materialName: '物料名称',
+      specification: '型号规格',
+      projectNumber: '项目代号',
+      FMD: 'FMD',
+      MSDS: 'MSDS/专利证明',
+      RoHS: 'RoHS',
+      HF: 'HF',
+      REACH: 'REACH',
+      OTHER: '其他',
+      OTHER2: '客户特殊需求',
+      envProtectionStatus: '环保属性',
+      RELEASED: '已发布',
+      REWORK: '驳回',
+      UNDERREVIEW: '正在审阅',
+      INWORK: '正在工作'
     },
     search: {
       platform: '平台',
@@ -73,7 +77,6 @@ export default {
       cas_no: 'CAS No.',
       search: '查询',
       mail: '催邮',
-      number: '编号',
       name: '名称',
       version: '版本',
       material_name: '物料名称',
@@ -81,7 +84,11 @@ export default {
       supplier: '供应商',
       manufacturer: '生产厂家',
       time: '环保创建时时间',
-      result: '物料环保搜索结果'
+      result: '物料环保搜索结果',
+      eNumber: '环保编号',
+      eName: '环保名称',
+      eStatus: '环保状态',
+      createDate: '创建时间'
     },
     escapeClause: {
       title: '选择RoHS豁免条款',
@@ -89,7 +96,23 @@ export default {
       category: '豁免条款类别',
       describe: '豁免条款描述',
       range: '失效范围',
-      result: '豁免条款搜索结果'
+      result: '豁免条款搜索结果',
+      ensure: '确定',
+      cancel: '取消'
+    },
+    detailTable: {
+      version: '版本',
+      materialNumber: '物料编码',
+      materialName: '物料名称',
+      modelName: '型号规格',
+      supplierNumber: '供应商',
+      requestProject: '申请项目',
+      manufacturer: '生产厂家',
+      envProtectionStatus: '环保属性',
+      requestCause: '申请原因',
+      number: '编号',
+      name: '名称',
+      state: '状态'
     }
   },
   tagsView: {
@@ -131,7 +154,9 @@ export default {
     Manager_handset: '管理者手机'
   },
   taskName: {
-    submitSample: '待提交物料封样'
+    submitSample: '待提交物料封样',
+    submitEnvironmentalInformation: '提交环保资料',
+    changeExpirationReport: '更新到期报告'
   },
   state: {
     REWORK: '驳回',

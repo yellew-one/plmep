@@ -11,6 +11,7 @@ const getters = {
   islogin: state => state.user.islogin,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  visitedviews: state => state.tagsview.visitedviews
+  visitedviews: state => state.tagsview.visitedviews,
+  huanbaoTaskNum: state => state.app.huanbaoTaskNum
 }
 export default getters

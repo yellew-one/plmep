@@ -3,6 +3,8 @@
     <el-dialog
       :title="$t('huanbaoTable.escapeClause.title')"
       :visible.sync="dialogVisible"
+      :show-close="false"
+      :close-on-press-escape="false"
       width="50%"
       top="15px">
       <el-card class="box-card">
@@ -61,13 +63,13 @@
       </el-card>
       <el-card class="box-card" style="margin-top: 0px">
         <el-row :gutter="30" type="flex" class="row-bg" style="height: 30px;margin-top: -20px">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form style="margin-left: 2%" >
               <el-form-item :label="$t('huanbaoTable.escapeClause.result')">
               </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="12">
             <el-form >
               <el-form-item>
               </el-form-item>
@@ -75,9 +77,15 @@
           </el-col>
         </el-row>
         <el-table
+          ref="multipleTable"
           :data="tableData"
           border
-          style="width: 100%;margin-top: 10px">
+          style="width: 100%;margin-top: 10px"
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="35">
+          </el-table-column>
           <el-table-column  align="center" show-overflow-tooltip="true"  prop="number"  :label="$t('huanbaoTable.escapeClause.number')">
             <template
               slot-scope="scope">
@@ -105,8 +113,8 @@
         </el-table>
       </el-card>
       <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="test">确 定</el-button>
+          <el-button @click="cancelValue">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+          <el-button type="primary" @click="setBabaValue">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
         </span>
     </el-dialog>
   </div>
@@ -114,11 +122,12 @@
 <script>export default {
   components: {},
   name: 'EscapeClause',
-  props: ['setTest'],
+  props: ['acceptSonValue'],
   mounted: function () {
   },
   data () {
     return {
+      str: '',
       dialogVisible: false,
       dateValue: '',
       temp: {
@@ -184,12 +193,26 @@
     }
   },
   methods: {
-    test () {
+    // 确认时回调父组件传值
+    setBabaValue () {
       this.dialogVisible = false
-      this.$props.setTest('123')
+      this.$props.acceptSonValue(this.str)
+      this.str = ''
     },
     setDialogFormVisible (item) {
       this.dialogVisible = item
+    },
+    handleSelectionChange (val) {
+      this.str = ''
+      for (let i in val) {
+        this.str = val[i].taskName + ',' + this.str
+      }
+      this.str = this.str.substring(0, this.str.length - 1)
+    },
+    cancelValue () {
+      this.str = ''
+      this.dialogVisible = false
+      this.$refs.multipleTable.clearSelection()
     }
   },
   watch: {

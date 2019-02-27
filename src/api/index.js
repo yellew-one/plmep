@@ -4,7 +4,7 @@
 import request from '@/utils/request'
 import Qs from 'qs'
 import store from '../stores'
-
+// 查看到期任务
 export function expiredSealedSampleTasks () {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
@@ -22,6 +22,7 @@ export function expiredSealedSampleTasks () {
     }
   })
 }
+// 封样待提交任务
 export function showSealedSampleTasks () {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
@@ -39,6 +40,7 @@ export function showSealedSampleTasks () {
     }
   })
 }
+// 获取用户信息
 export function userInfo () {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
@@ -53,6 +55,84 @@ export function userInfo () {
     data: {
       operation: 'userInfo',
       username: store.getters.userInfo.username
+    }
+  })
+}
+// 获取环保待提交任务
+export function showEnvProtectionTasks () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'showEnvProtectionTasks',
+      username: store.getters.userInfo.username
+    }
+  })
+}
+// 第三方到期任务
+export function expiredEnvProtectionTasks () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'expiredEnvProtectionTasks',
+      username: store.getters.userInfo.username
+    }
+  })
+}
+// 环保搜索
+export function searchEnvprotection (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchEnvprotection.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'searchEnvprotection',
+      searchDateFrom: e.searchDateFrom,
+      searchDateTo: e.searchDateTo,
+      materialCode: e.materialCode,
+      materialName: e.materialName,
+      exemptionForm: e.exemptionForm,
+      status: e.status,
+      casno: e.casno
+    }
+  })
+}
+// 环保任务详细
+export function showEnvprotectionTask (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'showEnvprotectionTask',
+      oid: e
     }
   })
 }

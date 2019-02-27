@@ -44,23 +44,23 @@ export default {
     third: {
       taskName: 'TaskName',
       theme: 'Theme',
-      status: 'Status',
-      task_deadlines: 'Task Deadlines'
+      state: 'Status',
+      specification: 'Task Deadlines'
     },
     submitted: {
       taskName: 'TaskName',
-      material_number: 'Material Number',
-      material_name: 'Material Name',
-      model_specification: 'Model Specification',
-      item_code: 'Item Code',
-      fmd: 'FMD',
-      msds: 'MSDS/Patent',
-      rohs: 'RoHS',
-      hf: 'HF',
-      reach: 'REACH',
-      others: 'Other',
-      customer_Special_Needs: 'Customer Special Needs',
-      environmental_attributes: 'Environmental Attributes'
+      materialNumber: 'Material Number',
+      materialName: 'Material Name',
+      specification: 'Model Specification',
+      projectNumber: 'Item Code',
+      FMD: 'FMD',
+      MSDS: 'MSDS/Patent',
+      RoHS: 'RoHS',
+      HF: 'HF',
+      REACH: 'REACH',
+      OTHER: 'Other',
+      OTHER2: 'Customer Special Needs',
+      envProtectionStatus: 'Environmental Attributes'
     },
     search: {
       platform: 'Platform',
@@ -73,7 +73,6 @@ export default {
       cas_no: 'CAS No.',
       search: 'Search',
       mail: 'E-mail',
-      number: 'Number',
       name: 'Name',
       version: 'Version',
       material_name: 'Material Name',
@@ -81,7 +80,11 @@ export default {
       supplier: 'Supplier',
       manufacturer: 'Manufacturer',
       time: 'Create Time',
-      result: 'Material Environmental Search Results'
+      result: 'Material Environmental Search Results',
+      eNumber: 'Environmental number',
+      eName: 'Environmental Name',
+      eStatus: 'Environmental state',
+      createDate: 'CreateDate'
     },
     escapeClause: {
       title: 'Optional RoHS exemption clause',
@@ -89,7 +92,23 @@ export default {
       category: 'Categories ',
       describe: 'Description ',
       range: 'Failure scope',
-      result: 'Search results for exemption clauses'
+      result: 'Search results for exemption clauses',
+      ensure: 'Ensure',
+      cancel: 'Cancel'
+    },
+    detailTable: {
+      materialNumber: 'Material Number',
+      materialName: 'Material Name',
+      modelName: 'Specification',
+      envProtectionStatus: 'EnvProtection Type',
+      supplierNumber: 'Supplier',
+      requestProject: 'Project',
+      manufacturer: 'Manufacturer',
+      requestCause: 'Reason',
+      version: 'Version',
+      number: 'Number',
+      name: 'Name',
+      state: 'State'
     }
   },
   tagsView: {
@@ -131,7 +150,9 @@ export default {
     Manager_handset: "Manager's handset"
   },
   taskName: {
-    submitSample: 'submitSample'
+    submitSample: 'submitSample',
+    submitEnvironmentalInformation: 'Submit Information',
+    changeExpirationReport: 'Update Report'
   },
   state: {
     REWORK: 'REWORK',

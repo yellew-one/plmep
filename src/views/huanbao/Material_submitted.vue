@@ -9,100 +9,100 @@
           <el-table-column  align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template
               slot-scope="scope">
-              <span  style="color: blue">{{scope.row.taskName}}</span>
+              <span  style="color: blue">{{$t(scope.row.taskName)}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="material_number"  :label="$t('huanbaoTable.submitted.material_number')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="materialNumber"  :label="$t('huanbaoTable.submitted.materialNumber')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.material_number}}</span>
+              <span>{{scope.row.materialNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="material_name"  :label="$t('huanbaoTable.submitted.material_name')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="materialName"  :label="$t('huanbaoTable.submitted.materialName')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.material_name}}</span>
+              <span>{{scope.row.materialName}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true"  prop="model_specification"  :label="$t('huanbaoTable.submitted.model_specification')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="specification"  :label="$t('huanbaoTable.submitted.specification')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.model_specification}}</span>
+              <span>{{scope.row.specification}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="item_code"  :label="$t('huanbaoTable.submitted.item_code')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="projectNumber"  :label="$t('huanbaoTable.submitted.projectNumber')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.item_code}}</span>
+              <span>{{scope.row.projectNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="fmd"  :label="$t('huanbaoTable.submitted.fmd')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="FMD"  :label="$t('huanbaoTable.submitted.FMD')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.fmd === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.fmd === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.fmd === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.fmd === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.FMD === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.FMD === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.FMD === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.FMD === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="msds"  :label="$t('huanbaoTable.submitted.msds')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="MSDS"  :label="$t('huanbaoTable.submitted.MSDS')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.msds === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.msds === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.msds === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.msds === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.MSDS === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.MSDS === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.MSDS === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.MSDS === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="rohs"  :label="$t('huanbaoTable.submitted.rohs')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="RoHS"  :label="$t('huanbaoTable.submitted.RoHS')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.rohs === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.rohs === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.rohs === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.rohs === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.RoHS === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.RoHS === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.RoHS === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.RoHS === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="hf"  :label="$t('huanbaoTable.submitted.hf')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="HF"  :label="$t('huanbaoTable.submitted.HF')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.hf === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.hf === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.hf === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.hf === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.HF === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.HF === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.HF === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.HF === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="reach"  :label="$t('huanbaoTable.submitted.reach')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="REACH"  :label="$t('huanbaoTable.submitted.REACH')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.reach === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.reach === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.reach === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.reach === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.REACH === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.REACH === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.REACH === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.REACH === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="others"  :label="$t('huanbaoTable.submitted.others')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="OTHER"  :label="$t('huanbaoTable.submitted.OTHER')" width="100">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.others === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.others === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.others === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.others === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.OTHER === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.OTHER === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.OTHER === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.OTHER === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="customer_Special_Needs"  :label="$t('huanbaoTable.submitted.customer_Special_Needs')" width="100">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="OTHER2"  :label="$t('huanbaoTable.submitted.OTHER2')" width="180">
             <template
               slot-scope="scope">
-              <el-button v-if="scope.row.customer_Special_Needs === '已发布'" title="已发布" type="success" circle></el-button>
-              <el-button v-if="scope.row.customer_Special_Needs === '驳回'" title="驳回" type="danger" circle></el-button>
-              <el-button v-if="scope.row.customer_Special_Needs === '正在审阅'" title="正在审阅" type="warning" circle></el-button>
-              <el-button v-if="scope.row.customer_Special_Needs === '正在工作'" title="正在工作" style="background-color: #909399;"  circle></el-button>
+              <el-button v-if="scope.row.OTHER2 === 'RELEASED'" :title="$t('huanbaoTable.submitted.FMD')" type="success" circle></el-button>
+              <el-button v-if="scope.row.OTHER2 === 'REWORK'" :title="$t('huanbaoTable.submitted.REWORK')" type="danger" circle></el-button>
+              <el-button v-if="scope.row.OTHER2 === 'UNDERREVIEW'" :title="$t('huanbaoTable.submitted.UNDERREVIEW')" type="warning" circle></el-button>
+              <el-button v-if="scope.row.OTHER2 === 'INWORK'" :title="$t('huanbaoTable.submitted.INWORK')" style="background-color: #909399;"  circle></el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="environmental_attributes"  :label="$t('huanbaoTable.submitted.environmental_attributes')" width="190">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="envProtectionStatus"  :label="$t('huanbaoTable.submitted.envProtectionStatus')" width="190">
             <template
               slot-scope="scope">
-              <span>{{scope.row.environmental_attributes}}</span>
+              <span>{{scope.row.envProtectionStatus}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -110,74 +110,28 @@
     </div>
 </template>
 <script>
+import { showEnvProtectionTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
   mounted: function () {
+    this.$router.push({name: 'detailTask'})
+    this.getDataList()
   },
   data () {
     return {
-      tableData: [{
-        taskName: '任务名',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '已发布',
-        msds: '已发布',
-        rohs: '已发布',
-        hf: '已发布',
-        reach: '已发布',
-        others: '已发布',
-        customer_Special_Needs: '已发布',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '驳回',
-        msds: '驳回',
-        rohs: '驳回',
-        hf: '驳回',
-        reach: '驳回',
-        others: '驳回',
-        customer_Special_Needs: '驳回',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '正在审阅',
-        msds: '正在审阅',
-        rohs: '正在审阅',
-        hf: '正在审阅',
-        reach: '正在审阅',
-        others: '正在审阅',
-        customer_Special_Needs: '正在审阅',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '正在工作',
-        msds: '驳回',
-        rohs: '正在审阅',
-        hf: '正在工作',
-        reach: '正在审阅',
-        others: '正在工作',
-        customer_Special_Needs: '已发布',
-        environmental_attributes: '环保属性'
-      }]
+      tableData: []
     }
   },
   methods: {
+    // 获取表格信息
+    getDataList () {
+      showEnvProtectionTasks().then(r => {
+        this.tableData = r.data
+        this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
+      })
+    },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask'})
+      this.$router.push({name: 'detailTask', params: {oid: row.oid}})
     }
   }
 }

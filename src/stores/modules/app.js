@@ -6,11 +6,15 @@ const app = {
       opened: !+Cookies.get('sidebarStatus'),
       withoutAnimation: false
     },
+    huanbaoTaskNum: 0,
     device: 'desktop',
     guojihua: localStorage.getItem('guojihua') || 'zh',
     loading: false
   },
   mutations: {
+    SET_HUANBAOTASKNUM: (state, huanbaoTaskNum) => {
+      state.huanbaoTaskNum = huanbaoTaskNum
+    },
     SET_LOADING: (state, loading) => {
       state.loading = loading
     },
