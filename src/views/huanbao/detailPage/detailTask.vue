@@ -5,7 +5,7 @@
         <div class="card_title">物料封样&nbsp;-&nbsp;MS7015AA000745, 物料封样_7015AA000745,LXF_T400_A01_彩盒防拆标签(无LOGO)_01, 1.4</div>
         <el-card shadow="hover" class="card">
           <div class="longcheer_hr">
-            <span>基本属性</span>
+            <span>{{$t('huanbaoTable.detailTable.envProtectionStatus')}}</span>
           </div>
           <el-row class="card_row">
             <el-col :span="4" class="card_lable">
@@ -63,6 +63,18 @@
               {{model.requestCause}}
             </el-col>
           </el-row>
+          <div class="longcheer_hr" style="margin-top: 20px">
+            <span>{{$t('huanbaoTable.detailTable.document')}}</span>
+          </div>
+          <el-tabs type="border-card">
+            <el-tab-pane :label="$t('huanbaoTable.submitted.FMD')">123</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.MSDS')">用户管理</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.RoHS')">用户管理</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.HF')">用户管理</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.REACH')">配置管理</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER')">角色管理</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER2')">定时任务补偿</el-tab-pane>
+          </el-tabs>
         </el-card>
       </el-col>
     </el-row>
@@ -75,6 +87,7 @@ export default {
   data () {
     return {
       oid: '',
+      activeName2: 'first',
       model: {
         version: '',
         materialNumber: '',
@@ -92,17 +105,17 @@ export default {
     }
   },
   mounted: function () {
-    this.model = {}
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
     this.oid = this.$route.params.oid
-    if (this.oid) this.getDataList()
+    if (this.oid) this.getDataList(this.oid)
   },
   methods: {
-    getDataList () {
-      showEnvprotectionTask().then(r => {
+    getDataList (e) {
+      showEnvprotectionTask(e).then(r => {
         console.log('xoxo', r)
+        this.model = r.data[0]
       })
     }
   }

@@ -114,7 +114,7 @@ import { showEnvProtectionTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
   mounted: function () {
-    this.$router.push({name: 'detailTask'})
+    // this.$router.push({name: 'detailTask'})
     this.getDataList()
   },
   data () {
@@ -128,6 +128,7 @@ export default {
       showEnvProtectionTasks().then(r => {
         this.tableData = r.data
         this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
+        console.log('xoxo', r)
       })
     },
     cellClick (row, column, cell, event) {

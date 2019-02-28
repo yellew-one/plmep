@@ -247,3 +247,42 @@ export function editSealedDocInfo (data) {
     }
   })
 }
+// getEnvpState 获取物料环保搜索页面查询条件中物料环保状态下拉框的值
+export function getEnvpState () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchEnvprotection.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getEnvpState'
+    }
+  })
+}
+// selectRoHSExemption 获取RoHS豁免条款
+export function selectRoHSExemption (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchEnvprotection.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectRoHSExemption',
+      RoHSNumber: e.RoHSNumber,
+      RoHSType: e.RoHSType,
+      startDate: e.startDate,
+      endDate: e.endDate,
+      RoHSDescription: e.RoHSDescription
+    }
+  })
+}

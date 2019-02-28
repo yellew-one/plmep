@@ -86,11 +86,20 @@ export default {
       eStatus: 'Environmental state',
       createDate: 'CreateDate'
     },
+    searchStatus: {
+      TEMP: 'TEMP',
+      INWORK: 'INWORK',
+      UNDERREVIEW: 'UNDERREVIEW',
+      RELEASED: 'RELEASED',
+      REWORK: 'REWORK',
+      CANCELLED: 'CANCELLED',
+      DISABLE: 'DISABLE'
+    },
     escapeClause: {
       title: 'Optional RoHS exemption clause',
-      number: 'Number',
-      category: 'Categories ',
-      describe: 'Description ',
+      RoHSNumber: 'Number',
+      RoHSType: 'Categories ',
+      RoHSDescription: 'Description ',
       range: 'Failure scope',
       result: 'Search results for exemption clauses',
       ensure: 'Ensure',
@@ -108,7 +117,8 @@ export default {
       version: 'Version',
       number: 'Number',
       name: 'Name',
-      state: 'State'
+      state: 'State',
+      document: 'Document Information'
     }
   },
   tagsView: {

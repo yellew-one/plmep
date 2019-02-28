@@ -32,7 +32,14 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item prop="status" :label="$t('huanbaoTable.search.status')">
-                      <el-input   v-model="temp.status"></el-input>
+                      <el-select v-model="temp.status" placeholder="" style="width: 100%">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -206,11 +213,12 @@
 </template>
 <script>
 import EscapeClause from '../../components/EscapeClause/escapeClause'
-import { searchEnvprotection } from '@/api/index'
+import { searchEnvprotection, getEnvpState } from '@/api/index'
 export default {
   components: {EscapeClause},
   name: 'HelloWorld',
   mounted: function () {
+    this.getEnvpStates()
   },
   data () {
     return {
@@ -225,41 +233,58 @@ export default {
         status: '',
         casno: ''
       },
-      tableData: [{
-        RoHS: '',
-        manufacturer: '信创',
-        REACH: '',
-        OTHER: '',
-        number: 'HSF54402227',
-        modelName: 'P3580-BL-CASE-1',
-        MSDS: '',
-        OTHER2: '',
-        createTime: '2019-01-02',
-        name: '物料环保-54402227,SHIELD FRAME,P3580,CASE,BL',
-        FMD: '',
-        HF: '',
-        status: 'CANCELLED'
-      }]
+      tableData: [],
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }],
+      optionsValue: ''
     }
   },
   methods: {
+    // 获取物料环保搜索页面查询条件中物料环保状态下拉框的值
+    getEnvpStates () {
+      getEnvpState().then(r => {
+        console.log('xoxo', r.data[0].state)
+        var states = []
+        for (var i in r.data[0].state) {
+          states.push({
+            value: r.data[0].state[i],
+            label: this.$t('huanbaoTable.searchStatus.' + r.data[0].state[i])
+          })
+        }
+        this.options = states
+      })
+    },
+    // 搜索结果
     searchResult () {
-      console.log('xoxo', this.dateValue)
       this.temp.searchDateFrom = this.dateValue[0]
       this.temp.searchDateTo = this.dateValue[1]
       this.getDataList(this.temp)
+      this.temp = {
+        searchDateFrom: '',
+        searchDateTo: '',
+        materialCode: '',
+        materialName: '',
+        exemptionForm: '',
+        status: '',
+        casno: ''
+      }
     },
     // 获取搜索结果
     getDataList (e) {
       searchEnvprotection(e).then(r => {
-        // this.tableData = r.data
-        console.log('xoxo', r.data.length)
-        console.log('xoxo', r.data)
+        if (r.data.length > 10) {
+          this.tableData = r.data.slice(0, 9)
+        } else {
+          this.tableData = r.data
+        }
+        console.log('xoxo', this.tableData)
       })
     },
     // 接受子组件传值
     acceptSonValue (e) {
-      this.temp.demand_name = e
+      this.temp.exemptionForm = e
     },
     // 父子组件传值
     escapeClick () {

@@ -15,13 +15,13 @@
                        style=' margin-left:0px;'>
                 <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="12">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.escapeClause.number')">
-                      <el-input   v-model="temp.demand_name"></el-input>
+                    <el-form-item prop="RoHSNumber" :label="$t('huanbaoTable.escapeClause.RoHSNumber')">
+                      <el-input   v-model="temp.RoHSNumber"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.escapeClause.category')">
-                      <el-input   v-model="temp.demand_name"></el-input>
+                    <el-form-item prop="RoHSType" :label="$t('huanbaoTable.escapeClause.RoHSType')">
+                      <el-input   v-model="temp.RoHSType"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -41,14 +41,14 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item prop="demand_code" :label="$t('huanbaoTable.escapeClause.describe') ">
-                      <el-input   v-model="temp.demand_name"></el-input>
+                    <el-form-item prop="RoHSDescription" :label="$t('huanbaoTable.escapeClause.RoHSDescription') ">
+                      <el-input   v-model="temp.RoHSDescription"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20" type="flex" class="row-bg" >
                   <el-col :span="8">
-                    <el-button size="mini" type="primary" plain>{{$t('huanbaoTable.search.search')}}</el-button>
+                    <el-button size="mini" type="primary" plain @click="searchResult">{{$t('huanbaoTable.search.search')}}</el-button>
                     <!--<el-button size="mini" type="primary" plain>{{$t('huanbaoTable.search.mail')}}</el-button>-->
                   </el-col>
                   <el-col :span="8">
@@ -86,28 +86,28 @@
             type="selection"
             width="35">
           </el-table-column>
-          <el-table-column  align="center" show-overflow-tooltip="true"  prop="number"  :label="$t('huanbaoTable.escapeClause.number')">
+          <el-table-column  align="center" show-overflow-tooltip="true"  prop="RoHSNumber"  :label="$t('huanbaoTable.escapeClause.RoHSNumber')">
             <template
               slot-scope="scope">
-              <span>{{scope.row.taskName}}</span>
+              <span>{{scope.row.RoHSNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="name"  :label="$t('huanbaoTable.escapeClause.category')">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="RoHSType"  :label="$t('huanbaoTable.escapeClause.RoHSType')">
             <template
               slot-scope="scope">
-              <span>{{scope.row.material_number}}</span>
+              <span>{{scope.row.RoHSType}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true" prop="version"  :label="$t('huanbaoTable.escapeClause.range')">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="expirationDate"  :label="$t('huanbaoTable.escapeClause.range')">
             <template
               slot-scope="scope">
-              <span>{{scope.row.material_name}}</span>
+              <span>{{scope.row.expirationDate}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.escapeClause.describe')">
+          <el-table-column align="center" show-overflow-tooltip="true"  prop="RoHSDescription"  :label="$t('huanbaoTable.escapeClause.RoHSDescription')">
             <template
               slot-scope="scope">
-              <span>{{scope.row.model_specification}}</span>
+              <span>{{scope.row.RoHSDescription}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -119,7 +119,9 @@
     </el-dialog>
   </div>
 </template>
-<script>export default {
+<script>
+import { selectRoHSExemption } from '@/api/index'
+export default {
   components: {},
   name: 'EscapeClause',
   props: ['acceptSonValue'],
@@ -131,86 +133,69 @@
       dialogVisible: false,
       dateValue: '',
       temp: {
-        demand_name: 'PLM'
+        RoHSNumber: '',
+        RoHSType: '',
+        startDate: '',
+        endDate: '',
+        RoHSDescription: ''
       },
-      tableData: [{
-        taskName: '任务名',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '已发布',
-        msds: '已发布',
-        rohs: '已发布',
-        hf: '已发布',
-        reach: '已发布',
-        others: '已发布',
-        customer_Special_Needs: '已发布',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '驳回',
-        msds: '驳回',
-        rohs: '驳回',
-        hf: '驳回',
-        reach: '驳回',
-        others: '驳回',
-        customer_Special_Needs: '驳回',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '正在审阅',
-        msds: '正在审阅',
-        rohs: '正在审阅',
-        hf: '正在审阅',
-        reach: '正在审阅',
-        others: '正在审阅',
-        customer_Special_Needs: '正在审阅',
-        environmental_attributes: '环保属性'
-      }, {
-        taskName: '任务名2',
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格',
-        item_code: '项目代号',
-        fmd: '正在工作',
-        msds: '驳回',
-        rohs: '正在审阅',
-        hf: '正在工作',
-        reach: '正在审阅',
-        others: '正在工作',
-        customer_Special_Needs: '已发布',
-        environmental_attributes: '环保属性'
-      }]
+      tableData: []
     }
   },
   methods: {
+    searchResult () {
+      this.temp.startDate = this.dateValue[0]
+      this.temp.endDate = this.dateValue[1]
+      this.tableData = []
+      this.getDataList(this.temp)
+    },
+    getDataList (e) {
+      selectRoHSExemption(e).then(r => {
+        console.log('escapeClause', r)
+        if (r.data.length > 10) {
+          this.tableData = r.data.slice(0, 9)
+        } else {
+          this.tableData = r.data
+        }
+      })
+    },
     // 确认时回调父组件传值
     setBabaValue () {
       this.dialogVisible = false
       this.$props.acceptSonValue(this.str)
       this.str = ''
+      this.temp = {
+        RoHSNumber: '',
+        RoHSType: '',
+        startDate: '',
+        endDate: '',
+        RoHSDescription: ''
+      }
+      this.tableData = []
     },
     setDialogFormVisible (item) {
       this.dialogVisible = item
     },
+    // 处理多选数据
     handleSelectionChange (val) {
       this.str = ''
       for (let i in val) {
-        this.str = val[i].taskName + ',' + this.str
+        this.str = val[i].RoHSNumber + ',' + this.str
       }
       this.str = this.str.substring(0, this.str.length - 1)
+      console.log('handleSelectionChange', this.str)
     },
+    // 取消操作
     cancelValue () {
       this.str = ''
+      this.temp = {
+        RoHSNumber: '',
+        RoHSType: '',
+        startDate: '',
+        endDate: '',
+        RoHSDescription: ''
+      }
+      this.tableData = []
       this.dialogVisible = false
       this.$refs.multipleTable.clearSelection()
     }

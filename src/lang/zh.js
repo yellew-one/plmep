@@ -90,11 +90,20 @@ export default {
       eStatus: '环保状态',
       createDate: '创建时间'
     },
+    searchStatus: {
+      TEMP: '临时',
+      INWORK: '正在工作',
+      UNDERREVIEW: '正在审阅',
+      RELEASED: '已发布',
+      REWORK: '驳回',
+      CANCELLED: '已取消',
+      DISABLE: '废弃'
+    },
     escapeClause: {
       title: '选择RoHS豁免条款',
-      number: '豁免条款编号',
-      category: '豁免条款类别',
-      describe: '豁免条款描述',
+      RoHSNumber: '豁免条款编号',
+      RoHSType: '豁免条款类别',
+      RoHSDescription: '豁免条款描述',
       range: '失效范围',
       result: '豁免条款搜索结果',
       ensure: '确定',
@@ -112,7 +121,8 @@ export default {
       requestCause: '申请原因',
       number: '编号',
       name: '名称',
-      state: '状态'
+      state: '状态',
+      document: '环保文档'
     }
   },
   tagsView: {
