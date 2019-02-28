@@ -199,7 +199,42 @@ export default {
       lq_deadline_sign: '最后期限标识',
       title_attribute: '属性',
       title_Sealed_document: '封样文档',
-      lq_desc: '说明'
+      lq_desc: '说明',
+      Supply: '供货',
+      unSupply: '不供货'
+    }
+  },
+  app_enum: {
+    lqClassCategory: {
+      MATERIALCATEGOR1: '标准结构件',
+      MATERIALCATEGORY2: '结构壳料',
+      MATERIALCATEGORY3: '结构辅料',
+      MATERIALCATEGORY4: '一般结构料',
+      MATERIALCATEGORY5: '天线',
+      MATERIALCATEGORY6: '组件',
+      MATERIALCATEGORY7: '电声器件',
+      MATERIALCATEGORY8: '机电料',
+      MATERIALCATEGORY9: '包材料（除配件外）',
+      MATERIALCATEGORY10: '包材料（配件）',
+      MATERIALCATEGORY11: '安规器件',
+      MATERIALCATEGORY12: 'PCB',
+      MATERIALCATEGORY13: '售后辅料'
+    },
+    lq_supplier_rank: {
+      FORONE: '一供',
+      FORTWO: '二供',
+      FORCUSTOMERS: '客供'
+    }
+  },
+  TableTile: {
+    files: {
+      number: '编号',
+      version: '版本',
+      name: '名称',
+      status: '状态',
+      type3: '三级分类',
+      approval: '审批',
+      attachment: '封样文档附件'
     }
   }
 }

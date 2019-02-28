@@ -1,9 +1,9 @@
 <template>
-      <el-dialog top="30px"  :title="$t('m.SealedInfoEdit')" :visible.sync="dialogFormVisible" width="750px">
+      <el-dialog top="30px"  :title="$t('m.SealedInfoEdit')" :visible.sync="dialogFormVisible" width="800px">
         <el-scrollbar style="height: 450px">
           <el-card>
-            <el-form  status-icon="true" :rules="rules" :label-position="$store.getters.guojihua==='en'?'top':'left'" size="mini" ref="editUserform" :model="model" label-width="100px">
-              <el-form-item :label="$t('fengyangTable.detail.materialName')" prop="name">
+            <el-form  status-icon="true" :rules="rules" :label-position="$store.getters.guojihua==='en'?'top':'left'" size="mini" ref="editform" :model="model" label-width="120px">
+              <el-form-item :label="$t('fengyangTable.detail.materialName')" prop="materialName">
                 <el-input :disabled="true"  v-model="model.materialName"></el-input>
               </el-form-item>
               <el-row>
@@ -22,13 +22,27 @@
               <el-row>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_supplier_rank')" prop="lq_supplier_rank">
-                    <el-input   v-model="model.lq_supplier_rank"></el-input>
+                    <el-select style="width: 100%" v-model="model.lq_supplier_rank" placeholder="">
+                      <el-option
+                        v-for="item in options2"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col span="2">&nbsp;</el-col>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_class_category')" prop="lq_class_category">
-                    <el-input   v-model="model.lq_class_category"></el-input>
+                    <el-select style="width: 100%" v-model="model.lq_class_category" placeholder="">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -97,8 +111,8 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item :label="$t('fengyangTable.detail.lq_desc')" prop="lq_tel">
-                <el-input   v-model="model.lq_tel"></el-input>
+              <el-form-item :label="$t('fengyangTable.detail.lq_desc')" prop="lq_desc">
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  v-model="model.lq_desc"></el-input>
               </el-form-item>
             </el-form>
           </el-card>
@@ -110,11 +124,12 @@
       </el-dialog>
 </template>
 <script>
-import { lqClassCategory, lqSupplierRank } from '@/api/index'
+import { lqClassCategory, lqSupplierRank, editSealedDocInfo } from '@/api/index'
 export default {
   name: 'sealeInfoEdit',
   mounted: function () {
   },
+  props: ['restData'],
   methods: {
     openDialog (type, data) {
       this.dialogFormVisible = type
@@ -122,24 +137,125 @@ export default {
         this.model = Object.assign({}, data)
         this.getlqClassCategory()
         this.getlqSupplierRank()
+        this.$refs['editform'].clearValidate()
       }
     },
     getlqClassCategory () {
+      var that = this
       lqClassCategory().then(r => {
         console.log(r)
+        var sz = []
+        r.data.forEach(function (value, index) {
+          console.log('foreach:', value)
+          for (var key in value) {
+            sz.push({
+              value: key,
+              label: that.$t('app_enum.lqClassCategory.' + key)
+            })
+          }
+        })
+        this.options = sz
       })
     },
     getlqSupplierRank () {
+      var that = this
       lqSupplierRank().then(r => {
         console.log(r)
+        var sz = []
+        r.data.forEach(function (value, index) {
+          console.log('foreach:', value)
+          for (var key in value) {
+            sz.push({
+              value: key,
+              label: that.$t('app_enum.lq_supplier_rank.' + key)
+            })
+          }
+        })
+        this.options2 = sz
+      })
+    },
+    submit () {
+      this.$refs['editform'].validate((valid) => {
+        if (valid) {
+          this.$store.commit('SET_LOADING', true)
+          editSealedDocInfo(this.model).then(r => {
+            console.log('r->', r)
+            if (r.data.mes === '保存成功！') {
+              this.dialogFormVisible = false
+              this.$props.restData()
+              this.$message({
+                message: this.$t('success.update_success'),
+                type: 'success',
+                duration: 5 * 1000
+              })
+            } else {
+              this.$message({
+                message: 'Submit Error',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     }
   },
   data () {
     return {
       dialogFormVisible: false,
-      rules: [],
-      model: {}
+      rules: {
+        materialName: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_supplier_rank: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_class_category: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_size: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_monomers_weight: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_fiction_preston: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_fiction_time: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_approve: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_approve_time: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_courier_number: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_courier_number_time: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_sender: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_reviewer: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_review_time: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        lq_tel: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ]
+      },
+      model: {lq_class_category: '', lq_supplier_rank: ''},
+      options: [],
+      options2: []
     }
   }
 }

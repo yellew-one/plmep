@@ -228,3 +228,22 @@ export function lqSupplierRank () {
     }
   })
 }
+// 编辑封样详细信息后保存接口
+export function editSealedDocInfo (data) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editSealedSampleDocInfo',
+      jsonData: JSON.stringify(data),
+      oid: data.oid
+    }
+  })
+}

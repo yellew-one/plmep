@@ -88,10 +88,10 @@
                 {{model.lq_environmental_protection_status}}
               </el-col>
               <el-col :span="4" class="card_lable">
-                {{$t('fengyangTable.detail.lq_supplier_number')}}:
+                &nbsp;
               </el-col>
               <el-col :span="9" class="card_value">&nbsp;
-                {{model.lq_supplier_number}}
+                &nbsp;
               </el-col>
             </el-row>
             <el-row class="card_row">
@@ -209,14 +209,92 @@
             <div class="longcheer_hr" style="margin-top: 20px">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_Sealed_document')}}</span>
             </div>
-            <el-row class="card_row">
+            <el-row class="card_row" style="padding-left: 5px">
               <el-col :span="24" class="card_lable">
+                <el-button-group>
+                  <el-button size="mini"  icon="el-icon-plus"></el-button>
+                  <el-button size="mini"  icon="el-icon-edit"></el-button>
+                  <el-button size="mini"  icon="el-icon-share"></el-button>
+                  <el-button size="mini"  icon="el-icon-delete"></el-button>
+                </el-button-group>
+                <el-table
+                  size="mini"
+                  :data="filesList"
+                  border
+                  height="200px"
+                  style="width: 100%">
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('TableTile.files.number')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('TableTile.files.name')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="status"  :label="$t('TableTile.files.status')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="type3"  :label="$t('TableTile.files.type3')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="approval"  :label="$t('TableTile.files.approval')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
+                    <template
+                      slot-scope="scope">
+                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
+            <div class="longcheer_hr" style="margin-top: 20px">
+              <span class="longcheer_hr_span"></span>
+            </div>
+            <el-row class="card_row">
+              <el-col span="4" style="text-align: right">备注：</el-col>
+              <el-col span="1" style="text-align: right">&nbsp;</el-col>
+              <el-col span="12"><el-input  type="textarea" :rows="3"></el-input></el-col>
+            </el-row>
+            <el-row class="card_row">
+              <el-col span="4" style="text-align: right">&nbsp;</el-col>
+              <el-col span="1" style="text-align: right">&nbsp;</el-col>
+              <el-col span="12" style="text-align: right">
+                <el-radio v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+                <el-radio v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+              </el-col>
+            </el-row>
+            <el-row class="card_row">
+              <el-col span="4" style="text-align: right">&nbsp;</el-col>
+              <el-col span="1" style="text-align: right">&nbsp;</el-col>
+              <el-col span="12" style="text-align: right">
+                <el-button :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
               </el-col>
             </el-row>
           </el-card>
         </el-col>
       </el-row>
-      <sealeInfoEdit ref="infoEdit"></sealeInfoEdit>
+      <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
     </div>
 </template>
 <script>
@@ -264,8 +342,12 @@ export default {
   },
   methods: {
     getDetailInfo (oid) {
+      if (!oid) {
+        oid = this.oid
+      }
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
+        this.model.oid = this.$route.params.oid
       })
     },
     editSealedSampleDocInfo (oid) {
@@ -279,7 +361,9 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       model: {},
-      oid: ''
+      oid: '',
+      filesList: [],
+      radio: '1'
     }
   }
 }

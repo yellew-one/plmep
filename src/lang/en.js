@@ -195,7 +195,42 @@ export default {
       lq_deadline_sign: 'Deadline marking',
       title_attribute: 'Attribute',
       title_Sealed_document: 'Sealed document',
-      lq_desc: 'Explain'
+      lq_desc: 'Explain',
+      Supply: 'Supply',
+      unSupply: 'No Supply'
+    }
+  },
+  app_enum: {
+    lqClassCategory: {
+      MATERIALCATEGOR1: 'Standard structural material',
+      MATERIALCATEGORY2: 'Shell structure',
+      MATERIALCATEGORY3: 'Auxiliary material',
+      MATERIALCATEGORY4: 'General structural material',
+      MATERIALCATEGORY5: 'Antenna',
+      MATERIALCATEGORY6: 'Component',
+      MATERIALCATEGORY7: 'electroacoustic device',
+      MATERIALCATEGORY8: 'Electromechanical material',
+      MATERIALCATEGORY9: 'Wrapping material(except for accessories)',
+      MATERIALCATEGORY10: 'Wrapping material(accessories)',
+      MATERIALCATEGORY11: 'Safety device',
+      MATERIALCATEGORY12: 'PCB',
+      MATERIALCATEGORY13: 'After-sale excipients'
+    },
+    lq_supplier_rank: {
+      FORONE: 'One supply',
+      FORTWO: 'Tow supply',
+      FORCUSTOMERS: 'Customer supply'
+    }
+  },
+  TableTile: {
+    files: {
+      number: 'number',
+      version: 'version',
+      name: 'name',
+      status: 'status',
+      type3: 'Three level classification',
+      approval: 'approval',
+      attachment: 'Sample enclosure document attachment'
     }
   }
 }

@@ -2,9 +2,9 @@
     <div class="app-container" style="height: 100%" >
       <el-card class="box-card">
       <el-table
+        size="mini"
         :data="tableData"
         border
-        height="450px"
         style="width: 100%">
         <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
           <template
