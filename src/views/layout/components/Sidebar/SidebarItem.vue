@@ -9,8 +9,8 @@
           <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{$t(item.children[0].meta.title)}}
             <!--<span class="sd">{{item.children[0].meta.title | titlefilters }}</span>-->
             <span class="sd" v-if="item.children[0].meta.title === 'huanbaoRoute.Material_submitted'">{{$store.getters.huanbaoTaskNum}}</span>
-            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.ypdq_task'">{{$store.getters.huanbaoTaskNum}}</span>
-            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.myTasks'">{{$store.getters.huanbaoTaskNum}}</span>
+            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.ypdq_task'">{{$store.getters.fengyangdaoqiNum}}</span>
+            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.myTasks'">{{$store.getters.fengyangTaskNum}}</span>
           </span>
         </el-menu-item>
       </router-link>
@@ -62,6 +62,8 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  created () {
   },
   methods: {
     hasOneShowingChildren (children) {

@@ -1,16 +1,15 @@
 <template>
   <div class="app-container" style="height: 100%" >
-    <el-card class="box-card">
       <el-card class="box-card">
         <el-table
           :data="tableData"
+          size="mini"
           border
-          height="450px"
           style="width: 100%">
           <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
             <template
               slot-scope="scope">
-              <a href="#" style="color: blue">{{$t(scope.row.taskName)}}</a>
+              <a href="#" style="color: blue" @click="goDetail(scope.row)">{{$t(scope.row.taskName)}}</a>
             </template>
           </el-table-column>
           <el-table-column align="center" :show-overflow-tooltip="true"   prop="theme"  :label="$t('table.material_number')" width="180">
@@ -51,7 +50,6 @@
           </el-table-column>
         </el-table>
       </el-card>
-    </el-card>
   </div>
 </template>
 <script>import { expiredSealedSampleTasks } from '@/api/index'
@@ -64,7 +62,12 @@ export default {
     getDataList () {
       expiredSealedSampleTasks().then(r => {
         this.tableData = r.data
+        this.$store.commit('SET_FENGYANGDAOQINUM', r.data.length)
       })
+    },
+    goDetail (data) {
+      // console.log('data', data)
+      this.$router.push({name: 'fdetailypdq', params: {oid: data.oid, state: data.state}})
     }
   },
   data () {

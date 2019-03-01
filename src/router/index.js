@@ -135,5 +135,18 @@ export const asyncRouterMap = [
       meta: { title: 'fengyangRoute.details', icon: 'dashboard', noCache: true }
     }]
   },
+  {
+    path: '/fdetailypdq',
+    component: Layout,
+    redirect: '/fdetailypdq',
+    meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard' },
+    hidden: true,
+    children: [{
+      path: 'fdetailypdq',
+      component: () => import('@/views/fengyang/detailPage/detailypdq'),
+      name: 'fdetailypdq',
+      meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard', noCache: true }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

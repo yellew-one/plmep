@@ -1,18 +1,30 @@
 <template>
     <div class="app-container">
-      <button>gogogogogogogogo</button>
-      <svg-icon iconClass="menu"></svg-icon>
+      <el-button @click="gongao" type="primary" icon="el-icon-warning">公告</el-button>
     </div>
 </template>
 <script>
+import { showSealedSampleTasks, expiredSealedSampleTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
   mounted: function () {
     //      { path: '*', redirect: '/404', hidden: true }])
+    this.getNum()
   },
   methods: {
+    getNum () {
+      showSealedSampleTasks().then(r => {
+        this.$store.commit('SET_FENGYANGTASKNUM', r.data.length)
+      })
+      expiredSealedSampleTasks().then(r => {
+        this.$store.commit('SET_FENGYANGDAOQINUM', r.data.length)
+      })
+    },
     handleClick () {
       this.$router.push({ path: '/404' })
+    },
+    gongao () {
+      window.open('http://plmtest.longcheer.com/Windchill/ptc1/ext/longcheer/helpDoc/helpDocSS', '_blank')
     }
   },
   data () {

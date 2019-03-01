@@ -6,7 +6,7 @@
           <el-card shadow="hover" class="card">
             <div class="longcheer_hr">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
-              <div class="longcheer_hr_reight">
+              <div class="longcheer_hr_reight" v-if="state === 'state.REWORK' || state === 'state.INWORK'">
                 <el-button @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit')}}</el-button>
               </div>
             </div>
@@ -105,7 +105,7 @@
                 {{$t('fengyangTable.detail.lq_supplier_rank')}}:
               </el-col>
               <el-col :span="9" class="card_value">&nbsp;
-                {{model.lq_supplier_rank}}
+                {{$t('app_enum.lq_supplier_rank.' + model.lq_supplier_rank)}}
               </el-col>
             </el-row>
             <el-row class="card_row">
@@ -127,7 +127,7 @@
                 {{$t('fengyangTable.detail.lq_class_category')}}:
               </el-col>
               <el-col :span="7" class="card_value">&nbsp;
-                {{model.lq_class_category}}
+                {{$t('app_enum.lqClassCategory.' + model.lq_class_category)}}
               </el-col>
               <el-col :span="4" class="card_lable">
                 {{$t('fengyangTable.detail.lq_fiction_preston')}}:
@@ -211,8 +211,8 @@
             </div>
             <el-row class="card_row" style="padding-left: 5px">
               <el-col :span="24" class="card_lable">
-                <el-button-group>
-                  <el-button size="mini"  icon="el-icon-plus"></el-button>
+                <el-button-group v-if="state === 'state.REWORK' || state === 'state.INWORK'">
+                  <el-button size="mini"  icon="el-icon-plus" @click="uploadSampDoc"></el-button>
                   <el-button size="mini"  icon="el-icon-edit"></el-button>
                   <el-button size="mini"  icon="el-icon-share"></el-button>
                   <el-button size="mini"  icon="el-icon-delete"></el-button>
@@ -269,37 +269,39 @@
               </el-col>
             </el-row>
             <div class="longcheer_hr" style="margin-top: 20px">
-              <span class="longcheer_hr_span"></span>
+              <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
             </div>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">备注：</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
-              <el-col span="12"><el-input  type="textarea" :rows="3"></el-input></el-col>
+              <el-col  span="12"><el-input  :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-radio v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-                <el-radio v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
               </el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-button :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+                <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
               </el-col>
             </el-row>
           </el-card>
         </el-col>
       </el-row>
       <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
+      <uploadSampleDoc ref="uploadSamDoc"></uploadSampleDoc>
     </div>
 </template>
 <script>
 import { showTaskDetails, editSealedSampleDocInfo } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
+import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
 export default {
   name: 'detailTask',
   mounted: function () {
@@ -333,10 +335,12 @@ export default {
       lq_deadline_sign: 'lq_deadline_sign'} */
   },
   components: {
-    sealeInfoEdit
+    sealeInfoEdit,
+    uploadSampleDoc
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
+    this.state = this.$route.params.state
     this.oid = this.$route.params.oid
     if (this.oid) this.getDetailInfo(this.oid)
   },
@@ -355,6 +359,9 @@ export default {
     },
     editInfo () {
       this.$refs.infoEdit.openDialog(true, this.model)
+    },
+    uploadSampDoc () {
+      this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid)
     }
   },
   data () {
@@ -363,7 +370,8 @@ export default {
       model: {},
       oid: '',
       filesList: [],
-      radio: '1'
+      radio: '1',
+      state: ''
     }
   }
 }

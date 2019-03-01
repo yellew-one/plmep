@@ -12,6 +12,8 @@ const getters = {
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   visitedviews: state => state.tagsview.visitedviews,
-  huanbaoTaskNum: state => state.app.huanbaoTaskNum
+  huanbaoTaskNum: state => state.app.huanbaoTaskNum,
+  fengyangTaskNum: state => state.app.fengyangTaskNum,
+  fengyangdaoqiNum: state => state.app.fengyangdaoqiNum
 }
 export default getters

@@ -64,11 +64,12 @@ export default {
       showSealedSampleTasks().then(r => {
         // console.log(r)
         this.tableData = r.data
+        this.$store.commit('SET_FENGYANGTASKNUM', r.data.length)
       })
     },
     goDetail (data) {
       // console.log('data', data)
-      this.$router.push({name: 'fdetailTask', params: {oid: data.oid}})
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: data.state}})
     }
   },
   data () {

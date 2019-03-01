@@ -55,7 +55,7 @@
                 <el-col span="2">&nbsp;</el-col>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_fiction_time')" prop="lq_fiction_time">
-                    <el-date-picker   v-model="model.lq_fiction_time"></el-date-picker>
+                    <el-date-picker value-format="yyyy/MM/dd"  v-model="model.lq_fiction_time"></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -68,7 +68,7 @@
                 <el-col span="2">&nbsp;</el-col>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_review_time')" prop="lq_review_time">
-                    <el-date-picker   v-model="model.lq_review_time"></el-date-picker>
+                    <el-date-picker value-format="yyyy/MM/dd"  v-model="model.lq_review_time"></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -81,7 +81,7 @@
                 <el-col span="2">&nbsp;</el-col>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_approve_time')" prop="lq_approve_time">
-                    <el-date-picker   v-model="model.lq_approve_time"></el-date-picker>
+                    <el-date-picker value-format="yyyy/MM/dd"  v-model="model.lq_approve_time"></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -94,7 +94,7 @@
                 <el-col span="2">&nbsp;</el-col>
                 <el-col span="11">
                   <el-form-item :label="$t('fengyangTable.detail.lq_courier_number_time')" prop="lq_courier_number_time">
-                    <el-date-picker   v-model="model.lq_courier_number_time"></el-date-picker>
+                    <el-date-picker value-format="yyyy/MM/dd"  v-model="model.lq_courier_number_time"></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -111,9 +111,9 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item :label="$t('fengyangTable.detail.lq_desc')" prop="lq_desc">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  v-model="model.lq_desc"></el-input>
-              </el-form-item>
+              <!--<el-form-item :label="$t('fengyangTable.detail.lq_desc')" prop="lq_desc">-->
+                <!--<el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  v-model="model.lq_desc"></el-input>-->
+              <!--</el-form-item>-->
             </el-form>
           </el-card>
         </el-scrollbar>
@@ -177,8 +177,25 @@ export default {
     submit () {
       this.$refs['editform'].validate((valid) => {
         if (valid) {
+          var temp = {}
+          temp.lq_size = this.model.lq_size
+          temp.lq_monomers_weight = this.model.lq_monomers_weight
+          temp.lq_supplier_rank = this.model.lq_supplier_rank
+          temp.lq_class_category = this.model.lq_class_category
+          temp.lq_fiction_preston = this.model.lq_fiction_preston
+          temp.lq_fiction_time = this.model.lq_fiction_time
+          temp.lq_reviewer = this.model.lq_reviewer
+          temp.lq_review_time = this.model.lq_review_time
+          temp.lq_approve = this.model.lq_approve
+          temp.lq_approve_time = this.model.lq_approve_time
+          temp.lq_courier_number = this.model.lq_courier_number
+          temp.lq_courier_number_time = this.model.lq_courier_number_time
+          temp.lq_sender = this.model.lq_sender
+          temp.lq_tel = this.model.lq_tel
+          temp.lq_desc = this.model.lq_desc
+          console.log('this.model------------>', this.model)
           this.$store.commit('SET_LOADING', true)
-          editSealedDocInfo(this.model).then(r => {
+          editSealedDocInfo(temp, this.model.oid).then(r => {
             console.log('r->', r)
             if (r.data.mes === '保存成功！') {
               this.dialogFormVisible = false

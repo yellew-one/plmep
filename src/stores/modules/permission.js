@@ -130,6 +130,16 @@ const permission = {
               name: 'fdetailTask',
               meta: { title: 'fengyangRoute.details', icon: 'permission' }
             }]
+        }, {
+          redirect: '/fdetailypdq',
+          title: 'fengyangRoute.ypdqdetails',
+          meta: { title: 'fengyangRoute.ypdqdetails', icon: 'permission' },
+          children: [
+            {
+              title: 'fengyangRoute.ypdqdetails',
+              name: 'fdetailypdq',
+              meta: { title: 'fengyangRoute.ypdqdetails', icon: 'permission' }
+            }]
         }]
         const dynamicRouter2 = [{
           redirect: '/third',

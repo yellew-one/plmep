@@ -7,11 +7,19 @@ const app = {
       withoutAnimation: false
     },
     huanbaoTaskNum: 0,
+    fengyangTaskNum: 0,
+    fengyangdaoqiNum: 0,
     device: 'desktop',
     guojihua: localStorage.getItem('guojihua') || 'zh',
     loading: false
   },
   mutations: {
+    SET_FENGYANGDAOQINUM: (state, fengyangdaoqiNum) => {
+      state.fengyangdaoqiNum = fengyangdaoqiNum
+    },
+    SET_FENGYANGTASKNUM: (state, fengyangTaskNum) => {
+      state.fengyangTaskNum = fengyangTaskNum
+    },
     SET_HUANBAOTASKNUM: (state, huanbaoTaskNum) => {
       state.huanbaoTaskNum = huanbaoTaskNum
     },
