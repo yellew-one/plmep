@@ -31,7 +31,8 @@ export default {
     sealed_Sample: 'Sealed Sample',
     ypdq_task: 'Sample Maturity Task',
     fengyang_seacher: 'Search for Material Seal Samples',
-    details: 'Sample details'
+    details: 'Sample details',
+    ypdqdetails: 'Expire Sample details'
   },
   huanbaoRoute: {
     myTasks: 'My Tasks',
@@ -283,12 +284,16 @@ export default {
   state: {
     REWORK: 'REWORK',
     INWORK: 'INWORK',
-    SAMPLE_EXPIRE: 'SAMPLE_EXPIRE'
+    SAMPLE_EXPIRE: 'SAMPLE_EXPIRE',
+    UNDERREVIEW: 'UNDERREVIEW',
+    RELEASED: 'RELEASED'
   },
   formButton: {
     cancel: 'Cancel',
     submit: 'Submit',
-    edit: 'Edit'
+    edit: 'Edit',
+    edit_k: 'Edit Express information',
+    Approval: 'Approval'
   },
   fengyangTable: {
     detail: {
@@ -324,6 +329,24 @@ export default {
       lq_desc: 'Explain',
       Supply: 'Supply',
       unSupply: 'No Supply'
+    },
+    seacher: {
+      number: 'number',
+      seacher_info: 'Seacher Info',
+      name: 'name',
+      Specification_type: 'Specification type',
+      stauts: 'stauts',
+      create_time: 'create_time',
+      Material_category: 'Material category',
+      Seal_recognition_time: 'Seal recognition time',
+      doc_number: 'Documents Number',
+      doc_name: 'Documents Name',
+      type3: 'Three level classification',
+      seach_result: 'Search result',
+      title: {
+        Material_seacher: 'Search for Material Seal Samples',
+        add_doc: 'Add Documents'
+      }
     }
   },
   app_enum: {
@@ -346,6 +369,32 @@ export default {
       FORONE: 'One supply',
       FORTWO: 'Tow supply',
       FORCUSTOMERS: 'Customer supply'
+    },
+    lqThirdLevel: {
+      'PFMEA_Seq': 'PFMEA',
+      'HF_ID_Seq': 'HF_ID_Seq',
+      'CP_Seq': 'CP_Seq',
+      'CLCFB_ID_Seq': 'CLCFB_ID_Seq',
+      'RZZS_ID_Seq': 'RZZS_ID_Seq',
+      'YPBGLLB_ID_Seq': 'YPBGLLB_ID_Seq',
+      'FM_ID_Seq': 'FM_ID_Seq',
+      'PLSCLLBG_ID_Seq': 'PLSCLLBG_ID_Seq',
+      'WLBOMO_ID_Seq': 'WLBOMO_ID_Seq',
+      'GXTJ_ID_Seq': 'GXTJ_ID_Seq',
+      'ZJLCT_ID_Seq': 'ZJLCT_ID_Seq',
+      'QCCCLBG_ID_Seq': 'QCCCLBG_ID_Seq',
+      'BZFS_ID_Seq': 'BZFS_ID_Seq',
+      'AGBG_ID_Seq': 'AGBG_ID_Seq',
+      'GCTZ_ID_Seq': 'GCTZ_ID_Seq',
+      'CPKBG_ID_Seq': 'CPKBG_ID_Seq',
+      'ROHS_ID_Seq': 'ROHS_ID_Seq',
+      'KKXCSBG_ID_Seq': 'KKXCSBG_ID_Seq',
+      'QCGCT_ID_Seq': 'QCGCT_ID_Seq',
+      'YPTP_ID_Seq': 'YPTP_ID_Seq',
+      'SPEC_ID_Seq': 'SPEC_ID_Seq',
+      'MSA_Seq': 'MSA_Seq',
+      'DQJXXNCSBG_ID_Seq': 'DQJXXNCSBG_ID_Seq',
+      'YPCQTP_ID_Seq': 'YPCQTP_ID_Seq'
     }
   },
   TableTile: {

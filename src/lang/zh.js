@@ -31,7 +31,8 @@ export default {
     sealed_Sample: '已封样',
     ypdq_task: '样品到期任务',
     fengyang_seacher: '物料封样搜索',
-    details: '封样详细信息'
+    details: '封样详细信息',
+    ypdqdetails: '样品到期详细信息'
   },
   huanbaoRoute: {
     myTasks: '我的任务',
@@ -287,12 +288,16 @@ export default {
   state: {
     REWORK: '驳回',
     INWORK: '正在工作',
-    SAMPLE_EXPIRE: '封样到期'
+    SAMPLE_EXPIRE: '封样到期',
+    UNDERREVIEW: '未审查',
+    RELEASED: '发布'
   },
   formButton: {
     cancel: '取消',
     submit: '提交',
-    edit: '编辑'
+    edit: '编辑',
+    edit_k: '编辑快递信息',
+    Approval: '审批'
   },
   fengyangTable: {
     detail: {
@@ -328,6 +333,24 @@ export default {
       lq_desc: '说明',
       Supply: '供货',
       unSupply: '不供货'
+    },
+    seacher: {
+      number: '编号',
+      seacher_info: '查看信息',
+      name: '名称',
+      Specification_type: '规格型号',
+      stauts: '状态',
+      create_time: '创建时间',
+      Material_category: '物料规格型号',
+      Seal_recognition_time: '封样承认时间',
+      doc_number: '文档编号',
+      doc_name: '文档名称',
+      type3: '三级分类',
+      seach_result: '搜索结果',
+      title: {
+        Material_seacher: '物料封样搜索',
+        add_doc: '添加文档'
+      }
     }
   },
   app_enum: {
@@ -350,6 +373,32 @@ export default {
       FORONE: '一供',
       FORTWO: '二供',
       FORCUSTOMERS: '客供'
+    },
+    lqThirdLevel: {
+      'PFMEA_Seq': 'PFMEA',
+      'HF_ID_Seq': '其他限用物质成分调查表',
+      'CP_Seq': 'CP',
+      'CLCFB_ID_Seq': '材料成分表',
+      'RZZS_ID_Seq': '3C认证证书',
+      'YPBGLLB_ID_Seq': '样品变更覆历表',
+      'FM_ID_Seq': '封面',
+      'PLSCLLBG_ID_Seq': '批量生产良率报告',
+      'WLBOMO_ID_Seq': '物料BOM清单',
+      'GXTJ_ID_Seq': '成型条件',
+      'ZJLCT_ID_Seq': '制造流程图',
+      'QCCCLBG_ID_Seq': 'FAI全尺寸报告',
+      'BZFS_ID_Seq': '包装方式',
+      'AGBG_ID_Seq': '安规报告',
+      'GCTZ_ID_Seq': '工程图面',
+      'CPKBG_ID_Seq': 'CPK报告',
+      'ROHS_ID_Seq': 'RoHS限用物质成份调查表',
+      'KKXCSBG_ID_Seq': '可靠性测试报告',
+      'QCGCT_ID_Seq': 'QC工程图',
+      'YPTP_ID_Seq': '样品图片',
+      'SPEC_ID_Seq': '规格书',
+      'MSA_Seq': 'MSA',
+      'DQJXXNCSBG_ID_Seq': '电气/机械性能测试报告/出货检验报告',
+      'YPCQTP_ID_Seq': '样品拆解图片'
     }
   },
   TableTile: {

@@ -229,7 +229,7 @@ export function lqSupplierRank () {
   })
 }
 // 编辑封样详细信息后保存接口
-export function editSealedDocInfo (data) {
+export function editSealedDocInfo (data, oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -243,7 +243,7 @@ export function editSealedDocInfo (data) {
     data: {
       operation: 'editSealedSampleDocInfo',
       jsonData: JSON.stringify(data),
-      oid: data.oid
+      oid: oid
     }
   })
 }
@@ -391,6 +391,65 @@ export function selectOTHER2 (e) {
     data: {
       operation: 'selectOTHER2',
       oid: e
+    }
+  })
+}
+// 封样文档三级分类下了框调用
+export function lqThirdLevel () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'lq_third_level',
+      internalName: 'lq_third_level'
+    }
+  })
+}
+// 搜索封样文档接口
+export function searchSealedDocs (number, name, thirdLevel) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'searchSealedDocs',
+      username: store.getters.userInfo.username,
+      number: number,
+      name: name,
+      lq_third_level: thirdLevel
+    }
+  })
+}
+// addDoc  勾选物料封养文档，点击“确定“将物料封样和物料封样文档关联
+export function addDoc (oid, oids) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/addSealedSampleDoc.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'addDoc',
+      username: store.getters.userInfo.username,
+      oid: oid,
+      oids: oids
     }
   })
 }
