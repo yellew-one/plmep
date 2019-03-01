@@ -4,13 +4,14 @@
         <el-table
           :data="tableData"
           border
+          size="mini"
           style="width: 100%"
           @cell-click="cellClick">
-          <el-table-column  align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
+          <el-table-column align="center" show-overflow-tooltip="true" prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template
-              slot-scope="scope">
-              <span  style="color: blue">{{$t(scope.row.taskName)}}</span>
-            </template>
+            slot-scope="scope">
+            <span  style="color: blue">{{$t(scope.row.taskName)}}</span>
+          </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip="true" prop="materialNumber"  :label="$t('huanbaoTable.submitted.materialNumber')" width="180">
             <template
@@ -114,7 +115,6 @@ import { showEnvProtectionTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
   mounted: function () {
-    // this.$router.push({name: 'detailTask'})
     this.getDataList()
   },
   data () {
@@ -122,17 +122,20 @@ export default {
       tableData: []
     }
   },
+  activated: function () {
+    this.getDataList()
+  },
   methods: {
     // 获取表格信息
     getDataList () {
       showEnvProtectionTasks().then(r => {
         this.tableData = r.data
         this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
-        console.log('xoxo', r)
+        console.log('Material Submitted', r)
       })
     },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask', params: {oid: row.oid}})
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
     }
   }
 }

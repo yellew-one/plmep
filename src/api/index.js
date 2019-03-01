@@ -286,3 +286,111 @@ export function selectRoHSExemption (e) {
     }
   })
 }
+// selectFMD  展示环保条目  FMD条目
+export function selectFMD (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectFMD',
+      oid: e
+    }
+  })
+}
+// 展示环保条目  MSDS条目
+export function selectMSDS (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectMSDS',
+      oid: e
+    }
+  })
+}
+// 展示环保条目  RoHS条目
+export function selectRoHS (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectRoHS',
+      oid: e
+    }
+  })
+}
+// 展示环保条目   HF条目
+export function selectHF (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectHF',
+      oid: e
+    }
+  })
+}
+// 展示环保条目   REACH条目
+export function selectREACH (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectREACH',
+      oid: e
+    }
+  })
+}
+// 展示环保条目    客户特殊需求申报条目
+export function selectOTHER2 (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectOTHER2',
+      oid: e
+    }
+  })
+}

@@ -4,7 +4,9 @@
       <el-table
         :data="tableData"
         border
-        style="width: 100%">
+        size="mini"
+        style="width: 100%"
+        @cell-click="cellClick">
         <el-table-column align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.third.taskName')" width="180">
           <template
             slot-scope="scope">
@@ -54,6 +56,9 @@ export default {
       expiredEnvProtectionTasks().then(r => {
         this.tableData = r.data
       })
+    },
+    cellClick (row, column, cell, event) {
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
     }
   }
 }

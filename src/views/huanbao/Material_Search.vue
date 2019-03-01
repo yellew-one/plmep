@@ -72,7 +72,7 @@
                 </el-row>
                 <el-row :gutter="20" type="flex" class="row-bg" >
                   <el-col :span="8">
-                    <el-button size="mini" type="primary" plain @click="searchResult">{{$t('huanbaoTable.search.search')}}</el-button>
+                    <el-button :loading="$store.getters.loading" size="mini" type="primary" plain @click="searchResult">{{$t('huanbaoTable.search.search')}}</el-button>
                     <!--<el-button size="mini" type="primary" plain>{{$t('huanbaoTable.search.mail')}}</el-button>-->
                   </el-col>
                   <el-col :span="8">
@@ -103,7 +103,9 @@
         <el-table
           :data="tableData"
           border
-          style="width: 100%;margin-top: 10px">
+          size="mini"
+          style="width: 100%;margin-top: 10px"
+          @cell-click="cellClick">
           <el-table-column align="center" show-overflow-tooltip="true" prop="number"  :label="$t('huanbaoTable.search.eNumber')" width="180">
             <template
               slot-scope="scope">
@@ -212,7 +214,7 @@
     </div>
 </template>
 <script>
-import EscapeClause from '../../components/EscapeClause/escapeClause'
+import EscapeClause from '../../components/huanbaoDialog/escapeClause'
 import { searchEnvprotection, getEnvpState } from '@/api/index'
 export default {
   components: {EscapeClause},
@@ -234,10 +236,7 @@ export default {
         casno: ''
       },
       tableData: [],
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }],
+      options: [],
       optionsValue: ''
     }
   },
@@ -258,6 +257,7 @@ export default {
     },
     // 搜索结果
     searchResult () {
+      this.$store.commit('SET_LOADING', true)
       this.temp.searchDateFrom = this.dateValue[0]
       this.temp.searchDateTo = this.dateValue[1]
       this.getDataList(this.temp)
@@ -274,12 +274,13 @@ export default {
     // 获取搜索结果
     getDataList (e) {
       searchEnvprotection(e).then(r => {
+        console.log('search result', r)
         if (r.data.length > 10) {
           this.tableData = r.data.slice(0, 9)
         } else {
           this.tableData = r.data
         }
-        console.log('xoxo', this.tableData)
+        console.log('search result', this.tableData)
       })
     },
     // 接受子组件传值
@@ -294,6 +295,9 @@ export default {
     // 父组件回调
     childByValue (childValue) {
       this.dialogVisible = childValue
+    },
+    cellClick (row, column, cell, event) {
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
     }
   }
 }

@@ -1,3 +1,4 @@
+// 豁免条款搜索 dialog
 <template>
   <div class="app-container">
     <el-dialog
@@ -80,6 +81,7 @@
           ref="multipleTable"
           :data="tableData"
           border
+          size="mini"
           style="width: 100%;margin-top: 10px"
           @selection-change="handleSelectionChange">
           <el-table-column
@@ -201,7 +203,7 @@ export default {
     }
   },
   watch: {
-    dialogFormVisible (val, oldVal) {
+    dialogVisible (val, oldVal) {
       this.$emit('childByValue', 'false')
     }
   }
