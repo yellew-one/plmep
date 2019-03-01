@@ -213,7 +213,7 @@
               <el-col :span="24" class="card_lable">
                 <el-button-group v-if="state === 'state.REWORK' || state === 'state.INWORK'">
                   <el-button size="mini"  icon="el-icon-plus" @click="uploadSampDoc"></el-button>
-                  <el-button size="mini"  icon="el-icon-edit"></el-button>
+                  <el-button size="mini"  icon="el-icon-edit" @click="filesUploadClick"></el-button>
                   <el-button size="mini"  icon="el-icon-share"></el-button>
                   <el-button size="mini"  icon="el-icon-delete"></el-button>
                 </el-button-group>
@@ -291,52 +291,82 @@
                 <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
               </el-col>
             </el-row>
+            <div class="longcheer_hr" style="margin-top: 40px">
+              <span class="longcheer_hr_span">{{$t('huanbaoTable.detailTable.approval')}}</span>
+            </div>
+            <el-row class="card_row">
+              <el-col span="24">
+                <el-table
+                  :data="approvalTable"
+                  border
+                  size="mini"
+                  style="width: 100%">
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="state"  :label="$t('huanbaoTable.approval.state')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{$t(scope.row.state)}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="linkName"  :label="$t('huanbaoTable.approval.linkName')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.linkName}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="role"  :label="$t('huanbaoTable.approval.role')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.role}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="approvers"  :label="$t('huanbaoTable.approval.approvers')">
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.approvers}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="router"  :label="$t('huanbaoTable.approval.router')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.router}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="remark"  :label="$t('huanbaoTable.approval.remark')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.remark}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="approvaltime"  :label="$t('huanbaoTable.approval.approvaltime')" >
+                    <template
+                      slot-scope="scope">
+                      <span>{{scope.row.approvaltime}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
           </el-card>
         </el-col>
       </el-row>
       <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
       <uploadSampleDoc ref="uploadSamDoc"></uploadSampleDoc>
+      <filesUpload ref="fileUpload"></filesUpload>
     </div>
 </template>
 <script>
 import { showTaskDetails, editSealedSampleDocInfo } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
+import filesUpload from '../../../components/filesUpload/index'
 export default {
   name: 'detailTask',
   mounted: function () {
-    /* this.model = {
-      version: '1',
-      materialNumber: 'MT1102X22',
-      materialName: '萨德反导系统',
-      lq_classification: 'WPO112',
-      lq_project: '飞机',
-      lq_model_name: 'ROGP',
-      lq_request_cause: 'SKASNG',
-      lq_manufacturer: 'lq_manufacturer',
-      lq_supplier: 'lq_supplier',
-      lq_supplier_number: 'lq_supplier_number',
-      lq_environmental_protection_status: 'lq_environmental_protection_status',
-      approveddate: 'approveddate',
-      lq_supplier_rank: 'lq_supplier_rank',
-      lq_class_category: 'lq_class_category',
-      lq_size: 'lq_size',
-      lq_monomers_weight: 'lq_monomers_weight',
-      lq_fiction_preston: 'fiction_preston',
-      lq_fiction_time: '_fiction_time',
-      lq_reviewer: 'lq_reviewer',
-      lq_review_time: 'lq_review_time',
-      lq_approve: 'lq_approve',
-      lq_approve_time: 'lq_approve_time',
-      lq_courier_number: 'lq_courier_number',
-      lq_courier_number_time: 'lq_courier_number_time',
-      lq_sender: 'lq_sender',
-      lq_tel: 'lq_tel',
-      lq_deadline_sign: 'lq_deadline_sign'} */
   },
   components: {
     sealeInfoEdit,
-    uploadSampleDoc
+    uploadSampleDoc,
+    filesUpload
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
@@ -345,6 +375,9 @@ export default {
     if (this.oid) this.getDetailInfo(this.oid)
   },
   methods: {
+    filesUploadClick () {
+      this.$refs.fileUpload.openDialog()
+    },
     getDetailInfo (oid) {
       if (!oid) {
         oid = this.oid
