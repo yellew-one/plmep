@@ -136,7 +136,14 @@ export default {
       approvaltime: 'Approval time'
     },
     FMD: {
-      itemName: 'Item Name',
+      itemType: 'Item Type',
+      materialNumber: 'Material Number',
+      reportNumber: 'Report Number',
+      reportType: 'Report Type',
+      reportDate: 'Report Date',
+      createDate: 'Report Date',
+      lastDate: 'Last Date',
+      detectionUnit: 'Detection Unit',
       third: 'Third-Party Report',
       attribute: 'Detailed information',
       edit: 'EDIT',
@@ -290,11 +297,14 @@ export default {
     RELEASED: 'RELEASED'
   },
   formButton: {
-    cancel: 'Cancel',
     submit: 'Submit',
     edit: 'Edit',
     edit_k: 'Edit Express information',
-    Approval: 'Approval'
+    Approval: 'Approval',
+    delete: 'Delete',
+    check: 'Check',
+    ensure: 'Ensure',
+    cancel: 'Cancel'
   },
   fengyangTable: {
     detail: {

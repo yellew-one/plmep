@@ -1,23 +1,25 @@
 <template>
-  <el-dialog top="30px"  :title="title" :visible.sync="dialogFormVisible" width="800px">
+  <el-dialog :title="title" :visible.sync="dialogFormVisible" width="60%" append-to-body>
     <div style="margin-top: 10px;text-align:right">
-      <el-scrollbar style="height: 400px">
+      <el-scrollbar style="height: 300px">
         <el-card>
           <el-upload
             class="upload-demo"
             :action="action"
+            :name="name"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
             multiple
             :file-list="fileList">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-card>
       </el-scrollbar>
-      <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
-      <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
+      <span slot="footer" class="dialog-footer" >
+        <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
+        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
+      </span>
     </div>
   </el-dialog>
 </template>
@@ -32,10 +34,11 @@ export default {
       this.dialogFormVisible = true
     },
     // 初始化值
-    setAttribute (aciton, fileList, title) {
-      this.aciton = aciton
+    setAttribute (aciton, fileList, title, name) {
+      this.action = aciton
       this.fileList = fileList
       this.title = title
+      this.name = name
     },
     // 提交
     submit () {
@@ -61,7 +64,8 @@ export default {
       dialogFormVisible: false,
       action: '', // 接口地址
       fileList: '',
-      title: ''
+      title: '',
+      name: ''
     }
   }
 }

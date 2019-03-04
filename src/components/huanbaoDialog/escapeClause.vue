@@ -175,8 +175,8 @@ export default {
       }
       this.tableData = []
     },
-    setDialogFormVisible (item) {
-      this.dialogVisible = item
+    setDialogFormVisible () {
+      this.dialogVisible = true
     },
     // 处理多选数据
     handleSelectionChange (val) {
@@ -200,11 +200,6 @@ export default {
       this.tableData = []
       this.dialogVisible = false
       this.$refs.multipleTable.clearSelection()
-    }
-  },
-  watch: {
-    dialogVisible (val, oldVal) {
-      this.$emit('childByValue', 'false')
     }
   }
 }

@@ -140,7 +140,14 @@ export default {
       approvaltime: '审批时间'
     },
     FMD: {
-      itemName: '条目名称',
+      itemType: '条目类型',
+      materialNumber: '物料编号',
+      reportNumber: '报告编号',
+      reportType: '报告类型',
+      reportDate: '报告日期',
+      createDate: '创建时间',
+      lastDate: '上次修改时间',
+      detectionUnit: '检测单位',
       third: '可复用的第三方报告',
       attribute: '详细信息',
       edit: '编辑',
@@ -298,7 +305,10 @@ export default {
     submit: '提交',
     edit: '编辑',
     edit_k: '编辑快递信息',
-    Approval: '审批'
+    Approval: '审批',
+    delete: '删除',
+    check: '查看',
+    ensure: '确定'
   },
   fengyangTable: {
     detail: {

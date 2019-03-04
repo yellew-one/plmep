@@ -196,6 +196,15 @@
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column
+                  fixed="right"
+                  label="操作"
+                  width="100">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editMSDS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkMSDS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.RoHS')">
@@ -564,13 +573,12 @@
               </el-table>
             </el-col>
           </el-row>
-          <edit-f-m-d-dialog
-                              ref="myChild"
-                              :acceptSonValueByEdit = 'acceptSonValueByEdit'
-                              v-on:childByValueByEdit="childByValueByEdit"></edit-f-m-d-dialog>
+          <edit-f-m-d-dialog  ref="myChild"
+                              :acceptSonValueByEdit = 'acceptSonValueByEdit'></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
-                       :acceptSonValueByThird = 'acceptSonValueByThird'
-                       v-on:childByValueByThird="childByValueByThird"></third-reuse>
+                       :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
+          <edit-msds ref="editMsds"
+                     :acceptSonValueByMsds = 'acceptSonValueByMsds'></edit-msds>
         </el-card>
       </el-col>
     </el-row>
@@ -580,8 +588,10 @@
 import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER2 } from '@/api/index'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
+import EditMsds from '../../../components/huanbaoDialog/editMSDS'
 export default {
   components: {
+    EditMsds,
     ThirdReuse,
     EditFMDDialog},
   name: 'detailTask',
@@ -591,8 +601,6 @@ export default {
       radio: '1',
       oid: '',
       activeName2: 'first',
-      editFMDdialogVisible: '',
-      thirdFMDdialogVisible: '',
       model: {
         version: '',
         materialNumber: '',
@@ -731,12 +739,11 @@ export default {
         this.tableDataOTHER2 = r.data
       })
     },
-    // 编辑
+    // FMD编辑
     editFMD (row) {
-      this.editFMDdialogVisible = true
-      this.$refs.myChild.setDialogFormVisible(this.editFMDdialogVisible, row, this.oid)
+      this.$refs.myChild.setDialogFormVisible(row, this.oid)
     },
-    // 删除
+    // FMD删除
     deleteFMD (index, rows) {
       rows.splice(index, 1)
     },
@@ -747,17 +754,16 @@ export default {
         this.$store.commit('SET_LOADING', false)
       }, 1000)
     },
-    // 第三方复用
+    // FMD 第三方复用
     thirdreuseFMD () {
-      this.thirdFMDdialogVisible = true
-      this.$refs.thirdReuse.setDialogFormVisible(this.thirdFMDdialogVisible)
+      this.$refs.thirdReuse.setDialogFormVisible()
     },
-    // 父组件回调
-    childByValueByEdit (childValue) {
-      this.editFMDdialogVisible = childValue
+    // MSDS 编辑
+    editMSDS (row) {
+      this.$refs.editMsds.setDialogFormVisible()
     },
-    childByValueByThird (childValue) {
-      this.thirdFMDdialogVisible = childValue
+    // msds 删除
+    checkMSDS (row) {
     }
   }
 }

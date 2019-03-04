@@ -209,8 +209,7 @@
       </el-card>
       <escape-clause
                       ref="myChild"
-                      :acceptSonValue = 'acceptSonValue'
-                      v-on:childByValue="childByValue"></escape-clause>
+                      :acceptSonValue = 'acceptSonValue'></escape-clause>
     </div>
 </template>
 <script>
@@ -289,12 +288,7 @@ export default {
     },
     // 父子组件传值
     escapeClick () {
-      this.dialogVisible = true
-      this.$refs.myChild.setDialogFormVisible(this.dialogVisible)
-    },
-    // 父组件回调
-    childByValue (childValue) {
-      this.dialogVisible = childValue
+      this.$refs.myChild.setDialogFormVisible()
     },
     cellClick (row, column, cell, event) {
       this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})

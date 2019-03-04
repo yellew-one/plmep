@@ -97,8 +97,8 @@ export default {
     }
   },
   methods: {
-    setDialogFormVisible (item, row, oid) {
-      this.dialogVisible = item
+    setDialogFormVisible (row, oid) {
+      this.dialogVisible = true
       this.temp = row
       this.oid = oid
     },
@@ -109,11 +109,6 @@ export default {
         this.$store.commit('SET_LOADING', false)
       }, 1000)
       this.$props.acceptSonValueByEdit(this.oid)
-    }
-  },
-  watch: {
-    dialogVisible (val, oldVal) {
-      this.$emit('childByValue', 'false')
     }
   }
 }
