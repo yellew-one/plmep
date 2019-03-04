@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     // 打开弹窗
-    openDialog (aciton, fileList, title) {
+    openDialog () {
       this.dialogFormVisible = true
     },
     // 初始化值

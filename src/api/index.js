@@ -40,6 +40,24 @@ export function showSealedSampleTasks () {
     }
   })
 }
+// 正在审阅信息接口
+export function getReviewedSealDoc () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/SealSample_Review.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getReviewedSealDoc',
+      username: store.getters.userInfo.username
+    }
+  })
+}
 // 获取用户信息
 export function userInfo () {
   return request({
@@ -436,7 +454,7 @@ export function searchSealedDocs (number, name, thirdLevel) {
 // addDoc  勾选物料封养文档，点击“确定“将物料封样和物料封样文档关联
 export function addDoc (oid, oids) {
   return request({
-    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/addSealedSampleDoc.jsp',
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

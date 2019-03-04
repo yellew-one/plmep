@@ -199,6 +199,13 @@ export default {
       })
       addDoc(this.oid, str).then(r => {
         console.log(r)
+        if (r.data.mes) {
+          this.$message({
+            message: r.data.mes,
+            type: 'info',
+            duration: 5 * 1000
+          })
+        }
       })
     }
   }

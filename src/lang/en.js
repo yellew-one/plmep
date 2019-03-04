@@ -279,7 +279,8 @@ export default {
   taskName: {
     submitSample: 'submitSample',
     submitEnvironmentalInformation: 'Submit Information',
-    changeExpirationReport: 'Update Report'
+    changeExpirationReport: 'Update Report',
+    submitExpiredSample: 'submitExpiredSample'
   },
   state: {
     REWORK: 'REWORK',

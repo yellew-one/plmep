@@ -283,13 +283,14 @@ export default {
   taskName: {
     submitSample: '待提交物料封样',
     submitEnvironmentalInformation: '提交环保资料',
-    changeExpirationReport: '更新到期报告'
+    changeExpirationReport: '更新到期报告',
+    submitExpiredSample: '样品到期提醒'
   },
   state: {
     REWORK: '驳回',
     INWORK: '正在工作',
     SAMPLE_EXPIRE: '封样到期',
-    UNDERREVIEW: '未审查',
+    UNDERREVIEW: '正在审阅',
     RELEASED: '发布'
   },
   formButton: {
