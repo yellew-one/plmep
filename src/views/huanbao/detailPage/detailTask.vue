@@ -63,6 +63,17 @@
               {{model.requestCause}}
             </el-col>
           </el-row>
+          <el-row class="card_row">
+            <el-col :span="4" class="card_lable">
+              <a style="color: blue;" href="http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews">生成的承认书EXCEL插件</a>
+            </el-col>
+            <el-col :span="7" class="card_value">&nbsp;
+            </el-col>
+            <el-col :span="4" class="card_lable">
+            </el-col>
+            <el-col :span="9" class="card_value">&nbsp;
+            </el-col>
+          </el-row>
           <div class="longcheer_hr" style="margin-top: 20px">
             <span>{{$t('huanbaoTable.detailTable.document')}}</span>
           </div>
@@ -70,13 +81,21 @@
             <el-tab-pane :label="$t('huanbaoTable.submitted.FMD')">
               <el-row>
                 <el-button size="mini" type="primary" plain>{{$t('huanbaoTable.FMD.download')}}</el-button>
-                <el-button size="mini" type="success" plain>{{$t('huanbaoTable.FMD.upload')}}</el-button>
-                <el-button v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                <el-button size="mini" type="success" plain
+                           @click="fmdUpload">{{$t('huanbaoTable.FMD.upload')}}</el-button>
+                <el-button size="mini" v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
                            :loading="$store.getters.loading"
                            @click="thirdreuseFMD"
-                           size="mini"
                            type="info"
                            plain>{{$t('huanbaoTable.FMD.reuse')}}</el-button>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="fmdOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
               </el-row>
               <el-table
                 :data="tableDataFMD"
@@ -143,18 +162,26 @@
                     <span>{{$t('huanbaoTable.FMD.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  fixed="right"
-                  label="操作"
-                  width="100">
+                <el-table-column align="center" fixed="right" label="操作" width="100"
+                  v-if="state === 'INWORK' || state === 'REWORK' ">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="deleteFMD(scope.$index, tableDataFMD)" type="text" size="small">{{$t('huanbaoTable.FMD.delete')}}</el-button>
+                    <el-button @click="editFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
+                    <el-button @click="deleteFMD(scope.$index, tableDataFMD)" type="text" size="small">{{$t('huanbaoTable.FMD.delete')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.MSDS')">
+              <el-row>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="msdsOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
               <el-table
                 :data="tableDataMSDS"
                 border
@@ -196,10 +223,7 @@
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  fixed="right"
-                  label="操作"
-                  width="100">
+                <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editMSDS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkMSDS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -208,6 +232,22 @@
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.RoHS')">
+              <el-row>
+                <el-button size="mini" type="primary" plain>下载导入模板</el-button>
+                <el-button size="mini" type="success" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">上传环保数据</el-button>
+                <el-button size="mini" type="warning" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">编辑RoHS总报告</el-button>
+                <el-button size="mini" type="info" plain>查看RoHS总报告</el-button>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="rohsOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
               <el-table
                 :data="tableDataROHS"
                 border
@@ -327,15 +367,25 @@
                     <span>{{$t('huanbaoTable.ROHS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="metalSum" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.ROHS.metalSum')" width="180">
-                  <template
-                    slot-scope="scope">
-                    <span>{{scope.row.metalSum}}</span>
+                <el-table-column align="center" fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.HF')">
+              <el-row>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="hfOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
               <el-table
                 :data="tableDataHF"
                 border
@@ -404,6 +454,16 @@
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.REACH')">
+              <el-row>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="reachOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
               <el-table
                 :data="tableDataREACH"
                 border
@@ -459,8 +519,119 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER')">OTHER</el-tab-pane>
+            <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER')">
+              <el-row>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="otherOpinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
+              <el-table
+                :data="tableDataOTHER"
+                border
+                size="mini"
+                style="width: 100%;margin-top: 10px">
+                <el-table-column prop="materialName" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.materialName')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.materialName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="manufacturer" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.manufacturer')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.manufacturer}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="ni" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.ni')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.ni}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="pahs" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.pahs')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.pahs}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="didp" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.didp')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.didp}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="dinp" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.dinp')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.dinp}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="dnhp" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.dnhp')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.dnhp}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="sccp" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.sccp')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.sccp}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="be" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.be')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.be}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="sb" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.sb')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.sb}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="reportCount" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.reportCount')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.reportCount}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="reportDate" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.reportDate')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.reportDate}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="reportNumber" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.reportNumber')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.reportNumber}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.state')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{$t('huanbaoTable.OTHER.'+scope.row.state)}}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER2')">
+              <el-row>
+                <el-popover
+                  v-if="isShow"
+                  placement="top-start"
+                  width="1000px"
+                  trigger="hover"
+                  :content="other2Opinion">
+                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                </el-popover>
+              </el-row>
               <el-table
                 :data="tableDataOTHER2"
                 border
@@ -528,46 +699,46 @@
                 border
                 size="mini"
                 style="width: 100%">
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="state"  :label="$t('huanbaoTable.approval.state')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.approval.state')" >
                   <template
                     slot-scope="scope">
-                    <span>{{$t(scope.row.state)}}</span>
+                    <span>{{$t('huanbaoTable.approval.' + scope.row.status)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="linkName"  :label="$t('huanbaoTable.approval.linkName')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="activityName"  :label="$t('huanbaoTable.approval.activityName')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.linkName}}</span>
+                    <span>{{scope.row.activityName}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="role"  :label="$t('huanbaoTable.approval.role')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="roleName"  :label="$t('huanbaoTable.approval.roleName')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.role}}</span>
+                    <span>{{scope.row.roleName}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="approvers"  :label="$t('huanbaoTable.approval.approvers')">
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="ownerName"  :label="$t('huanbaoTable.approval.ownerName')">
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.approvers}}</span>
+                    <span>{{scope.row.ownerName}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="router"  :label="$t('huanbaoTable.approval.router')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="vote"  :label="$t('huanbaoTable.approval.vote')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.router}}</span>
+                    <span>{{scope.row.vote}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="remark"  :label="$t('huanbaoTable.approval.remark')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="comment"  :label="$t('huanbaoTable.approval.comment')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.remark}}</span>
+                    <span>{{scope.row.comment}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" show-overflow-tooltip="true"  prop="approvaltime"  :label="$t('huanbaoTable.approval.approvaltime')" >
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="finishTime"  :label="$t('huanbaoTable.approval.finishTime')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.approvaltime}}</span>
+                    <span>{{scope.row.finishTime}}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -579,24 +750,29 @@
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
           <edit-msds ref="editMsds"
                      :acceptSonValueByMsds = 'acceptSonValueByMsds'></edit-msds>
+          <rohs-dialog ref="editRohs"></rohs-dialog>
         </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER2 } from '@/api/index'
+import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, testUpload } from '@/api/index'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
+import RohsDialog from '../../../components/huanbaoDialog/editRohs'
 export default {
   components: {
+    RohsDialog,
     EditMsds,
     ThirdReuse,
     EditFMDDialog},
   name: 'detailTask',
   data () {
     return {
+      isShow: false,
+      isSub: '',
       state: '',
       radio: '1',
       oid: '',
@@ -679,30 +855,45 @@ export default {
         reportNumber: '报告编号',
         state: '状态'
       }],
+      tableDataOTHER: [{
+        materialName: '原材料名称',
+        manufacturer: '原材料制造商',
+        reportMaterialContained: '是否有申报物资',
+        reportMaterialReport: '申报物资报告',
+        reportCount: 'REACH报告',
+        reportDate: '报告日期',
+        reportNumber: '报告编号',
+        state: '状态'
+      }],
       tableDataOTHER2: [{
         fileName: '文件名',
         fileType: '资料类型',
         modifyTimestamp: '上次修改时间',
         state: '状态'
       }],
-      approvalTable: [{
-        state: 'State',
-        linkName: 'Link Name',
-        role: 'Role',
-        approvers: 'Approvers',
-        router: 'Router',
-        remark: 'Remark',
-        approvaltime: 'Approval time'
-      }]
+      approvalTable: [],
+      fmdOpinion: '',
+      msdsOpinion: '',
+      rohsOpinion: '',
+      hfOpinion: '',
+      reachOpinion: '',
+      otherOpinion: '',
+      other2Opinion: ''
     }
   },
   mounted: function () {
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
-    this.oid = this.$route.params.oid
-    this.state = this.$route.params.state
-    if (this.oid) this.getDataList(this.oid)
+    if (this.$route.params.oid) {
+      localStorage.setItem('oid', this.$route.params.oid)
+    }
+    if (this.$route.params.state) {
+      localStorage.setItem('state', this.$route.params.state)
+    }
+    this.oid = localStorage.getItem('oid')
+    this.state = localStorage.getItem('state')
+    this.getDataList(this.oid)
   },
   methods: {
     // 子组件调用
@@ -713,6 +904,25 @@ export default {
       showEnvprotectionTask(e).then(r => {
         console.log('DETAILTASKS', r)
         this.model = r.data[0]
+        processHistory('envp', r.data[0].number).then(r => {
+          console.log('processHistory', r)
+          this.approvalTable = r.data
+        })
+        envpComments(r.data[0].number).then(r => {
+          console.log('Comments', r)
+          if (r.data.flag) {
+            this.isShow = true
+            this.fmdOpinion = r.data.fmdComment
+            this.msdsOpinion = r.data.msdsComment
+            this.rohsOpinion = r.data.rohsComment
+            this.hfOpinion = r.data.hfComment
+            this.reachOpinion = r.data.reachComment
+            this.otherOpinion = r.data.otherComment
+            this.other2Opinion = r.data.other2Comment
+          } else {
+            this.isShow = false
+          }
+        })
       })
       selectFMD(e).then(r => {
         console.log('FMD', r)
@@ -734,6 +944,10 @@ export default {
         console.log('REACH', r)
         this.tableDataREACH = r.data
       })
+      selectOTHER(e).then(r => {
+        console.log('OTHER', r)
+        this.tableDataOTHER = r.data
+      })
       selectOTHER2(e).then(r => {
         console.log('OTHER2', r)
         this.tableDataOTHER2 = r.data
@@ -741,7 +955,12 @@ export default {
     },
     // FMD编辑
     editFMD (row) {
-      this.$refs.myChild.setDialogFormVisible(row, this.oid)
+      if (row.subMaterialName) {
+        this.isSub = 'SUB'
+      } else {
+        this.isSub = 'NOSUB'
+      }
+      this.$refs.myChild.setDialogFormVisible(row, this.oid, this.isSub)
     },
     // FMD删除
     deleteFMD (index, rows) {
@@ -750,20 +969,40 @@ export default {
     // 提交
     submit () {
       this.$store.commit('SET_LOADING', true)
-      setTimeout(() => {
-        this.$store.commit('SET_LOADING', false)
-      }, 1000)
+      // 物料环保资料完整性校验
+      envpDataCheck(this.model.number).then(r => {
+        console.log('envpDataCheck', r)
+        this.$notify.info({
+          message: r.data.info,
+          title: r.data.status,
+          duration: 3 * 1000
+        })
+      })
     },
     // FMD 第三方复用
     thirdreuseFMD () {
-      this.$refs.thirdReuse.setDialogFormVisible()
+      this.$refs.thirdReuse.setDialogFormVisible(this.model.number)
     },
     // MSDS 编辑
     editMSDS (row) {
-      this.$refs.editMsds.setDialogFormVisible()
+      this.$refs.editMsds.setDialogFormVisible(row, 'edit')
     },
     // msds 删除
     checkMSDS (row) {
+      this.$refs.editMsds.setDialogFormVisible(row, 'check')
+    },
+    // rohs 编辑
+    editRoHS (row) {
+      this.$refs.editRohs.setDialogFormVisible()
+    },
+    // rohs 查看
+    checkRoHS (row) {
+    },
+    // fmd 下载
+    fmdUpload () {
+      testUpload().then(r => {
+        console.log('xoxo', r)
+      })
     }
   }
 }

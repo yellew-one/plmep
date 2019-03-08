@@ -113,7 +113,7 @@ export function expiredEnvProtectionTasks () {
   })
 }
 // 环保搜索
-export function searchEnvprotection (e) {
+export function searchEnvprotection (e, counts) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchEnvprotection.jsp',
     method: 'post',
@@ -132,7 +132,9 @@ export function searchEnvprotection (e) {
       materialName: e.materialName,
       exemptionForm: e.exemptionForm,
       status: e.status,
-      casno: e.casno
+      casno: e.casno,
+      nowPage: counts.nowPage,
+      pageSize: counts.pageCount
     }
   })
 }
@@ -469,6 +471,153 @@ export function addDoc (oid, oids) {
       oid: oid,
       oids: oids
     }
+  })
+}
+// getReuseReports： 第三方报告复用数据查询
+export function searchReuseReport (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'searchReuseReport',
+      selectedDocumentType: e.selectedDocumentType,
+      selectedMaterial: e.selectedMaterial,
+      envpNumber: e.envpNumber
+    }
+  })
+}
+// envpDataCheck：物料环保资料完整性校验
+export function envpDataCheck (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'checkData',
+      envpNumber: e
+    }
+  })
+}
+// getMaterialName：用于原材料名称下拉框
+export function getMaterialName (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getMaterial',
+      envpNumber: e
+    }
+  })
+}
+// reuseReportsExecute：第三方报告复用页面提交事件处理。
+export function reuseReportsExecute (reports, attachs, e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'execute',
+      reports: reports,
+      attachs: attachs,
+      envpNumber: e
+    }
+  })
+}
+// processHistory：封样和环保任务审批日志
+export function processHistory (type, e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'processHistory',
+      type: type,
+      number: e
+    }
+  })
+}
+// envpComments:物料环保审批意见
+export function envpComments (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'comments',
+      envpNum: e
+    }
+  })
+}
+// MSDS条目详细信息接口
+export function getMSDSInfo (type, e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvprotectionMSDS.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getMSDSTable',
+      attachmentType: type,
+      msdsOid: e
+    }
+  })
+}
+//  测试下载文件
+export function testUpload () {
+  return request({
+    url: '/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {}
   })
 }
 

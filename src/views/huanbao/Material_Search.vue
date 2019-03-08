@@ -121,7 +121,7 @@
           <el-table-column align="center" show-overflow-tooltip="true" prop="status"  :label="$t('huanbaoTable.search.eStatus')" width="180">
             <template
               slot-scope="scope">
-              <span>{{scope.row.status}}</span>
+              <span>{{$t('huanbaoTable.searchStatus.'+ scope.row.status)}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip="true" prop="modelName"  :label="$t('huanbaoTable.search.model_specification')" width="180">
@@ -206,6 +206,14 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          :current-page="counts.nowPage"
+          layout="total, prev, pager, next"
+          :total="counts.total"
+          :page-size="counts.pageCount">
+        </el-pagination>
       </el-card>
       <escape-clause
                       ref="myChild"
@@ -219,7 +227,6 @@ export default {
   components: {EscapeClause},
   name: 'HelloWorld',
   mounted: function () {
-    this.getEnvpStates()
   },
   data () {
     return {
@@ -236,14 +243,23 @@ export default {
       },
       tableData: [],
       options: [],
-      optionsValue: ''
+      optionsValue: '',
+      counts: {
+        total: 0,
+        nowPage: 1,
+        pageCount: 10,
+        nextPage: 0,
+        lastPage: 0
+      }
     }
+  },
+  activated: function () {
+    this.getEnvpStates()
   },
   methods: {
     // 获取物料环保搜索页面查询条件中物料环保状态下拉框的值
     getEnvpStates () {
       getEnvpState().then(r => {
-        console.log('xoxo', r.data[0].state)
         var states = []
         for (var i in r.data[0].state) {
           states.push({
@@ -259,27 +275,15 @@ export default {
       this.$store.commit('SET_LOADING', true)
       this.temp.searchDateFrom = this.dateValue[0]
       this.temp.searchDateTo = this.dateValue[1]
-      this.getDataList(this.temp)
-      this.temp = {
-        searchDateFrom: '',
-        searchDateTo: '',
-        materialCode: '',
-        materialName: '',
-        exemptionForm: '',
-        status: '',
-        casno: ''
-      }
+      this.getDataList(this.temp, this.counts)
     },
     // 获取搜索结果
-    getDataList (e) {
-      searchEnvprotection(e).then(r => {
+    getDataList (e, counts) {
+      this.counts.nowPage = 1
+      searchEnvprotection(e, counts).then(r => {
         console.log('search result', r)
-        if (r.data.length > 10) {
-          this.tableData = r.data.slice(0, 9)
-        } else {
-          this.tableData = r.data
-        }
-        console.log('search result', this.tableData)
+        this.tableData = r.data.result
+        this.counts.total = r.data.totalCount
       })
     },
     // 接受子组件传值
@@ -292,6 +296,14 @@ export default {
     },
     cellClick (row, column, cell, event) {
       this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
+    },
+    handleCurrentChange (val) {
+      this.counts.nowPage = val
+      searchEnvprotection(this.temp, this.counts).then(r => {
+        console.log('search result', r)
+        this.tableData = r.data.result
+        this.counts.total = r.data.totalCount
+      })
     }
   }
 }

@@ -1,18 +1,19 @@
 /**
-* 编辑FMD
+* Created by yaoyuan on 2019/3/7.
+* 编辑  rohs
 */
 <template>
   <div class="app-container">
     <el-dialog
-      :visible.sync="dialog"
+      :visible.sync="rohsDialog"
       :show-close="false"
       :close-on-press-escape="false"
       width="50%"
       top="15%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span>{{$t('huanbaoTable.FMD.attribute')}}</span>
+        <span>RoHS总报告</span>
       </div>
-      <el-row :gutter="20" v-if="isSub === 'NOSUB'">
+      <el-row :gutter="20" >
         <el-col :span="24">
           <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
                    style=' margin-left:0px;'>
@@ -74,106 +75,31 @@
           </el-form>
         </el-col>
       </el-row>
-      <el-row :gutter="20" v-if="isSub === 'SUB'">
-        <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
-                   style=' margin-left:0px;'>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="subMaterialName" :label="$t('huanbaoTable.FMD.subMaterialName')">
-                  <el-input v-model="temp.subMaterialName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="casNo" :label="$t('huanbaoTable.FMD.casNo')">
-                  <el-input v-model="temp.casNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="substanceWeight" :label="$t('huanbaoTable.FMD.substanceWeight')">
-                  <el-input v-model="temp.substanceWeight"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="contentRate" :label="$t('huanbaoTable.FMD.contentRate')">
-                  <span>{{temp.contentRate}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="exemptions" :label="$t('huanbaoTable.FMD.exemptions')">
-                  <el-input disabled="true" v-model="temp.exemptions">
-                    <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
-                  </el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </el-col>
-      </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
         <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="completeFMD">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
     </el-dialog>
-    <escape-clause  ref="myChild"
-                    :acceptSonValue = 'acceptSonValue'></escape-clause>
   </div>
 </template>
 <script>
-import EscapeClause from './escapeClause'
 // import {  } from '@/api/index'
 export default {
-  components: {EscapeClause},
-  name: 'EditFMDDialog',
-  props: ['acceptSonValueByEdit'],
+  components: {},
+  name: 'RohsDialog',
+  props: [''],
   mounted: function () {
   },
   data () {
     return {
-      isSub: '',
-      oid: '',
-      dialog: false,
+      rohsDialog: false,
       temp: {},
       tableData: []
     }
   },
   methods: {
-    setDialogFormVisible (row, oid, sub) {
-      this.temp = {}
-      this.oid = ''
-      this.isSub = ''
-      this.dialog = true
-      this.temp = row
-      this.oid = oid
-      this.isSub = sub
+    setDialogFormVisible () {
+      this.rohsDialog = true
     },
     completeFMD () {
       this.dialog = false

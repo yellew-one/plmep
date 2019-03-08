@@ -18,8 +18,8 @@
                    style=' margin-left:0px;'>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;">
               <el-col :span="16">
-                <el-form-item prop="materialName" :label="$t('huanbaoTable.FMD.itemType')">
-                  <el-input v-model="temp.materialName">{{ temp.itemName}}</el-input>
+                <el-form-item prop="materialName" :label="$t('huanbaoTable.FMD.documentType')">
+                  <el-input v-model="temp.selectedDocumentType"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -30,7 +30,14 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: -10px">
               <el-col :span="16">
                 <el-form-item prop="materialWeight" :label="$t('huanbaoTable.FMD.materialName')">
-                  <el-input v-model="temp.materialName">{{ temp.itemName}}</el-input>
+                  <el-select v-model="temp.selectedMaterial" placeholder="" style="width: 100%">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -58,6 +65,7 @@
       <el-row class="card_row">
         <el-col span="24">
           <el-table
+            ref="multipleTable1"
             :data="thirdTable"
             border
             size="mini"
@@ -73,10 +81,10 @@
                 <span>{{$t(scope.row.materialNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="itemType"  :label="$t('huanbaoTable.FMD.itemType')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="documentType"  :label="$t('huanbaoTable.FMD.documentType')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.itemType}}</span>
+                <span>{{scope.row.documentType}}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materialName"  :label="$t('huanbaoTable.FMD.materialName')" >
@@ -109,22 +117,22 @@
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="detectionUnit"  :label="$t('huanbaoTable.FMD.detectionUnit')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="examUnit"  :label="$t('huanbaoTable.FMD.examUnit')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.detectionUnit}}</span>
+                <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="createDate"  :label="$t('huanbaoTable.FMD.createDate')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="createTime"  :label="$t('huanbaoTable.FMD.createTime')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.createDate}}</span>
+                <span>{{scope.row.createTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="lastDate"  :label="$t('huanbaoTable.FMD.lastDate')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  :label="$t('huanbaoTable.FMD.modifyTime')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.lastDate}}</span>
+                <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -149,70 +157,79 @@
       <el-row class="card_row">
         <el-col span="24">
           <el-table
+            ref="multipleTable2"
             :data="msdsTable"
             border
             size="mini"
             style="width: 100%"
-            @selection-change="handleSelectionChangemsds">
+            @selection-change="handleSelectionChangeMsds">
             <el-table-column
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="state"  :label="$t('huanbaoTable.approval.state')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="materilaNum"  :label="$t('huanbaoTable.FMD.materialNumber')" >
               <template
                 slot-scope="scope">
-                <span>{{$t(scope.row.state)}}</span>
+                <span>{{$t(scope.row.materilaNum)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="linkName"  :label="$t('huanbaoTable.approval.linkName')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="documentType"  :label="$t('huanbaoTable.FMD.documentType')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.linkName}}</span>
+                <span>{{scope.row.documentType}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="role"  :label="$t('huanbaoTable.approval.role')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="materialName"  :label="$t('huanbaoTable.FMD.materialName')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.role}}</span>
+                <span>{{scope.row.materialName}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="approvers"  :label="$t('huanbaoTable.approval.approvers')">
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="manufacturer"  :label="$t('huanbaoTable.FMD.manufacturer')">
               <template
                 slot-scope="scope">
-                <span>{{scope.row.approvers}}</span>
+                <span>{{scope.row.manufacturer}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="router"  :label="$t('huanbaoTable.approval.router')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="attachType"  :label="$t('huanbaoTable.FMD.attachType')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.router}}</span>
+                <span>{{scope.row.attachType}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="remark"  :label="$t('huanbaoTable.approval.remark')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  :label="$t('huanbaoTable.FMD.fileName')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.remark}}</span>
+                <span>{{scope.row.fileName}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="approvaltime"  :label="$t('huanbaoTable.approval.approvaltime')" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="createTime"  :label="$t('huanbaoTable.FMD.createTime')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.approvaltime}}</span>
+                <span>{{scope.row.createTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  :label="$t('huanbaoTable.FMD.modifyTime')" >
+              <template
+                slot-scope="scope">
+                <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
           </el-table>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+        <el-button size="mini" @click="cancelValue">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
         <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="completeFMD">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
+      <!--相关物料-->
       <relevant-materials ref="relevantMaterials"></relevant-materials>
     </el-dialog>
   </div>
 </template>
 <script>
 import RelevantMaterials from './relevantMaterials'
+import { searchReuseReport, getMaterialName, reuseReportsExecute } from '@/api/index'
 export default {
   components: {RelevantMaterials},
   name: 'ThirdReuse',
@@ -223,46 +240,85 @@ export default {
     return {
       oid: '',
       dialogVisible: false,
-      temp: {},
-      tableData: [],
-      thirdTable: [{
-        itemType: '条目类型',
-        materialNumber: '物料编号',
-        reportNumber: '报告编号',
-        reportType: '报告类型',
-        reportDate: '报告日期',
-        createDate: '创建时间',
-        lastDate: '上次修改时间',
-        detectionUnit: '检测单位',
-        materialName: '原材料名称',
-        manufacturer: '原材料制造商'
-      }],
-      msdsTable: [{
-        state: 'State',
-        linkName: 'Link Name',
-        role: 'Role',
-        approvers: 'Approvers',
-        router: 'Router',
-        remark: 'Remark',
-        approvaltime: 'Approval time'
-      }]
+      temp: {
+        selectedDocumentType: '',
+        selectedMaterial: '',
+        envpNumber: ''
+      },
+      thirdTable: [],
+      msdsTable: [],
+      options: [],
+      reports: '',
+      attachs: '',
+      multipleTable1: [],
+      multipleTable2: []
     }
   },
   methods: {
-    setDialogFormVisible () {
+    setDialogFormVisible (e) {
+      this.temp = {
+        selectedDocumentType: '',
+        selectedMaterial: '',
+        envpNumber: ''
+      }
+      this.thirdTable = []
+      this.msdsTable = []
+      this.options = []
       this.dialogVisible = true
+      this.temp.envpNumber = e
+      getMaterialName(e).then(r => {
+        console.log('getMaterialName', r)
+        var names = []
+        for (let i in r.data) {
+          names.push({
+            value: r.data[i].materialId,
+            label: r.data[i].materialName
+          })
+        }
+        this.options = names
+      })
     },
     completeFMD () {
       this.dialogVisible = false
+      reuseReportsExecute(this.reports, this.attachs, this.temp.envpNumber).then(r => {
+        console.log('reuseReportsExecute', r.data.status)
+        if (r.data.status === 'success') {
+          this.$message.success({
+            message: '恭喜你，这是一条成功消息'
+          })
+        }
+      })
+    },
+    cancelValue () {
+      this.dialogVisible = false
     },
     searchResult () {
+      searchReuseReport(this.temp).then(r => {
+        console.log('searchReuseReport', r)
+        for (let i in r.data) {
+          this.thirdTable = r.data[i].report
+          this.msdsTable = r.data[i].attach
+        }
+      })
     },
     handleSelectionChangeThird (val) {
+      var reports = ''
+      for (let i in val) {
+        reports = val[i].reportId + ',' + reports
+      }
+      reports = reports.substring(0, reports.length - 1)
+      this.reports = reports
     },
-    handleSelectionChangemsds (val) {
+    handleSelectionChangeMsds (val) {
+      var attachs = ''
+      for (let i in val) {
+        attachs = val[i].attachId + ',' + attachs
+      }
+      attachs = attachs.substring(0, attachs.length - 1)
+      this.attachs = attachs
     },
     relevant (row) {
-      this.$refs.relevantMaterials.setDialogFormVisible()
+      this.$refs.relevantMaterials.setDialogFormVisible(row)
     }
   }
 }

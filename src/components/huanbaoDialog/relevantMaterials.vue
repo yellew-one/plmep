@@ -23,19 +23,19 @@
             <el-table-column align="center" show-overflow-tooltip="true"  prop="material_number"  :label="$t('table.material_number')" >
               <template
                 slot-scope="scope">
-                <span>{{$t(scope.row.material_number)}}</span>
+                <span>{{$t(scope.row.materialNum)}}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip="true"  prop="material_name"  :label="$t('table.material_name')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.material_name}}</span>
+                <span>{{scope.row.materialName}}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip="true"  prop="model_specification"  :label="$t('table.model_specification')" >
               <template
                 slot-scope="scope">
-                <span>{{scope.row.model_specification}}</span>
+                <span>{{scope.row.modelName}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -54,15 +54,16 @@ export default {
     return {
       dialogVisible: false,
       relevantTable: [{
-        material_number: '物料编号',
-        material_name: '物料名称',
-        model_specification: '型号规格'
+        materialName: '',
+        materialNum: '',
+        modelName: ''
       }]
     }
   },
   methods: {
-    setDialogFormVisible () {
+    setDialogFormVisible (row) {
       this.dialogVisible = true
+      this.relevantTable = row.relatedMaterial
     }
   }
 }

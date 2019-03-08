@@ -165,6 +165,9 @@ export default {
     setBabaValue () {
       this.dialogVisible = false
       this.$props.acceptSonValue(this.str)
+    },
+    setDialogFormVisible () {
+      this.dialogVisible = true
       this.str = ''
       this.temp = {
         RoHSNumber: '',
@@ -174,9 +177,6 @@ export default {
         RoHSDescription: ''
       }
       this.tableData = []
-    },
-    setDialogFormVisible () {
-      this.dialogVisible = true
     },
     // 处理多选数据
     handleSelectionChange (val) {
@@ -189,15 +189,6 @@ export default {
     },
     // 取消操作
     cancelValue () {
-      this.str = ''
-      this.temp = {
-        RoHSNumber: '',
-        RoHSType: '',
-        startDate: '',
-        endDate: '',
-        RoHSDescription: ''
-      }
-      this.tableData = []
       this.dialogVisible = false
       this.$refs.multipleTable.clearSelection()
     }
