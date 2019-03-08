@@ -123,7 +123,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/fdetailTask',
+    path: '/fdetailTask/:oid/:state',
     component: Layout,
     redirect: '/fdetailTask',
     meta: { title: 'fengyangRoute.details', icon: 'dashboard' },

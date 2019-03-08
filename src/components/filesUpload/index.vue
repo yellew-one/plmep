@@ -7,6 +7,7 @@
             class="upload-demo"
             :action="action"
             :name="name"
+            :data = "ref"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -34,11 +35,12 @@ export default {
       this.dialogFormVisible = true
     },
     // 初始化值
-    setAttribute (aciton, fileList, title, name) {
+    setAttribute (aciton, fileList, title, name, ref) {
       this.action = aciton
       this.fileList = fileList
       this.title = title
       this.name = name
+      this.ref = ref
     },
     // 提交
     submit () {
@@ -65,7 +67,8 @@ export default {
       action: '', // 接口地址
       fileList: '',
       title: '',
-      name: ''
+      name: '',
+      ref: ''
     }
   }
 }

@@ -471,3 +471,42 @@ export function addDoc (oid, oids) {
     }
   })
 }
+
+// 封样信息信息页面加载完成后展示关联的物料封样文档接口
+export function showRelatedWLFYDocs (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'showRelatedWLFYDocs',
+      oid: oid
+    }
+  })
+}
+
+// 封样信息信息页面移除相关物料封样文档
+export function removeRelatedWLFYDocs (oid, oids) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'removeRelatedWLFYDocs',
+      oid: oid,
+      oids: oids
+    }
+  })
+}

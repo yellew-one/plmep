@@ -5,10 +5,12 @@ export default {
   error: {
     username_not_exist: '账号不存在',
     password_error: '密码错误',
-    required: '必填'
+    required: '必填',
+    please_selector: '请选择'
   },
   success: {
-    update_success: '修改成功'
+    update_success: '修改成功',
+    remove_success: '移除成功'
   },
   table: {
     name: '名称',
@@ -261,6 +263,7 @@ export default {
     homepage: '首页',
     Logout: '注销',
     back_home: '返回首页',
+    Notice: '公告',
     editUserInfo: '编辑接口人信息',
     SealedInfoEdit: '编辑封样详细信息'
   },
@@ -343,7 +346,11 @@ export default {
       title_Sealed_document: '封样文档',
       lq_desc: '说明',
       Supply: '供货',
-      unSupply: '不供货'
+      unSupply: '不供货',
+      add: '添加',
+      create: '新建',
+      edit: '编辑',
+      remove: '移除'
     },
     seacher: {
       number: '编号',
@@ -378,12 +385,14 @@ export default {
       MATERIALCATEGORY10: '包材料（配件）',
       MATERIALCATEGORY11: '安规器件',
       MATERIALCATEGORY12: 'PCB',
-      MATERIALCATEGORY13: '售后辅料'
+      MATERIALCATEGORY13: '售后辅料',
+      undefined: ''
     },
     lq_supplier_rank: {
       FORONE: '一供',
       FORTWO: '二供',
-      FORCUSTOMERS: '客供'
+      FORCUSTOMERS: '客供',
+      undefined: ''
     },
     lqThirdLevel: {
       'PFMEA_Seq': 'PFMEA',
@@ -420,7 +429,10 @@ export default {
       status: '状态',
       type3: '三级分类',
       approval: '审批',
-      attachment: '封样文档附件'
+      attachment: '封样文档附件',
+      explain: '说明',
+      business: '业务',
+      Enclosure: '附件'
     }
   }
 }

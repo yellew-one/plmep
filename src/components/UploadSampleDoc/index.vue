@@ -40,7 +40,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="10">
-                    <el-button size="mini" type="primary" plain @click="searchResult">{{$t('huanbaoTable.search.search')}}</el-button>
+                    <el-button size="mini" :loading="$store.getters.loading" type="primary" plain @click="searchResult">{{$t('huanbaoTable.search.search')}}</el-button>
                   </el-col>
                 </el-row>
               </el-form>
@@ -124,7 +124,7 @@ import { lqThirdLevel, searchSealedDocs, addDoc } from '@/api/index'
 export default {
   components: {},
   name: 'EscapeClause',
-  props: ['acceptSonValue'],
+  props: ['acceptSonValue', 'restData'],
   mounted: function () {
   },
   data () {
@@ -167,7 +167,7 @@ export default {
       var that = this
       lqThirdLevel().then(r => {
         console.log(r)
-        var sz = []
+        var sz = [{value: '', lable: ''}]
         r.data.forEach(function (value, index) {
           console.log('foreach:', value)
           for (var key in value) {
@@ -181,6 +181,7 @@ export default {
       })
     },
     getSearchSealedDocs () {
+      this.$store.commit('SET_LOADING', true)
       searchSealedDocs(this.number, this.name, this.thirdLevel).then(r => {
         this.tableData = r.data.slice(0, 9)
         console.log(this.tableData)
@@ -199,11 +200,19 @@ export default {
       })
       addDoc(this.oid, str).then(r => {
         console.log(r)
-        if (r.data.mes) {
+        if (r.data[0].mes && r.data[0].mes === '添加成功！') {
           this.$message({
-            message: r.data.mes,
-            type: 'info',
+            message: r.data[0].mes,
+            type: 'success',
             duration: 5 * 1000
+          })
+          this.dialogVisible = false
+          this.$props.restData()
+        } else if (r.data[0].mes) {
+          this.$message({
+            message: r.data[0].mes,
+            type: 'warn',
+            duration: 8 * 1000
           })
         }
       })

@@ -5,10 +5,12 @@ export default {
   error: {
     username_not_exist: 'account is not exist',
     password_error: 'password error',
-    required: 'is required'
+    required: 'is required',
+    please_selector: 'please selector data'
   },
   success: {
-    update_success: 'update info success'
+    update_success: 'update info success',
+    remove_success: 'remove success'
   },
   table: {
     name: 'Name',
@@ -256,6 +258,7 @@ export default {
     loginTitle: 'Environmental Protection',
     homepage: 'Home Page',
     Logout: 'Logout',
+    Notice: 'Notice',
     back_home: 'Back to home page',
     editUserInfo: 'Editing  Person Information',
     SealedInfoEdit: 'Sealed Info Edit'
@@ -339,7 +342,11 @@ export default {
       title_Sealed_document: 'Sealed document',
       lq_desc: 'Explain',
       Supply: 'Supply',
-      unSupply: 'No Supply'
+      unSupply: 'No Supply',
+      add: 'add',
+      create: 'create',
+      edit: 'edit',
+      remove: 'remove'
     },
     seacher: {
       number: 'number',
@@ -374,12 +381,14 @@ export default {
       MATERIALCATEGORY10: 'Wrapping material(accessories)',
       MATERIALCATEGORY11: 'Safety device',
       MATERIALCATEGORY12: 'PCB',
-      MATERIALCATEGORY13: 'After-sale excipients'
+      MATERIALCATEGORY13: 'After-sale excipients',
+      undefined: ''
     },
     lq_supplier_rank: {
       FORONE: 'One supply',
       FORTWO: 'Tow supply',
-      FORCUSTOMERS: 'Customer supply'
+      FORCUSTOMERS: 'Customer supply',
+      undefined: ''
     },
     lqThirdLevel: {
       'PFMEA_Seq': 'PFMEA',
@@ -416,7 +425,10 @@ export default {
       status: 'status',
       type3: 'Three level classification',
       approval: 'approval',
-      attachment: 'Sample enclosure document attachment'
+      attachment: 'Sample enclosure document attachment',
+      explain: 'Explain',
+      business: 'business',
+      Enclosure: 'Enclosure'
     }
   }
 }

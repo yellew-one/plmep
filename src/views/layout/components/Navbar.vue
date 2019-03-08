@@ -8,13 +8,16 @@
         <i :title="loginName" class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
+        <router-link class="inlineBlock" to="/home">
           <el-dropdown-item>
             {{$t('m.back_home')}}
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
           <span  @click="changePdUI" style="display:block;">{{$t('m.editUserInfo')}}</span>
+        </el-dropdown-item>
+        <el-dropdown-item divided>
+          <span  @click="goNotice" style="display:block;">{{$t('m.Notice')}}</span>
         </el-dropdown-item>
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">{{$t('m.Logout')}}</span>
@@ -120,6 +123,9 @@ export default {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
       location.reload()
+    },
+    goNotice () {
+      window.open('http://plmtest.longcheer.com/Windchill/ptc1/ext/longcheer/helpDoc/helpDocSS', '_blank')
     },
     changePdUI () {
       // this.textMap = '修改密码'

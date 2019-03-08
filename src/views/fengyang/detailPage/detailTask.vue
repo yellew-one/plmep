@@ -206,63 +206,76 @@
                 {{model.lq_deadline_sign}}
               </el-col>
             </el-row>
+            <el-row class="card_row" style="margin-top: 30px">
+              <el-col :span="11" class="card_lable">
+               <a style="color: blue">生成的承认书EXCEL附件</a>
+              </el-col>
+              <el-col :span="13" class="card_lable">
+
+              </el-col>
+            </el-row>
             <div class="longcheer_hr" style="margin-top: 20px">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_Sealed_document')}}</span>
             </div>
             <el-row class="card_row" style="padding-left: 5px">
               <el-col :span="24" class="card_lable">
                 <el-button-group v-if="state === 'state.REWORK' || state === 'state.INWORK'">
-                  <el-button size="mini"  icon="el-icon-plus" @click="uploadSampDoc"></el-button>
-                  <el-button size="mini"  icon="el-icon-edit" @click="filesUploadClick"></el-button>
-                  <el-button size="mini"  icon="el-icon-share"></el-button>
-                  <el-button size="mini"  icon="el-icon-delete"></el-button>
+                  <el-button size="mini" :loading="$store.getters.loading"  icon="el-icon-share" @click="uploadSampDoc">{{$t('fengyangTable.detail.add')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">{{$t('fengyangTable.detail.create')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-edit" @click="fileseditClick">{{$t('fengyangTable.detail.edit')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
                 </el-button-group>
                 <el-table
                   size="mini"
                   :data="filesList"
                   border
                   height="200px"
+                  @selection-change="handleSelectionChange"
                   style="width: 100%">
+                  <el-table-column
+                    type="selection"
+                    width="55">
+                  </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('TableTile.files.number')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.number)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.version)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('TableTile.files.name')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.name)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="status"  :label="$t('TableTile.files.status')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.state)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="type3"  :label="$t('TableTile.files.type3')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t('app_enum.lqThirdLevel.' + scope.row.lq_third_level)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="approval"  :label="$t('TableTile.files.approval')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.taskName)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
                     <template
                       slot-scope="scope">
-                      <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.taskName)}}</a>
+                      {{$t(scope.row.taskName)}}
                     </template>
                   </el-table-column>
                 </el-table>
@@ -350,15 +363,15 @@
         </el-col>
       </el-row>
       <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
-      <uploadSampleDoc ref="uploadSamDoc"></uploadSampleDoc>
-      <filesUpload ref="fileUpload"></filesUpload>
+      <uploadSampleDoc :restData="showRelatedWLFYDocs" ref="uploadSamDoc"></uploadSampleDoc>
+      <updateSampleDoc ref="docUpdate"></updateSampleDoc>
     </div>
 </template>
 <script>
-import { showTaskDetails, editSealedSampleDocInfo } from '@/api/index'
+import { showTaskDetails, editSealedSampleDocInfo, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
-import filesUpload from '../../../components/filesUpload/index'
+import updateSampleDoc from '../../../components/UploadSampleDoc/update'
 export default {
   name: 'detailTask',
   mounted: function () {
@@ -366,17 +379,31 @@ export default {
   components: {
     sealeInfoEdit,
     uploadSampleDoc,
-    filesUpload
+    updateSampleDoc
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
     this.state = this.$route.params.state
     this.oid = this.$route.params.oid
-    if (this.oid) this.getDetailInfo(this.oid)
+    if (this.oid) {
+      this.getDetailInfo(this.oid)
+      this.showRelatedWLFYDocs(this.oid)
+    }
   },
   methods: {
+    fileseditClick () {
+      this.$refs.docUpdate.openDialog(this.model.materialNumber)
+    },
     filesUploadClick () {
       this.$refs.fileUpload.openDialog()
+      // http://172.16.9.170:8081/files/upLoad
+      // http://172.17.1.125:8081/files/upLoad
+      this.$refs.fileUpload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '', 'fileList', {number: this.model.materialNumber})
+    },
+    showRelatedWLFYDocs () {
+      showRelatedWLFYDocs(this.oid).then(r => {
+        this.filesList = r.data
+      })
     },
     getDetailInfo (oid) {
       if (!oid) {
@@ -395,6 +422,45 @@ export default {
     },
     uploadSampDoc () {
       this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid)
+    },
+    handleSelectionChange (val) {
+      var str = ''
+      var index = val.length
+      val.forEach(function (value, i) {
+        str += value.oid
+        if (index !== i + 1) {
+          str += ','
+        }
+      })
+      this.filesOids = str
+    },
+    removeRelatedWLFYDocs () {
+      if (!this.filesOids && this.filesOids.length === 0) {
+        this.$message({
+          message: this.$t('error.please_selector'),
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return
+      }
+      this.$store.commit('SET_LOADING', true)
+      removeRelatedWLFYDocs(this.oid, this.filesOids).then(r => {
+        console.log(r)
+        if (r.data.mes === '移除成功！') {
+          this.$message({
+            message: this.$t('success.remove_success'),
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.showRelatedWLFYDocs()
+        } else {
+          this.$message({
+            message: '' + r.data.mes,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        }
+      })
     }
   },
   data () {
@@ -404,7 +470,8 @@ export default {
       oid: '',
       filesList: [],
       radio: '1',
-      state: ''
+      state: '',
+      filesOids: ''
     }
   }
 }
