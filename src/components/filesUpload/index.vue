@@ -8,6 +8,7 @@
             :action="action"
             :name="name"
             :data = "ref"
+            :on-success="success"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -27,6 +28,7 @@
 <script>
 export default {
   name: 'filesUpload',
+  props: ['returnFilePath'],
   mounted: function () {
   },
   methods: {
@@ -44,7 +46,7 @@ export default {
     },
     // 提交
     submit () {
-      console.log()
+      this.dialogFormVisible = false
     },
     // 点击文件列表中已上传的文件时的钩子
     handlePreview (file) {
@@ -59,6 +61,11 @@ export default {
     beforeRemove (file, fileList) {
       console.log('file', file)
       console.log('fileList', fileList)
+    },
+    success (response, file, fileList) {
+      if (response.type === 'success') {
+        this.$props.returnFilePath(response.data[0])
+      }
     }
   },
   data () {
