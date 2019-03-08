@@ -397,6 +397,24 @@ export function selectREACH (e) {
   })
 }
 // 展示环保条目    客户特殊需求申报条目
+export function selectOTHER (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'selectOTHER',
+      oid: e
+    }
+  })
+}
+// 展示环保条目    客户特殊需求申报条目
 export function selectOTHER2 (e) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvironmental.jsp',
@@ -414,6 +432,7 @@ export function selectOTHER2 (e) {
     }
   })
 }
+
 // 封样文档三级分类下了框调用
 export function lqThirdLevel () {
   return request({
