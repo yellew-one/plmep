@@ -36,6 +36,10 @@ export default {
     openDialog () {
       this.dialogFormVisible = true
     },
+    // 打开弹窗
+    closeDialog () {
+      this.dialogFormVisible = false
+    },
     // 初始化值
     setAttribute (aciton, fileList, title, name, ref) {
       this.action = aciton
@@ -64,7 +68,7 @@ export default {
     },
     success (response, file, fileList) {
       if (response.type === 'success') {
-        this.$props.returnFilePath(response.data[0])
+        this.$props.returnFilePath(response.data[0], file.name)
       }
     }
   },

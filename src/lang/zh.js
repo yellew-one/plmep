@@ -386,6 +386,7 @@ export default {
       stauts: '状态',
       create_time: '创建时间',
       Material_category: '物料规格型号',
+      lq_class_category: '物料类别',
       Seal_recognition_time: '封样承认时间',
       doc_number: '文档编号',
       doc_name: '文档名称',

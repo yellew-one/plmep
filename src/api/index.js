@@ -138,6 +138,32 @@ export function searchEnvprotection (e, counts) {
     }
   })
 }
+// 封样搜索
+export function searchSealedSample (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'searchSealedSample',
+      username: store.getters.userInfo.username,
+      searchDateFrom: e.serchItems.searchDateFrom,
+      searchDateTo: e.serchItems.searchDateTo,
+      partNumber: e.serchItems.partNumber,
+      partName: e.serchItems.partName,
+      LQ_CLASS_CATEGORY: e.serchItems.LQ_CLASS_CATEGORY,
+      status: e.serchItems.status,
+      nowPage: e.counts.nowPage,
+      pageSize: e.counts.pageSize
+    }
+  })
+}
 // 环保任务详细
 export function showEnvprotectionTask (e) {
   return request({
@@ -675,6 +701,89 @@ export function removeRelatedWLFYDocs (oid, oids) {
       operation: 'removeRelatedWLFYDocs',
       oid: oid,
       oids: oids
+    }
+  })
+}
+
+// 获取物料状态枚举值
+export function getSealedSampleStatus () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getSealedSampleStatus',
+      username: store.getters.userInfo.username
+    }
+  })
+}
+
+// 获取物料类别枚举值
+export function getLqClassCateGory () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'get_LQ_CLASS_CATEGORY',
+      username: store.getters.userInfo.username
+    }
+  })
+}
+
+// 编辑物料封样文档接口
+export function editWLFYDoc (number, filePath, lqThirdLevel, description) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editWLFYDoc',
+      username: store.getters.userInfo.username,
+      number: number,
+      filePath: filePath,
+      lq_third_level: lqThirdLevel,
+      description: description
+    }
+  })
+}
+
+// 提交封样资料任务完成接口
+export function completeSealedTask (oid, comment, route) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'completeSealedTask',
+      username: store.getters.userInfo.username,
+      oid: oid,
+      comment: comment,
+      route: route
     }
   })
 }

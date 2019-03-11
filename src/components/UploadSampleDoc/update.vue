@@ -35,7 +35,7 @@
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
                 <el-form-item :label="$t('fengyangTable.seacher.type3')" prop="explain">
-                  <el-select style="width: 100%" v-model="model.thirdLevel" placeholder="">
+                  <el-select style="width: 100%" v-model="model.lq_third_level" placeholder="">
                     <el-option
                       v-for="item in options2"
                       :key="item.value"
@@ -74,19 +74,19 @@
                     <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="180">
                       <template
                         slot-scope="scope">
-                        {{$t(scope.row.number)}}
+                        {{$t(scope.row.name)}}
                       </template>
                     </el-table-column>
                     <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="URL/外部位置" width="180">
                       <template
                         slot-scope="scope">
-                        {{$t(scope.row.version)}}
+                        {{$t(scope.row.url)}}
                       </template>
                     </el-table-column>
                     <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">
                       <template
                         slot-scope="scope">
-                        {{$t(scope.row.version)}}
+                        {{$t(scope.row.desc)}}
                       </template>
                     </el-table-column>
                   </el-table>
@@ -101,11 +101,11 @@
         </div>
       </el-col>
     </el-row>
-    <filesUpload ref="fup"></filesUpload>
+    <filesUpload :returnFilePath="returnFilePath" ref="fup"></filesUpload>
   </el-dialog>
 </template>
 <script>
-import { lqThirdLevel } from '@/api/index'
+import { lqThirdLevel, editWLFYDoc } from '@/api/index'
 import filesUpload from '../../components/filesUpload/index'
 export default {
   name: 'update',
@@ -120,7 +120,16 @@ export default {
       this.$refs.fup.openDialog()
       // http://172.16.9.170:8081/files/upLoad
       // http://172.17.1.125:8081/files/upLoad
-      this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber})
+      this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
+    },
+    returnFilePath (data, name) {
+      this.filePath = data
+      this.filesList.push({name: name, url: data, desc: ''})
+      this.$refs.fup.closeDialog()
+    },
+    setModel (data) {
+      this.model = Object.assign(data)
+      console.log('xxoo', this.model)
     },
     openDialog (materialNumber) { // 打开弹窗
       this.updatedialogFlag = true
@@ -129,7 +138,10 @@ export default {
     handleSelectionChange () {
     },
     submit () { // 提交
-      console.log()
+      this.$store.commit('SET_LOADING', true)
+      editWLFYDoc(this.model.number, this.filePath, this.model.lq_third_level, this.model.explain).then(r => {
+        console.log(r)
+      })
     },
     getlqThirdLevel () {
       var that = this
@@ -156,7 +168,8 @@ export default {
       disableFlag: false,
       options2: [],
       filesList: [],
-      materialNumber: ''
+      materialNumber: '',
+      filePath: ''
     }
   }
 }

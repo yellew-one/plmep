@@ -49,18 +49,18 @@ export const asyncRouterMap = [
       meta: { title: 'fengyangRoute.ypdq_task', icon: 'issue' }
     }]
   },
-  {
-    path: '/funder_review',
-    component: Layout,
-    redirect: '/funder_review',
-    meta: { title: 'fengyangRoute.under_review', icon: 'issue' },
-    children: [{
-      path: 'funder_review',
-      component: () => import('@/views/fengyang/under_review'),
-      name: 'funder_review',
-      meta: { title: 'fengyangRoute.under_review', icon: 'issue' }
-    }]
-  },
+  // {
+  //   path: '/funder_review',
+  //   component: Layout,
+  //   redirect: '/funder_review',
+  //   meta: { title: 'fengyangRoute.under_review', icon: 'issue' },
+  //   children: [{
+  //     path: 'funder_review',
+  //     component: () => import('@/views/fengyang/under_review'),
+  //     name: 'funder_review',
+  //     meta: { title: 'fengyangRoute.under_review', icon: 'issue' }
+  //   }]
+  // },
   {
     path: '/fengyang_seacher',
     component: Layout,

@@ -9,12 +9,12 @@
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
                   <el-form-item prop="materialCode" :label="$t('fengyangTable.seacher.number')">
-                    <el-input   v-model="temp.materialCode"></el-input>
+                    <el-input   v-model="model.serchItems.partNumber"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('fengyangTable.seacher.name')">
-                    <el-input   v-model="temp.materialName"></el-input>
+                    <el-input   v-model="model.serchItems.partName"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -24,10 +24,10 @@
               </el-row>
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
-                  <el-form-item prop="materialCode" :label="$t('fengyangTable.seacher.Material_category')">
-                    <el-select v-model="temp.materialCode" placeholder="请选择">
+                  <el-form-item prop="materialCode" :label="$t('fengyangTable.seacher.lq_class_category')">
+                    <el-select style="width: 100%" v-model="model.serchItems.LQ_CLASS_CATEGORY" placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in options2"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -37,7 +37,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('fengyangTable.seacher.stauts')">
-                    <el-select v-model="temp.materialCode" placeholder="请选择">
+                    <el-select style="width: 100%"  v-model="model.serchItems.status" placeholder="请选择">
                       <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -55,6 +55,7 @@
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
                   <el-form-item prop="dateValue" :label="$t('fengyangTable.seacher.Seal_recognition_time')">
+                    <!--:change="datePicker"-->
                     <el-date-picker
                       style="width: 100%"
                       v-model="dateValue"
@@ -101,116 +102,130 @@
         </el-col>
       </el-row>
       <el-table
-        :data="tableData"
+        :data="model.dataList"
         size="mini"
         border
         style="width: 100%;margin-top: 10px">
         <el-table-column align="center" show-overflow-tooltip="true" prop="number"  :label="$t('fengyangTable.seacher.number')" width="180">
           <template
             slot-scope="scope">
-            <span style="color: blue">{{scope.row.number}}</span>
+            <span style="color: blue">{{scope.row.partNumber}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="seacher_info"  :label="$t('fengyangTable.seacher.seacher_info')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{scope.row.partName}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="name"  :label="$t('fengyangTable.seacher.name')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{scope.row.partName}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="Specification_type"  :label="$t('fengyangTable.seacher.Specification_type')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{scope.row.modelName}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="stauts"  :label="$t('fengyangTable.seacher.stauts')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{$t('huanbaoTable.searchStatus.' + scope.row.status)}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="create_time"  :label="$t('fengyangTable.seacher.create_time')" width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{scope.row.createStamp}}</span>
           </template>
         </el-table-column>
        </el-table>
+      <div style="width: 100%;text-align: right">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        :current-page="model.counts.nowPage"
+        layout="total, prev, pager, next"
+        :total="model.counts.totalCount"
+        :page-size="model.counts.pageSize">
+      </el-pagination>
+      </div>
     </el-card>
   </div>
 </template>
 <script>
-import { searchEnvprotection } from '@/api/index'
+import { searchSealedSample, lqClassCategory, getEnvpState } from '@/api/index'
+import { initPage } from '@/utils/index'
 export default {
   components: {},
   name: 'HelloWorld',
+  created: function () {
+    initPage(this.model, searchSealedSample)
+    this.model.searchCurrent(1)
+    console.log('this.model', this.model)
+  },
   mounted: function () {
+    this.getlqClassCategory()
+    this.getEnvpStates()
   },
   data () {
     return {
       dialogVisible: false,
       dateValue: '',
-      temp: {
-        searchDateFrom: '',
-        searchDateTo: '',
-        materialCode: '',
-        materialName: '',
-        exemptionForm: '',
-        status: '',
-        casno: ''
-      },
-      tableData: [{
-        RoHS: '',
-        manufacturer: '信创',
-        REACH: '',
-        OTHER: '',
-        number: 'HSF54402227',
-        modelName: 'P3580-BL-CASE-1',
-        MSDS: '',
-        OTHER2: '',
-        createTime: '2019-01-02',
-        name: '物料环保-54402227,SHIELD FRAME,P3580,CASE,BL',
-        FMD: '',
-        HF: '',
-        status: 'CANCELLED'
-      }],
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }]
+      model: {serchItems: {}, dataList: []},
+      options: [],
+      options2: []
     }
   },
   methods: {
     searchResult () {
       console.log('xoxo', this.dateValue)
-      this.temp.searchDateFrom = this.dateValue[0]
-      this.temp.searchDateTo = this.dateValue[1]
-      this.getDataList(this.temp)
+      if (this.model.serchItems.searchDateFrom && this.model.serchItems.searchDateFrom !== null) {
+        this.model.serchItems.searchDateFrom = this.dateValue[0]
+        this.model.serchItems.searchDateTo = this.dateValue[1]
+      } else {
+        this.model.serchItems.searchDateFrom = ''
+        this.model.serchItems.searchDateTo = ''
+      }
+      this.getDataList(1)
     },
     // 获取搜索结果
-    getDataList (e) {
-      searchEnvprotection(e).then(r => {
-        // this.tableData = r.data
-        console.log('xoxo', r.data.length)
-        console.log('xoxo', r.data)
+    getDataList (index) {
+      this.model.searchCurrent(index)
+    },
+    handleCurrentChange (val) {
+      this.getDataList(val)
+    },
+    getlqClassCategory () {
+      var that = this
+      lqClassCategory().then(r => {
+        console.log(r)
+        var sz = [{value: '', label: ''}]
+        r.data.forEach(function (value, index) {
+          console.log('foreach:', value)
+          for (var key in value) {
+            sz.push({
+              value: key,
+              label: that.$t('app_enum.lqClassCategory.' + key)
+            })
+          }
+        })
+        this.options2 = sz
+      })
+    },
+    getEnvpStates () {
+      getEnvpState().then(r => {
+        var states = [{value: '', label: ''}]
+        for (var i in r.data[0].state) {
+          states.push({
+            value: r.data[0].state[i],
+            label: this.$t('huanbaoTable.searchStatus.' + r.data[0].state[i])
+          })
+        }
+        this.options = states
       })
     }
   }

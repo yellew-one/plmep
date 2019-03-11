@@ -2,7 +2,7 @@
     <div class="app-container">
       <el-row>
         <el-col :span="24">
-          <div class="card_title">物料封样&nbsp;-&nbsp;{{model.materialNumber}}, {{model.materialName}}, {{model.version}}</div>
+          <div class="card_title">{{model.mainDocInfo}}</div>
           <el-card shadow="hover" class="card">
             <div class="longcheer_hr">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
@@ -221,7 +221,7 @@
               <el-col :span="24" class="card_lable">
                 <el-button-group v-if="state === 'state.REWORK' || state === 'state.INWORK'">
                   <el-button size="mini" :loading="$store.getters.loading"  icon="el-icon-share" @click="uploadSampDoc">{{$t('fengyangTable.detail.add')}}</el-button>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">{{$t('fengyangTable.detail.create')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesCreadClick">{{$t('fengyangTable.detail.create')}}</el-button>
                   <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-edit" @click="fileseditClick">{{$t('fengyangTable.detail.edit')}}</el-button>
                   <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
                 </el-button-group>
@@ -269,13 +269,13 @@
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="approval"  :label="$t('TableTile.files.approval')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.taskName)}}
+                      {{$t(scope.row.assignment)}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.taskName)}}
+                      {{$t(scope.row.attachment)}}
                     </template>
                   </el-table-column>
                 </el-table>
@@ -287,21 +287,21 @@
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">备注：</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
-              <el-col  span="12"><el-input  :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" type="textarea" :rows="3"></el-input></el-col>
+              <el-col  span="12"><el-input  :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
               </el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+                <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" @click="submitAprive" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
               </el-col>
             </el-row>
             <div class="longcheer_hr" style="margin-top: 40px">
@@ -314,46 +314,46 @@
                   border
                   size="mini"
                   style="width: 100%">
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="state"  :label="$t('huanbaoTable.approval.state')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.approval.state')" >
                     <template
                       slot-scope="scope">
-                      <span>{{$t(scope.row.state)}}</span>
+                      <span>{{$t('huanbaoTable.approval.' + scope.row.status)}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="linkName"  :label="$t('huanbaoTable.approval.linkName')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="activityName"  :label="$t('huanbaoTable.approval.activityName')" >
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.linkName}}</span>
+                      <span>{{scope.row.activityName}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="role"  :label="$t('huanbaoTable.approval.role')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="roleName"  :label="$t('huanbaoTable.approval.roleName')" >
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.role}}</span>
+                      <span>{{scope.row.roleName}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="approvers"  :label="$t('huanbaoTable.approval.approvers')">
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="ownerName"  :label="$t('huanbaoTable.approval.ownerName')">
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.approvers}}</span>
+                      <span>{{scope.row.ownerName}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="router"  :label="$t('huanbaoTable.approval.router')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="vote"  :label="$t('huanbaoTable.approval.vote')" >
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.router}}</span>
+                      <span>{{scope.row.vote}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="remark"  :label="$t('huanbaoTable.approval.remark')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="comment"  :label="$t('huanbaoTable.approval.comment')" >
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.remark}}</span>
+                      <span>{{scope.row.comment}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" show-overflow-tooltip="true"  prop="approvaltime"  :label="$t('huanbaoTable.approval.approvaltime')" >
+                  <el-table-column align="center" show-overflow-tooltip="true"  prop="finishTime"  :label="$t('huanbaoTable.approval.finishTime')" >
                     <template
                       slot-scope="scope">
-                      <span>{{scope.row.approvaltime}}</span>
+                      <span>{{scope.row.finishTime}}</span>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -368,7 +368,7 @@
     </div>
 </template>
 <script>
-import { showTaskDetails, editSealedSampleDocInfo, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
+import { showTaskDetails, completeSealedTask, editSealedSampleDocInfo, processHistory, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
 import updateSampleDoc from '../../../components/UploadSampleDoc/update'
@@ -392,7 +392,26 @@ export default {
   },
   methods: {
     fileseditClick () {
+      if (!this.filesOids && this.filesOids.length === 0) {
+        this.$message({
+          message: this.$t('error.please_selector'),
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return
+      }
       this.$refs.docUpdate.openDialog(this.model.materialNumber)
+      this.$refs.docUpdate.setModel(this.checkedone)
+    },
+    filesCreadClick () {
+      this.$refs.docUpdate.openDialog(this.model.materialNumber)
+      this.$refs.docUpdate.setModel({})
+    },
+    submitAprive () {
+      this.$store.commit('SET_LOADING', true)
+      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
+        console.log(r)
+      })
     },
     filesUploadClick () {
       this.$refs.fileUpload.openDialog()
@@ -412,6 +431,12 @@ export default {
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
         this.model.oid = this.$route.params.oid
+        this.getProcessHistory()
+      })
+    },
+    getProcessHistory () {
+      processHistory('sealed', this.model.materialNumber).then(r => {
+        console.log(r)
       })
     },
     editSealedSampleDocInfo (oid) {
@@ -424,15 +449,19 @@ export default {
       this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid)
     },
     handleSelectionChange (val) {
-      var str = ''
-      var index = val.length
-      val.forEach(function (value, i) {
-        str += value.oid
-        if (index !== i + 1) {
-          str += ','
-        }
-      })
-      this.filesOids = str
+      this.filesOids = ''
+      if (val && val.length > 0) {
+        var str = ''
+        var index = val.length
+        val.forEach(function (value, i) {
+          str += value.oid
+          if (index !== i + 1) {
+            str += ','
+          }
+        })
+        this.filesOids = str
+        this.checkedone = val[0]
+      }
     },
     removeRelatedWLFYDocs () {
       if (!this.filesOids && this.filesOids.length === 0) {
@@ -469,9 +498,10 @@ export default {
       model: {},
       oid: '',
       filesList: [],
-      radio: '1',
+      radio: 'Supply(供货)',
       state: '',
-      filesOids: ''
+      filesOids: '',
+      checkedone: {}
     }
   }
 }
