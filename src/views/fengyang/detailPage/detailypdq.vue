@@ -6,7 +6,7 @@
         <el-card shadow="hover" class="card">
           <div class="longcheer_hr">
             <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
-            <div class="longcheer_hr_reight" v-if="state === 'state.REWORK' || state === 'state.INWORK'">
+            <div class="longcheer_hr_reight" v-if="state === 'state.REWORK' || state === 'state.INWORK'|| state === 'state.SAMPLE_EXPIRE'">
               <el-button @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit_k')}}</el-button>
             </div>
           </div>
@@ -226,7 +226,7 @@
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
-              <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+              <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK' || state === 'state.SAMPLE_EXPIRE'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
             </el-col>
           </el-row>
         </el-card>
@@ -251,6 +251,7 @@ export default {
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
     this.oid = this.$route.params.oid
+    this.state = this.$route.params.state
     if (this.oid) this.getDetailInfo(this.oid)
   },
   methods: {
@@ -279,7 +280,8 @@ export default {
       model: {},
       oid: '',
       filesList: [],
-      radio: '1'
+      radio: '1',
+      state: ''
     }
   }
 }

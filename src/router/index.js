@@ -136,7 +136,7 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/fdetailypdq',
+    path: '/fdetailypdq/:oid/:state',
     component: Layout,
     redirect: '/fdetailypdq',
     meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard' },
