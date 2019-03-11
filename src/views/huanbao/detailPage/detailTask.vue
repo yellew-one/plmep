@@ -63,17 +63,6 @@
               {{model.requestCause}}
             </el-col>
           </el-row>
-          <el-row class="card_row">
-            <el-col :span="4" class="card_lable">
-              <a style="color: blue;" href="http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews">生成的承认书EXCEL插件</a>
-            </el-col>
-            <el-col :span="7" class="card_value">&nbsp;
-            </el-col>
-            <el-col :span="4" class="card_lable">
-            </el-col>
-            <el-col :span="9" class="card_value">&nbsp;
-            </el-col>
-          </el-row>
           <div class="longcheer_hr" style="margin-top: 20px">
             <span>{{$t('huanbaoTable.detailTable.document')}}</span>
           </div>
@@ -237,8 +226,9 @@
                 <el-button size="mini" type="success" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">上传环保数据</el-button>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">编辑RoHS总报告</el-button>
-                <el-button size="mini" type="info" plain>查看RoHS总报告</el-button>
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="editRoHSReport">编辑RoHS总报告</el-button>
+                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看RoHS总报告</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -377,6 +367,10 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.HF')">
               <el-row>
+                <el-button size="mini" type="warning" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="editRoHSReport">编辑HF总报告</el-button>
+                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看HF总报告</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -451,10 +445,23 @@
                     <span>{{$t('huanbaoTable.HF.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.REACH')">
               <el-row>
+                <el-button size="mini" type="warning" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="editRoHSReport">编辑RoHS总报告</el-button>
+                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看RoHS总报告</el-button>
+                <el-button size="mini" type="primary" plain>编辑REACH总声明</el-button>
+                <el-button size="mini" type="success" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">查看REACH总声明</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -517,10 +524,20 @@
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER')">
               <el-row>
+                <el-button size="mini" type="warning" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="editRoHSReport">编辑其他总报告</el-button>
+                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看其他总报告</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -619,10 +636,19 @@
                     <span>{{$t('huanbaoTable.OTHER.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER2')">
               <el-row>
+                <el-button size="mini" type="warning" plain
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="editRoHSReport">编辑客户特殊需求申报</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -749,7 +775,7 @@
           <third-reuse ref="thirdReuse"
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
           <edit-msds ref="editMsds"
-                     :acceptSonValueByMsds = 'acceptSonValueByMsds'></edit-msds>
+                     :updateMSDSData = 'updateMSDSData'></edit-msds>
           <rohs-dialog ref="editRohs"></rohs-dialog>
         </el-card>
       </el-col>
@@ -757,7 +783,7 @@
   </div>
 </template>
 <script>
-import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, testUpload } from '@/api/index'
+import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, completeEnvp } from '@/api/index'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
@@ -978,6 +1004,12 @@ export default {
           duration: 3 * 1000
         })
       })
+      completeEnvp(this.oid).then(r => {
+        console.log('completeSealedTask', r)
+        this.$message.success({
+          message: '这是一条成功的消息'
+        })
+      })
     },
     // FMD 第三方复用
     thirdreuseFMD () {
@@ -985,24 +1017,62 @@ export default {
     },
     // MSDS 编辑
     editMSDS (row) {
-      this.$refs.editMsds.setDialogFormVisible(row, 'edit')
+      this.$refs.editMsds.setDialogFormVisible(this.model.number, row, 'edit')
     },
-    // msds 删除
+    // msds 查看
     checkMSDS (row) {
-      this.$refs.editMsds.setDialogFormVisible(row, 'check')
+      this.$refs.editMsds.setDialogFormVisible(this.model.number, row, 'check')
+    },
+    // 编辑rohs 总报告
+    editRoHSReport () {
+      this.$refs.editRohs.setDialogFormVisible('edit')
+    },
+    // 查看总报告
+    checkRoHSReport () {
+      this.$refs.editRohs.setDialogFormVisible('')
     },
     // rohs 编辑
     editRoHS (row) {
-      this.$refs.editRohs.setDialogFormVisible()
     },
     // rohs 查看
     checkRoHS (row) {
     },
     // fmd 下载
-    fmdUpload () {
-      testUpload().then(r => {
-        console.log('xoxo', r)
+    fmdUpload () {},
+    updateMSDSData () {
+      selectMSDS(this.oid).then(r => {
+        console.log('MSDS', r)
+        this.tableDataMSDS = r.data
       })
+    },
+    test () {
+      var str1 = 'OR:ext.longcheer.envprotection.model.EnvprotectionAttachment:352396068'
+      var str2 = 'OR:ext.longcheer.envprotection.model.EnvprotectionAttachment:352396068'
+      if (str1 === str2) {
+        alert(str1.length)
+      } else {
+        alert(false)
+      }
+      var s = []
+      var a = [{id: '2'}, {id: '3'}, {id: '1'}, {id: '4'}]
+      var b = [{id: '2'}, {id: '3'}, {id: '1'}]
+      for (let i in a) {
+        for (let j in b) {
+          if (a[i].id === b[j].id) {
+            a.splice(a[i], 1)
+          }
+        }
+      }
+      console.log('xoxo1', a)
+      for (var i = 0; i < s.length; i++) {
+        for (var j = i + 1; j < s.length; j++) {
+          if (s[i].id === s[j].id) {
+            s.splice(j, 1)
+            j--
+          }
+        }
+      }
+      console.log('xoxo2', s)
     }
   }
 }

@@ -650,21 +650,6 @@ export function getMSDSInfo (type, e) {
     }
   })
 }
-//  测试下载文件
-export function testUpload () {
-  return request({
-    url: '/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    transformRequest: [function (data) {
-      data = Qs.stringify(data)
-      return data
-    }],
-    data: {}
-  })
-}
 
 // 封样信息信息页面加载完成后展示关联的物料封样文档接口
 export function showRelatedWLFYDocs (oid) {
@@ -701,6 +686,49 @@ export function removeRelatedWLFYDocs (oid, oids) {
       operation: 'removeRelatedWLFYDocs',
       oid: oid,
       oids: oids
+    }
+  })
+}
+
+// 编辑MSDS条目上传文件
+export function editMSDSTable (type, envprotectionDocumentOid, path, oid, attachmentOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvprotectionMSDS.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editMSDSTable',
+      attachmentType: type,
+      envprotectionDocumentOid: envprotectionDocumentOid,
+      filePath: path,
+      msdsOid: oid,
+      attachmentOid: attachmentOid
+    }
+  })
+}
+// completeEnvp 环保任务完成
+export function completeEnvp (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'completeEnvp',
+      oid: oid,
+      comment: '',
+      routing: 'Supply'
     }
   })
 }

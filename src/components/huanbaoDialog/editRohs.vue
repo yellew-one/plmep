@@ -13,79 +13,68 @@
       <div class="longcheer_hr" style="margin-top: -10px;">
         <span>RoHS总报告</span>
       </div>
-      <el-row :gutter="20" >
-        <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
-                   style=' margin-left:0px;'>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="materialName" :label="$t('huanbaoTable.FMD.materialName')">
-                  <span>{{ temp.materialName}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="materialWeight" :label="$t('huanbaoTable.FMD.materialWeight')">
-                  <span>{{temp.materialWeight}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="materialGroup" :label="$t('huanbaoTable.FMD.materialGroup')">
-                  <el-input v-model="temp.materialGroup"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="manufacturer" :label="$t('huanbaoTable.FMD.manufacturer')">
-                  <el-input v-model="temp.manufacturer"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
-                <el-form-item prop="state" :label="$t('huanbaoTable.FMD.state')">
-                  <span>{{$t('huanbaoTable.FMD.' + temp.state)}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item >
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+      <el-row style="margin-top: 10px;margin-left: 20px">
+        <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
+        <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+      </el-row>
+      <el-row class="card_row">
+        <el-col span="24">
+          <el-table
+            :data="approvalTable3"
+            border
+            size="mini"
+            style="width: 100%">
+            <el-table-column
+              type="selection"
+              width="35">
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+              <template
+                slot-scope="scope">
+                <span>{{$t(scope.row.fileName)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="报告日期" >
+              <template
+                slot-scope="scope">
+                <span>{{scope.row.endTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="检测单位" >
+              <template
+                slot-scope="scope">
+                <span>{{scope.row.endTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="上次修改时间" >
+              <template
+                slot-scope="scope">
+                <span>{{scope.row.endTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed="right" label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button type="text" size="small">下载</el-button>
+                <el-button v-if="type === 'edit'" @click="editMsds(scope.$index)" type="text" size="small">编辑</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="completeFMD">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
+        <el-button v-if="type === 'edit'" size="mini" @click="rohsDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+        <el-button v-if="type !== 'edit'" size="mini" @click="rohsDialog = false">关闭</el-button>
+        <el-button v-if="type === 'edit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeFMD">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
+      <rohs-report-dialog ref="RohsReportDialog"></rohs-report-dialog>
     </el-dialog>
   </div>
 </template>
 <script>
+import RohsReportDialog from './rohsReportDialog'
 // import {  } from '@/api/index'
 export default {
-  components: {},
+  components: {RohsReportDialog},
   name: 'RohsDialog',
   props: [''],
   mounted: function () {
@@ -94,24 +83,19 @@ export default {
     return {
       rohsDialog: false,
       temp: {},
-      tableData: []
+      tableData: [],
+      type: ''
     }
   },
   methods: {
-    setDialogFormVisible () {
+    setDialogFormVisible (e) {
       this.rohsDialog = true
+      this.type = e
     },
-    completeFMD () {
-      this.dialog = false
-      this.$props.acceptSonValueByEdit(this.oid)
+    addRoHSReport () {
+      this.$refs.RohsReportDialog.setDialogFormVisible()
     },
-    escapeClick () {
-      this.$refs.myChild.setDialogFormVisible()
-    },
-    // 接受子组件传值
-    acceptSonValue (e) {
-      this.temp.exemptions = e
-    }
+    editMsds (row) {}
   }
 }
 </script>

@@ -22,7 +22,8 @@
             :data="approvalTable1"
             border
             size="mini"
-            style="width: 100%">
+            style="width: 100%"
+            @select="handleSelectionChange1">
             <el-table-column
               type="selection"
               width="35">
@@ -147,21 +148,23 @@
         <el-button size="mini" @click="dialogVisible = false">{{$t('formButton.cancel')}}</el-button>
         <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="completeMSDS">{{$t('formButton.ensure')}}</el-button>
       </span>
-      <files-upload ref="upload"></files-upload>
+      <files-upload ref="upload"
+                    :returnFilePath = "returnFilePath"></files-upload>
     </el-dialog>
   </div>
 </template>
 <script>
-import { getMSDSInfo } from '@/api/index'
+import { getMSDSInfo, editMSDSTable } from '@/api/index'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {FilesUpload},
   name: 'EditMsds',
-  props: [''],
+  props: ['updateMSDSData'],
   mounted: function () {
   },
   data () {
     return {
+      envpNumber: '',
       showButton: false,
       oid: '',
       dialogVisible: false,
@@ -169,43 +172,91 @@ export default {
       tableData: [],
       approvalTable1: [],
       approvalTable2: [],
-      approvalTable3: []
+      approvalTable3: [],
+      attachmentOid1: '',
+      attachmentOid2: '',
+      attachmentOid3: '',
+      path: '',
+      msdsAttachmentOid: '',
+      msdsBeforeDelete: []
     }
   },
   methods: {
-    setDialogFormVisible (e, action) {
+    setDialogFormVisible (envpNumber, e, action) {
       this.approvalTable1 = []
       this.approvalTable2 = []
       this.approvalTable3 = []
       this.tableData = []
       this.dialogVisible = true
       this.tableData.push(e)
+      this.msdsAttachmentOid = ''
+      this.envpNumber = envpNumber
       if (action === 'edit') {
         this.showButton = true
       } else {
         this.showButton = false
       }
-      getMSDSInfo('01', e.msdsOid).then(r => {
+      this.getReportInfo()
+    },
+    getReportInfo () {
+      getMSDSInfo('01', this.tableData[0].msdsOid).then(r => {
         this.approvalTable1 = r.data
       })
-      getMSDSInfo('02', e.msdsOid).then(r => {
+      getMSDSInfo('02', this.tableData[0].msdsOid).then(r => {
         this.approvalTable2 = r.data
       })
-      getMSDSInfo('03', e.msdsOid).then(r => {
+      getMSDSInfo('03', this.tableData[0].msdsOid).then(r => {
         this.approvalTable3 = r.data
       })
     },
+    handleSelectionChange1 (val) {
+      console.log('xoxoval', val)
+      var str = ''
+      this.msdsBeforeDelete = []
+      for (let i in val) {
+        str = val[i].attachmentOid + ',' + str
+      }
+      this.msdsBeforeDelete = val
+      str = str.substring(0, str.length - 1)
+      this.msdsAttachmentOid = str
+      console.log('handleSelectionChange1', val)
+    },
     completeMSDS () {
       this.dialogVisible = false
+      editMSDSTable('01', this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, this.msdsAttachmentOid).then(r => {
+        console.log('editMSDSTable', r.data.result)
+        if (r.data.result === 'success') {
+          this.getReportInfo()
+          this.$props.updateMSDSData()
+          this.$message.success({
+            message: '操作文件成功'
+          })
+        }
+      })
+    },
+    deleteMsds () {
+      var s = this.approvalTable1
+      console.log('this.approvalTable1', this.approvalTable1)
+      console.log('this.msdsBeforeDelete', this.msdsBeforeDelete)
+      for (let i in s) {
+        for (let j in this.msdsBeforeDelete) {
+          if (s[i].attachmentOid === this.msdsBeforeDelete[j].attachmentOid) {
+            s.splice(s[i], 1)
+          }
+        }
+      }
+      this.approvalTable1 = s
+      console.log('s', this.approvalTable1)
     },
     uploadMsds () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '原材料MSDS', 'fileList')
-    },
-    deleteMsds () {
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'msds', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username})
     },
     uploadIP () {
       window.open('http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews')
+    },
+    returnFilePath (e) {
+      this.path = e
     }
   }
 }
