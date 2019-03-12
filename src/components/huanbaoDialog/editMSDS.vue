@@ -48,8 +48,8 @@
         <span>专利证明</span>
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
-        <el-button size="mini" type="primary" plain @click="uploadMsds">上传新文件</el-button>
-        <el-button size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+        <el-button size="mini" type="primary" plain @click="uploadPatent">上传新文件</el-button>
+        <el-button size="mini" type="danger"  plain @click="deletePatent">移除</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -57,7 +57,8 @@
             :data="approvalTable2"
             border
             size="mini"
-            style="width: 100%">
+            style="width: 100%"
+            @select="handleSelectionChange2">
             <el-table-column
               type="selection"
               width="35">
@@ -83,8 +84,8 @@
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
         <el-button size="mini" type="primary" plain @click="uploadIP" >下载IP Form模板</el-button>
-        <el-button size="mini" type="primary" plain @click="uploadMsds">上传新文件</el-button>
-        <el-button size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+        <el-button size="mini" type="primary" plain @click="uploadIPFORM">上传新文件</el-button>
+        <el-button size="mini" type="danger"  plain @click="deleteIPFORM">移除</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -92,7 +93,8 @@
             :data="approvalTable3"
             border
             size="mini"
-            style="width: 100%">
+            style="width: 100%"
+            @select="handleSelectionChange3">
             <el-table-column
               type="selection"
               width="35">
@@ -178,7 +180,12 @@ export default {
       attachmentOid3: '',
       path: '',
       msdsAttachmentOid: '',
-      msdsBeforeDelete: []
+      patentAttachmentOid: '',
+      ipAttachmentOid: '',
+      msdsBeforeDelete: [],
+      patentBeforeDelete: [],
+      ipBeforeDelete: [],
+      fileType: ''
     }
   },
   methods: {
@@ -190,6 +197,10 @@ export default {
       this.dialogVisible = true
       this.tableData.push(e)
       this.msdsAttachmentOid = ''
+      this.patentAttachmentOid = ''
+      this.ipAttachmentOid = ''
+      this.path = ''
+      this.fileType = ''
       this.envpNumber = envpNumber
       if (action === 'edit') {
         this.showButton = true
@@ -210,20 +221,51 @@ export default {
       })
     },
     handleSelectionChange1 (val) {
-      console.log('xoxoval', val)
       var str = ''
       this.msdsBeforeDelete = []
-      for (let i in val) {
-        str = val[i].attachmentOid + ',' + str
-      }
       this.msdsBeforeDelete = val
-      str = str.substring(0, str.length - 1)
-      this.msdsAttachmentOid = str
-      console.log('handleSelectionChange1', val)
+      if (val.length < 1) {
+        this.msdsAttachmentOid = ''
+      } else {
+        for (let i in val) {
+          str = val[i].attachmentOid + ',' + str
+        }
+        str = str.substring(0, str.length - 1)
+        this.msdsAttachmentOid = str
+      }
+    },
+    handleSelectionChange2 (val) {
+      var str = ''
+      this.patentBeforeDelete = []
+      this.patentBeforeDelete = val
+      if (val.length < 1) {
+        this.patentAttachmentOid = ''
+      } else {
+        for (let i in val) {
+          str = val[i].attachmentOid + ',' + str
+        }
+        str = str.substring(0, str.length - 1)
+        this.patentAttachmentOid = str
+      }
+    },
+    handleSelectionChange3 (val) {
+      var str = ''
+      this.ipBeforeDelete = []
+      this.ipBeforeDelete = val
+      if (val.length < 1) {
+        this.ipAttachmentOid = ''
+      } else {
+        for (let i in val) {
+          str = val[i].attachmentOid + ',' + str
+        }
+        str = str.substring(0, str.length - 1)
+        this.ipAttachmentOid = str
+      }
     },
     completeMSDS () {
       this.dialogVisible = false
-      editMSDSTable('01', this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, this.msdsAttachmentOid).then(r => {
+      var oid = this.msdsAttachmentOid + ',' + this.patentAttachmentOid + ',' + this.ipAttachmentOid
+      editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
         console.log('editMSDSTable', r.data.result)
         if (r.data.result === 'success') {
           this.getReportInfo()
@@ -234,34 +276,56 @@ export default {
         }
       })
     },
+    uploadMsds () {
+      this.$refs.upload.openDialog()
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+    },
     deleteMsds () {
-      var s = this.approvalTable1
-      console.log('this.approvalTable1', this.approvalTable1)
-      console.log('this.msdsBeforeDelete', this.msdsBeforeDelete)
-      for (let i in s) {
+      for (let i in this.approvalTable1) {
         for (let j in this.msdsBeforeDelete) {
-          if (s[i].attachmentOid === this.msdsBeforeDelete[j].attachmentOid) {
-            s.splice(s[i], 1)
+          if (this.approvalTable1[i].attachmentOid === this.msdsBeforeDelete[j].attachmentOid) {
+            this.approvalTable1.splice(i, 1)
           }
         }
       }
-      this.approvalTable1 = s
-      console.log('s', this.approvalTable1)
     },
-    uploadMsds () {
+    uploadPatent () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'msds', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username})
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
+    },
+    deletePatent () {
+      for (let i in this.approvalTable2) {
+        for (let j in this.patentBeforeDelete) {
+          if (this.approvalTable2[i].attachmentOid === this.patentBeforeDelete[j].attachmentOid) {
+            this.approvalTable2.splice(i, 1)
+          }
+        }
+      }
+    },
+    uploadIPFORM () {
+      this.$refs.upload.openDialog()
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+    },
+    deleteIPFORM () {
+      for (let i in this.approvalTable3) {
+        for (let j in this.ipBeforeDelete) {
+          if (this.approvalTable3[i].attachmentOid === this.ipBeforeDelete[j].attachmentOid) {
+            this.approvalTable3.splice(i, 1)
+          }
+        }
+      }
     },
     uploadIP () {
       window.open('http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews')
     },
-    returnFilePath (e) {
-      this.path = e
+    returnFilePath (e, type) {
+      this.path = e + ',' + this.path
+      this.fileType = type + ',' + this.fileType
     }
   }
 }
 </script>
-<style>
+<style scoped>
   .boxtext {
     font-size: 15px;
   }

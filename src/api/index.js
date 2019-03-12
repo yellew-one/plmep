@@ -126,6 +126,7 @@ export function searchEnvprotection (e, counts) {
     }],
     data: {
       operation: 'searchEnvprotection',
+      username: store.getters.userInfo.username,
       searchDateFrom: e.searchDateFrom,
       searchDateTo: e.searchDateTo,
       materialCode: e.materialCode,
@@ -728,7 +729,7 @@ export function completeEnvp (oid) {
       operation: 'completeEnvp',
       oid: oid,
       comment: '',
-      routing: 'Supply'
+      routing: '供货'
     }
   })
 }

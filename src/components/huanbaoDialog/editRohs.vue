@@ -11,7 +11,7 @@
       width="50%"
       top="15%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span>RoHS总报告</span>
+        <span class="longcheer_hr_span">RoHS总报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
@@ -110,7 +110,7 @@ export default {
     border-bottom: 2px solid #D13139;
     margin-bottom: 0px;
   }
-  .longcheer_hr span{
+  .longcheer_hr_span{
     display: inline-block;
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;

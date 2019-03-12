@@ -260,7 +260,10 @@ export default {
     // 获取物料环保搜索页面查询条件中物料环保状态下拉框的值
     getEnvpStates () {
       getEnvpState().then(r => {
-        var states = []
+        var states = [{
+          value: '',
+          label: ''
+        }]
         for (var i in r.data[0].state) {
           states.push({
             value: r.data[0].state[i],

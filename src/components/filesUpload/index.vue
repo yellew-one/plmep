@@ -41,12 +41,13 @@ export default {
       this.dialogFormVisible = false
     },
     // 初始化值
-    setAttribute (aciton, fileList, title, name, ref) {
+    setAttribute (aciton, fileList, title, name, ref, type) {
       this.action = aciton
       this.fileList = fileList
       this.title = title
       this.name = name
       this.ref = ref
+      this.type = type
     },
     // 提交
     submit () {
@@ -68,7 +69,7 @@ export default {
     },
     success (response, file, fileList) {
       if (response.type === 'success') {
-        this.$props.returnFilePath(response.data[0], file.name)
+        this.$props.returnFilePath(response.data[0], this.type)
       }
     }
   },
@@ -79,7 +80,8 @@ export default {
       fileList: '',
       title: '',
       name: '',
-      ref: ''
+      ref: '',
+      type: ''
     }
   }
 }

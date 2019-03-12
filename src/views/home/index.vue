@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { showSealedSampleTasks, expiredSealedSampleTasks } from '@/api/index'
+import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
   mounted: function () {
@@ -18,6 +18,9 @@ export default {
       })
       expiredSealedSampleTasks().then(r => {
         this.$store.commit('SET_FENGYANGDAOQINUM', r.data.length)
+      })
+      showEnvProtectionTasks().then(r => {
+        this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
       })
     },
     handleClick () {
