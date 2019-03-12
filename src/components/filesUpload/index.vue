@@ -20,7 +20,7 @@
       </el-scrollbar>
       <span slot="footer" class="dialog-footer" >
         <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
-        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
+        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.ensure')}}</el-button>
       </span>
     </div>
   </el-dialog>
@@ -69,7 +69,7 @@ export default {
     },
     success (response, file, fileList) {
       if (response.type === 'success') {
-        this.$props.returnFilePath(response.data[0], this.type)
+        this.$props.returnFilePath(fileList, this.type)
       }
     }
   },
