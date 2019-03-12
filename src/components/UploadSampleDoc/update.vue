@@ -18,14 +18,14 @@
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
                 <el-form-item :label="$t('TableTile.files.name')" prop="name">
-                  <el-input :disabled="disableFlag" v-model="model.name"></el-input>
+                  <el-input :disabled="true" v-model="model.name"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row style="padding-left: 10px">
               <el-col span="12">
                 <el-form-item :label="$t('TableTile.files.explain')" prop="explain">
-                  <el-input type="textarea" :disabled="disableFlag" v-model="model.explain"></el-input>
+                  <el-input  type="textarea" :disabled="disableFlag" v-model="model.explain"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -71,19 +71,13 @@
                       type="selection"
                       width="55">
                     </el-table-column>
-                    <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="180">
+                    <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="350">
                       <template
                         slot-scope="scope">
                         {{$t(scope.row.name)}}
                       </template>
                     </el-table-column>
-                    <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="URL/外部位置" width="180">
-                      <template
-                        slot-scope="scope">
-                        {{$t(scope.row.url)}}
-                      </template>
-                    </el-table-column>
-                    <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">
+                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">
                       <template
                         slot-scope="scope">
                         {{$t(scope.row.desc)}}
@@ -94,7 +88,7 @@
               </el-col>
             </el-row>
             <div style="text-align: right">
-              <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
+              <el-button  size="mini" @click="updatedialogFlag = false">{{$t('formButton.cancel')}}</el-button>
               <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.submit')}}</el-button>
               </div>
           </el-form>
@@ -105,7 +99,7 @@
   </el-dialog>
 </template>
 <script>
-import { lqThirdLevel, editWLFYDoc } from '@/api/index'
+import { lqThirdLevel, editWLFYDoc, createWLFYDoc, removeAttachment } from '@/api/index'
 import filesUpload from '../../components/filesUpload/index'
 export default {
   name: 'update',
@@ -124,23 +118,108 @@ export default {
     },
     returnFilePath (data, name) {
       this.filePath = data
-      this.filesList.push({name: name, url: data, desc: ''})
+      this.filesList.push({name: name, url: data, desc: '', ftype: 'new'})
       this.$refs.fup.closeDialog()
     },
     setModel (data) {
       this.model = Object.assign(data)
+      this.loadingFileList()
       console.log('xxoo', this.model)
+    },
+    removeRelatedWLFYDocs () {
+      var that = this
+      if (this.selectionData.length > 0) {
+        this.selectionData.forEach(function (value, index) {
+          if (value.ftype === 'oid') {
+            removeAttachment(that.model.number, that.value.attachment.split('.')[0]).then(r => {
+              console.log(r)
+              if (r.data.mes && r.data.mes.indexOf('成功')) {
+                that.$message({
+                  message: this.$t('success.remove_success') + ':' + that.value.attachment,
+                  type: 'success',
+                  duration: 5 * 1000
+                })
+              } else {
+                that.$message({
+                  message: r.data.mes,
+                  type: 'waining',
+                  duration: 5 * 1000
+                })
+              }
+            })
+          }
+        })
+      } else {
+        this.$message({
+          message: this.$t('error.please_selector'),
+          type: 'warning',
+          duration: 5 * 1000
+        })
+      }
+    },
+    loadingFileList () {
+      var sz = []
+      if (this.model.attachment && this.model.attachment !== '无附件') {
+        var list = this.model.attachment.split(';')
+        list.forEach(function (value, index) {
+          sz.push({name: value, url: '', desc: '', ftype: 'oid'})
+        })
+        this.filesList = sz
+      }
     },
     openDialog (materialNumber) { // 打开弹窗
       this.updatedialogFlag = true
       this.materialNumber = materialNumber
     },
-    handleSelectionChange () {
+    handleSelectionChange (data) {
+      if (data) {
+        this.selectionData = data
+      }
     },
     submit () { // 提交
       this.$store.commit('SET_LOADING', true)
+      if (this.model.ftype && this.model.ftype === 'create') {
+        this.oncreateWLFYDoc()
+      } else {
+        this.onEditWLFYDoc()
+      }
+    },
+    onEditWLFYDoc () {
       editWLFYDoc(this.model.number, this.filePath, this.model.lq_third_level, this.model.explain).then(r => {
         console.log(r)
+        if (r.data.mes.indexOf('成功') !== -1) {
+          this.$message({
+            message: this.$t('success.update_success'),
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.updatedialogFlag = false
+        } else {
+          this.$message({
+            message: r.data.mes,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        }
+      })
+    },
+    oncreateWLFYDoc () {
+      createWLFYDoc(this.model.oid, this.model.lq_third_level, this.model.explain, this.filePath).then(r => {
+        console.log(r)
+        if (r.data.mes.indexOf('成功') !== -1) {
+          this.$message({
+            message: this.$t('success.update_success'),
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.updatedialogFlag = false
+        } else {
+          this.$message({
+            message: r.data.mes,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        }
       })
     },
     getlqThirdLevel () {
@@ -169,7 +248,8 @@ export default {
       options2: [],
       filesList: [],
       materialNumber: '',
-      filePath: ''
+      filePath: '',
+      selectionData: []
     }
   }
 }

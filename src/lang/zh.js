@@ -320,7 +320,7 @@ export default {
     submitSample: '待提交物料封样',
     submitEnvironmentalInformation: '提交环保资料',
     changeExpirationReport: '更新到期报告',
-    submitExpiredSample: '样品到期提醒'
+    submitExpiredSample: '邮寄样品'
   },
   state: {
     REWORK: '驳回',

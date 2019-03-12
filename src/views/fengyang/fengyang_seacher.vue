@@ -109,7 +109,7 @@
         <el-table-column align="center" show-overflow-tooltip="true" prop="number"  :label="$t('fengyangTable.seacher.number')" width="180">
           <template
             slot-scope="scope">
-            <span style="color: blue">{{scope.row.partNumber}}</span>
+            <a style="color: blue" @click="goDetail(scope.row)">{{scope.row.partNumber}}</a>
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip="true" prop="seacher_info"  :label="$t('fengyangTable.seacher.seacher_info')" width="180">
@@ -181,6 +181,10 @@ export default {
     }
   },
   methods: {
+    goDetail (data) {
+      console.log('data', data)
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false'}})
+    },
     searchResult () {
       console.log('xoxo', this.dateValue)
       if (this.model.serchItems.searchDateFrom && this.model.serchItems.searchDateFrom !== null) {

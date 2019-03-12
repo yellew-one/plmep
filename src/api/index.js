@@ -815,3 +815,47 @@ export function completeSealedTask (oid, comment, route) {
     }
   })
 }
+
+// 创建物料封样文档接口
+export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'createWLFYDoc',
+      username: store.getters.userInfo.username,
+      oid: oid,
+      lqThirdLevel: lqThirdLevel,
+      description: description,
+      ftpFilePath: ftpFilePath
+    }
+  })
+}
+
+// 编辑物料封样文档时点击“移除”按钮移除原有的附件
+export function removeAttachment (number, fileName) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'removeAttachment',
+      username: store.getters.userInfo.username,
+      number: number,
+      fileName: fileName
+    }
+  })
+}

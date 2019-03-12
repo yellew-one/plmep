@@ -6,8 +6,8 @@
         <el-card shadow="hover" class="card">
           <div class="longcheer_hr">
             <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
-            <div class="longcheer_hr_reight" v-if="state === 'state.REWORK' || state === 'state.INWORK'|| state === 'state.SAMPLE_EXPIRE'">
-              <el-button @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit_k')}}</el-button>
+            <div class="longcheer_hr_reight">
+              <el-button v-if="state === 'true'" @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit_k')}}</el-button>
             </div>
           </div>
           <el-row class="card_row">
@@ -212,21 +212,23 @@
           <el-row class="card_row">
             <el-col span="4" style="text-align: right">备注：</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
-            <el-col  span="12"><el-input :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" type="textarea" :rows="3"></el-input></el-col>
+            <el-col  span="12"><el-input :disabled="state !== 'true'" type="textarea" :rows="3"></el-input></el-col>
           </el-row>
           <el-row class="card_row">
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
-              <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-              <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+              <!--:disabled="state !== 'state.REWORK' && state !== 'state.INWORK' && state !== 'state.SAMPLE_EXPIRE'"SAMPLE_EXPIRE-->
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
             </el-col>
           </el-row>
           <el-row class="card_row">
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
-              <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK' || state === 'state.SAMPLE_EXPIRE'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+              <!--v-if="state === 'state.REWORK' || state === 'state.INWORK' || state === 'state.SAMPLE_EXPIRE'"-->
+              <el-button v-if="state === 'true'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
             </el-col>
           </el-row>
         </el-card>

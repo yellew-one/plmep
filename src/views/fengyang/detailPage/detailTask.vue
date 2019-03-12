@@ -6,7 +6,7 @@
           <el-card shadow="hover" class="card">
             <div class="longcheer_hr">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
-              <div class="longcheer_hr_reight" v-if="state === 'state.REWORK' || state === 'state.INWORK'">
+              <div class="longcheer_hr_reight" v-if="state === 'true'">
                 <el-button @click="editInfo" icon="el-icon-edit" size="small">{{$t('formButton.edit')}}</el-button>
               </div>
             </div>
@@ -219,11 +219,11 @@
             </div>
             <el-row class="card_row" style="padding-left: 5px">
               <el-col :span="24" class="card_lable">
-                <el-button-group v-if="state === 'state.REWORK' || state === 'state.INWORK'">
-                  <el-button size="mini" :loading="$store.getters.loading"  icon="el-icon-share" @click="uploadSampDoc">{{$t('fengyangTable.detail.add')}}</el-button>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesCreadClick">{{$t('fengyangTable.detail.create')}}</el-button>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-edit" @click="fileseditClick">{{$t('fengyangTable.detail.edit')}}</el-button>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
+                <el-button-group v-if="state === 'true'">
+                  <el-button size="mini" :loading="$store.getters.loading" @click="uploadSampDoc" icon="el-icon-share" >{{$t('fengyangTable.detail.add')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" @click="filesCreadClick" icon="el-icon-plus" >{{$t('fengyangTable.detail.create')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" @click="fileseditClick" icon="el-icon-edit" >{{$t('fengyangTable.detail.edit')}}</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" @click="removeRelatedWLFYDocs" icon="el-icon-delete" >{{$t('fengyangTable.detail.remove')}}</el-button>
                 </el-button-group>
                 <el-table
                   size="mini"
@@ -242,7 +242,7 @@
                       {{$t(scope.row.number)}}
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
+                  <el-table-column v-if="false" align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
                     <template
                       slot-scope="scope">
                       {{$t(scope.row.version)}}
@@ -275,7 +275,7 @@
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.attachment)}}
+                      <a style="color: blue">{{$t(scope.row.attachment)}}</a>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -287,21 +287,21 @@
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">备注：</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
-              <el-col  span="12"><el-input  :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
+              <el-col  span="12"><el-input  :disabled="state !== 'true'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-                <el-radio :disabled="state !== 'state.REWORK' && state !== 'state.INWORK'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+                <el-radio :disabled="state !== 'true'" v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+                <el-radio :disabled="state !== 'true'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
               </el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-button v-if="state === 'state.REWORK' || state === 'state.INWORK'" :loading="$store.getters.loading" @click="submitAprive" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+                <el-button v-if="state === 'true'" :loading="$store.getters.loading" @click="submitAprive" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
               </el-col>
             </el-row>
             <div class="longcheer_hr" style="margin-top: 40px">
@@ -405,7 +405,7 @@ export default {
     },
     filesCreadClick () {
       this.$refs.docUpdate.openDialog(this.model.materialNumber)
-      this.$refs.docUpdate.setModel({})
+      this.$refs.docUpdate.setModel({ftype: 'create'})
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)
@@ -437,6 +437,7 @@ export default {
     getProcessHistory () {
       processHistory('sealed', this.model.materialNumber).then(r => {
         console.log(r)
+        this.approvalTable = r.data
       })
     },
     editSealedSampleDocInfo (oid) {
