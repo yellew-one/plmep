@@ -734,25 +734,6 @@ export function completeEnvp (oid) {
   })
 }
 
-// 获取物料状态枚举值
-export function getSealedSampleStatus () {
-  return request({
-    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    transformRequest: [function (data) {
-      data = Qs.stringify(data)
-      return data
-    }],
-    data: {
-      operation: 'getSealedSampleStatus',
-      username: store.getters.userInfo.username
-    }
-  })
-}
-
 // 获取物料类别枚举值
 export function getLqClassCateGory () {
   return request({
@@ -857,6 +838,44 @@ export function removeAttachment (number, fileName) {
       username: store.getters.userInfo.username,
       number: number,
       fileName: fileName
+    }
+  })
+}
+
+// 附件链接接口
+export function attachmentLink (number, fileName) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'attachmentLink',
+      number: number,
+      fileName: fileName
+    }
+  })
+}
+
+// 附件链接接口
+export function getSealedSampleStatus () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getSealedSampleStatus'
     }
   })
 }

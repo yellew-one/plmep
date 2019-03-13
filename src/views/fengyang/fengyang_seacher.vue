@@ -157,7 +157,7 @@
   </div>
 </template>
 <script>
-import { searchSealedSample, lqClassCategory, getEnvpState } from '@/api/index'
+import { searchSealedSample, lqClassCategory, getSealedSampleStatus } from '@/api/index'
 import { initPage } from '@/utils/index'
 export default {
   components: {},
@@ -221,7 +221,8 @@ export default {
       })
     },
     getEnvpStates () {
-      getEnvpState().then(r => {
+      getSealedSampleStatus().then(r => {
+        console.log(r)
         var states = [{value: '', label: ''}]
         for (var i in r.data[0].state) {
           states.push({

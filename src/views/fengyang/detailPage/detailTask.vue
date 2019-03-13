@@ -225,11 +225,12 @@
                   <el-button size="mini" :loading="$store.getters.loading" @click="fileseditClick" icon="el-icon-edit" >{{$t('fengyangTable.detail.edit')}}</el-button>
                   <el-button size="mini" :loading="$store.getters.loading" @click="removeRelatedWLFYDocs" icon="el-icon-delete" >{{$t('fengyangTable.detail.remove')}}</el-button>
                 </el-button-group>
+                <div>
                 <el-table
                   size="mini"
                   :data="filesList"
                   border
-                  height="200px"
+                  height="250px"
                   @selection-change="handleSelectionChange"
                   style="width: 100%">
                   <el-table-column
@@ -272,13 +273,25 @@
                       {{$t(scope.row.assignment)}}
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
+                  <el-table-column align="center"  prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
                     <template
                       slot-scope="scope">
-                      <a style="color: blue">{{$t(scope.row.attachment)}}</a>
+                      <el-popover
+                        placement="top"
+                        title="下载"
+                        width="300"
+                        trigger="hover"
+                        Slot="">
+                        <div style="margin-top: 5px" v-for="(item, index) in scope.row.attachment.split(';')" :key="index">
+                          <a @click="attachmentClick(scope.row.number, item)" style="font-size: 12px;color: blue;font-weight: bold;">{{item}}</a>
+                        </div>
+                         <a  slot="reference" @click="attachmentClick2(scope.row.number, scope.row.attachment)" style="color: blue">{{scope.row.attachment | overflowTooltip }}</a>
+                      </el-popover>
                     </template>
                   </el-table-column>
                 </el-table>
+                </div>
+                <!--<el-button size="mini" @mousedown="dragEagle" title="拖动">x</el-button>-->
               </el-col>
             </el-row>
             <div class="longcheer_hr" style="margin-top: 20px">
@@ -364,11 +377,11 @@
       </el-row>
       <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
       <uploadSampleDoc :restData="showRelatedWLFYDocs" ref="uploadSamDoc"></uploadSampleDoc>
-      <updateSampleDoc ref="docUpdate"></updateSampleDoc>
+      <updateSampleDoc :restData="showRelatedWLFYDocs" ref="docUpdate"></updateSampleDoc>
     </div>
 </template>
 <script>
-import { showTaskDetails, completeSealedTask, editSealedSampleDocInfo, processHistory, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
+import { showTaskDetails, attachmentLink, completeSealedTask, editSealedSampleDocInfo, processHistory, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
 import updateSampleDoc from '../../../components/UploadSampleDoc/update'
@@ -381,6 +394,16 @@ export default {
     uploadSampleDoc,
     updateSampleDoc
   },
+  filters: {
+    overflowTooltip: function (value) {
+      if (!value) return ''
+      if (value.length > 10) {
+        return value.substring(0, 10) + '...'
+      } else {
+        return value
+      }
+    }
+  },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
     this.state = this.$route.params.state
@@ -391,6 +414,17 @@ export default {
     }
   },
   methods: {
+    attachmentClick2 (number, data) {
+      if (data && data.indexOf(';') === -1) {
+        this.attachmentClick(number, data)
+      }
+    },
+    attachmentClick (number, name) {
+      attachmentLink(number, name).then(r => {
+        console.log(r)
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
+    },
     fileseditClick () {
       if (!this.filesOids && this.filesOids.length === 0) {
         this.$message({
@@ -405,7 +439,7 @@ export default {
     },
     filesCreadClick () {
       this.$refs.docUpdate.openDialog(this.model.materialNumber)
-      this.$refs.docUpdate.setModel({ftype: 'create'})
+      this.$refs.docUpdate.setModel({ftype: 'create', oid: this.oid})
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)

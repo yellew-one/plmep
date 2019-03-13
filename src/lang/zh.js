@@ -99,6 +99,7 @@ export default {
       UNDERREVIEW: '正在审阅',
       RELEASED: '已发布',
       REWORK: '驳回',
+      SAMPLE_EXPIRE: '封样到期',
       CANCELLED: '已取消',
       DISABLE: '废弃'
     },

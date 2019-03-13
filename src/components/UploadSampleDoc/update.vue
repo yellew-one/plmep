@@ -103,6 +103,7 @@ import { lqThirdLevel, editWLFYDoc, createWLFYDoc, removeAttachment } from '@/ap
 import filesUpload from '../../components/filesUpload/index'
 export default {
   name: 'update',
+  props: ['restData'],
   mounted: function () {
     this.getlqThirdLevel()
   },
@@ -112,13 +113,18 @@ export default {
   methods: {
     filesUploadClick () {
       this.$refs.fup.openDialog()
-      // http://172.16.9.170:8081/files/upLoad
+      // http://172.17.122.121:8081/files/upLoad
       // http://172.17.1.125:8081/files/upLoad
+      // http://172.16.9.169:8080/files/upLoad
       this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
     },
-    returnFilePath (data, name) {
-      this.filePath = data
-      this.filesList.push({name: name, url: data, desc: '', ftype: 'new'})
+    returnFilePath (data) {
+      console.log('xxoo', data)
+      var that = this
+      data.forEach(function (value, index) {
+        that.filePath += value.response.data[0] + ';'
+        that.filesList.push({name: value.name, url: '', desc: '', ftype: 'new'})
+      })
       this.$refs.fup.closeDialog()
     },
     setModel (data) {
@@ -129,26 +135,36 @@ export default {
     removeRelatedWLFYDocs () {
       var that = this
       if (this.selectionData.length > 0) {
+        var sz = this.filesList
         this.selectionData.forEach(function (value, index) {
           if (value.ftype === 'oid') {
-            removeAttachment(that.model.number, that.value.attachment.split('.')[0]).then(r => {
+            removeAttachment(that.model.number, value.name.split('.')[0]).then(r => {
               console.log(r)
-              if (r.data.mes && r.data.mes.indexOf('成功')) {
+              if (r.data.mes.indexOf('成功') !== -1) {
                 that.$message({
-                  message: this.$t('success.remove_success') + ':' + that.value.attachment,
+                  message: that.$t('success.remove_success') + ':' + value.name,
                   type: 'success',
                   duration: 5 * 1000
                 })
+                sz.splice(sz.indexOf(value), 1)
               } else {
                 that.$message({
                   message: r.data.mes,
-                  type: 'waining',
+                  type: 'warning',
                   duration: 5 * 1000
                 })
               }
             })
+          } else {
+            that.$message({
+              message: '文件' + value.name + '未上传至服务器,无需删除.',
+              type: 'warning',
+              duration: 5 * 1000
+            })
           }
         })
+        this.filesList = sz
+        this.$props.restData()
       } else {
         this.$message({
           message: this.$t('error.please_selector'),
@@ -159,6 +175,7 @@ export default {
     },
     loadingFileList () {
       var sz = []
+      this.filesList = []
       if (this.model.attachment && this.model.attachment !== '无附件') {
         var list = this.model.attachment.split(';')
         list.forEach(function (value, index) {
@@ -193,6 +210,7 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
+          this.$props.restData()
           this.updatedialogFlag = false
         } else {
           this.$message({
@@ -212,6 +230,7 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
+          this.$props.restData()
           this.updatedialogFlag = false
         } else {
           this.$message({

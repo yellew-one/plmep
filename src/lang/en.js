@@ -95,6 +95,7 @@ export default {
       UNDERREVIEW: 'UNDERREVIEW',
       RELEASED: 'RELEASED',
       REWORK: 'REWORK',
+      SAMPLE_EXPIRE: 'SAMPLE_EXPIRE',
       CANCELLED: 'CANCELLED',
       DISABLE: 'DISABLE'
     },
