@@ -734,6 +734,25 @@ export function completeEnvp (oid) {
   })
 }
 
+// 获取物料状态枚举值
+export function getSealedSampleStatus () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getSealedSampleStatus',
+      username: store.getters.userInfo.username
+    }
+  })
+}
+
 // 获取物料类别枚举值
 export function getLqClassCateGory () {
   return request({
@@ -813,7 +832,7 @@ export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
     data: {
       operation: 'createWLFYDoc',
       username: store.getters.userInfo.username,
-      number: oid,
+      oid: oid,
       lqThirdLevel: lqThirdLevel,
       description: description,
       ftpFilePath: ftpFilePath
@@ -842,7 +861,78 @@ export function removeAttachment (number, fileName) {
   })
 }
 
-// 附件链接接口
+// RoHS条目详细信息及编辑
+export function viewRohs (rohsItemOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/rohsItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'viewRohs',
+      rohsItemOid: rohsItemOid
+    }
+  })
+}
+
+// RoHS条目编辑确认
+export function execute (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/rohsItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'execute',
+      oid: oid,
+      pb: '1',
+      cd: '2',
+      hg: '3',
+      cr6p: '4',
+      pbbs: '5',
+      pbdes: '6',
+      dehp: '7',
+      bbp: '8',
+      dbp: '9',
+      dibp: '12',
+      exemption: '13',
+      remark: '13',
+      removeOid: '',
+      addOid: ''
+    }
+  })
+}
+
+// 查看编辑环保总报告
+export function envpFinalReport (oid, docType) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'envpFinalReport',
+      oid: oid,
+      docType: docType
+    }
+  })
+}
+// // 附件链接接口
 export function attachmentLink (number, fileName) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
@@ -858,24 +948,6 @@ export function attachmentLink (number, fileName) {
       operation: 'attachmentLink',
       number: number,
       fileName: fileName
-    }
-  })
-}
-
-// 附件链接接口
-export function getSealedSampleStatus () {
-  return request({
-    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/searchSealedSample.jsp',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    transformRequest: [function (data) {
-      data = Qs.stringify(data)
-      return data
-    }],
-    data: {
-      operation: 'getSealedSampleStatus'
     }
   })
 }

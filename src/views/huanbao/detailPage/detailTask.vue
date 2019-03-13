@@ -121,7 +121,7 @@
                     <span>{{scope.row.subMaterialName}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="casNo" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.FMD.casNo')" width="180">
+                <el-table-column prop="casNo" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.FMD.casNo')">
                   <template
                     slot-scope="scope">
                     <span>{{scope.row.casNo}}</span>
@@ -206,7 +206,7 @@
                     <span>{{scope.row.patentCert}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.MSDS.state')" width="180">
+                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.MSDS.state')">
                   <template
                     slot-scope="scope">
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
@@ -690,7 +690,7 @@
               </el-table>
             </el-tab-pane>
           </el-tabs>
-          <el-row v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">
+          <el-row v-if="this.approvalType === 'YEAH'">
             <div class="longcheer_hr" style="margin-top: 20px">
               <span>审批</span>
             </div>
@@ -771,12 +771,14 @@
             </el-col>
           </el-row>
           <edit-f-m-d-dialog  ref="myChild"
-                              :acceptSonValueByEdit = 'acceptSonValueByEdit'></edit-f-m-d-dialog>
+                              :updateFMDData = 'updateFMDData'></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
           <edit-msds ref="editMsds"
                      :updateMSDSData = 'updateMSDSData'></edit-msds>
-          <rohs-dialog ref="editRohs"></rohs-dialog>
+          <rohs-dialog ref="editRohs"
+                       :updateRoHSData = 'updateRoHSData'></rohs-dialog>
+          <general-report ref="editRohsReportDialog"></general-report>
         </el-card>
       </el-col>
     </el-row>
@@ -788,8 +790,10 @@ import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
 import RohsDialog from '../../../components/huanbaoDialog/editRohs'
+import GeneralReport from '../../../components/huanbaoDialog/generalReport'
 export default {
   components: {
+    GeneralReport,
     RohsDialog,
     EditMsds,
     ThirdReuse,
@@ -904,7 +908,8 @@ export default {
       hfOpinion: '',
       reachOpinion: '',
       otherOpinion: '',
-      other2Opinion: ''
+      other2Opinion: '',
+      approvalType: ''
     }
   },
   mounted: function () {
@@ -917,14 +922,20 @@ export default {
     if (this.$route.params.state) {
       localStorage.setItem('state', this.$route.params.state)
     }
+    if (this.$route.params.approvalType) {
+      localStorage.setItem('approvalType', this.$route.params.approvalType)
+    }
     this.oid = localStorage.getItem('oid')
     this.state = localStorage.getItem('state')
-    this.getDataList(this.oid)
+    this.approvalType = localStorage.getItem('approvalType')
+    if (this.oid) {
+      this.getDataList(this.oid)
+    }
   },
   methods: {
     // 子组件调用
-    acceptSonValueByEdit (oid) {
-      this.getDataList(oid)
+    acceptSonValueByEdit () {
+      this.getDataList(this.oid)
     },
     getDataList (e) {
       showEnvprotectionTask(e).then(r => {
@@ -1025,24 +1036,38 @@ export default {
     },
     // 编辑rohs 总报告
     editRoHSReport () {
-      this.$refs.editRohs.setDialogFormVisible('edit')
+      this.$refs.editRohsReportDialog.setgeneralReportDialogisible('edit', 'RoHS总报告', this.oid, 'RoHS')
     },
     // 查看总报告
     checkRoHSReport () {
-      this.$refs.editRohs.setDialogFormVisible('')
+      this.$refs.editRohsReportDialog.setgeneralReportDialogisible('view', 'RoHS总报告', this.oid, 'RoHS')
     },
     // rohs 编辑
     editRoHS (row) {
+      this.$refs.editRohs.setRohsDialogVisible('itemedit', row.rohsOid, this.oid)
     },
     // rohs 查看
     checkRoHS (row) {
+      this.$refs.editRohs.setRohsDialogVisible('itemview', row.rohsOid, this.oid)
     },
     // fmd 下载
     fmdUpload () {},
+    updateFMDData () {
+      selectFMD(this.oid).then(r => {
+        console.log('FMD', r)
+        this.tableDataFMD = r.data
+      })
+    },
     updateMSDSData () {
       selectMSDS(this.oid).then(r => {
         console.log('MSDS', r)
         this.tableDataMSDS = r.data
+      })
+    },
+    updateRoHSData () {
+      selectRoHS(this.oid).then(r => {
+        console.log('RoHS', r)
+        this.tableDataROHS = r.data
       })
     },
     test () {
@@ -1063,7 +1088,6 @@ export default {
           }
         }
       }
-      console.log('xoxo1', a)
       for (var i = 0; i < s.length; i++) {
         for (var j = i + 1; j < s.length; j++) {
           if (s[i].id === s[j].id) {

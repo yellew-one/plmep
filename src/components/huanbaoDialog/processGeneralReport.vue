@@ -79,7 +79,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="rohsReportDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="completeFMD">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
+        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="rohsReportDialog = false">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -88,7 +88,7 @@
 // import {  } from '@/api/index'
 export default {
   components: {},
-  name: 'RohsReportDialog',
+  name: 'ProcessingGeneralReport',
   props: [''],
   mounted: function () {
   },
@@ -103,7 +103,7 @@ export default {
     }
   },
   methods: {
-    setDialogFormVisible (e) {
+    setprocessingGeneralReportFormVisible (e) {
       this.rohsReportDialog = true
     },
     choseFile () {

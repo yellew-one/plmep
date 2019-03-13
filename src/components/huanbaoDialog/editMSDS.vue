@@ -319,8 +319,36 @@ export default {
       window.open('http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews')
     },
     returnFilePath (e, type) {
-      this.path = e + ',' + this.path
-      this.fileType = type + ',' + this.fileType
+      var strPath = ''
+      var strType = ''
+      for (let i in e) {
+        strPath = e[i].response.data[0] + ',' + strPath
+        strType = type + ',' + strType
+        if (type === '01') {
+          this.approvalTable1.push({
+            attachmentOid: '',
+            endTime: '',
+            fileName: e[i].name
+          })
+        }
+        if (type === '02') {
+          this.approvalTable2.push({
+            attachmentOid: '',
+            endTime: '',
+            fileName: e[i].name
+          })
+        }
+        if (type === '03') {
+          this.approvalTable3.push({
+            attachmentOid: '',
+            endTime: '',
+            fileName: e[i].name
+          })
+        }
+      }
+      this.path = strPath.substring(0, strPath.length - 1)
+      this.fileType = strType.substring(0, strType.length - 1)
+      this.$refs.upload.closeDialog()
     }
   }
 }

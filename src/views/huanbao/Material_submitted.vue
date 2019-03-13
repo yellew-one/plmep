@@ -135,7 +135,7 @@ export default {
       })
     },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state, approvalType: 'YEAH'}})
     }
   }
 }

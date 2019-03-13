@@ -7,7 +7,8 @@
       :show-close="false"
       :close-on-press-escape="false"
       width="50%"
-      top="15px">
+      top="15px"
+      append-to-body>
       <el-card class="box-card">
         <el-row :gutter="20">
           <el-col :span="24">

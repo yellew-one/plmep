@@ -298,7 +298,7 @@ export default {
       this.$refs.myChild.setDialogFormVisible()
     },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state, approvalType: ''}})
     },
     handleCurrentChange (val) {
       this.counts.nowPage = val
