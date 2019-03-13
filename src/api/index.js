@@ -813,7 +813,7 @@ export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
     data: {
       operation: 'createWLFYDoc',
       username: store.getters.userInfo.username,
-      oid: oid,
+      number: oid,
       lqThirdLevel: lqThirdLevel,
       description: description,
       ftpFilePath: ftpFilePath

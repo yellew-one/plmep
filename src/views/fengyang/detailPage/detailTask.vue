@@ -439,7 +439,7 @@ export default {
     },
     filesCreadClick () {
       this.$refs.docUpdate.openDialog(this.model.materialNumber)
-      this.$refs.docUpdate.setModel({ftype: 'create', oid: this.oid})
+      this.$refs.docUpdate.setModel({ftype: 'create', oid: this.oid, materialNumber: this.model.materialNumber})
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)

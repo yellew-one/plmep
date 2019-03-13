@@ -157,10 +157,11 @@ export default {
             })
           } else {
             that.$message({
-              message: '文件' + value.name + '未上传至服务器,无需删除.',
+              message: '移除成功',
               type: 'warning',
               duration: 5 * 1000
             })
+            sz.splice(sz.indexOf(value), 1)
           }
         })
         this.filesList = sz
@@ -222,7 +223,7 @@ export default {
       })
     },
     oncreateWLFYDoc () {
-      createWLFYDoc(this.model.oid, this.model.lq_third_level, this.model.explain, this.filePath).then(r => {
+      createWLFYDoc('MS' + this.model.materialNumber, this.model.lq_third_level, this.model.explain, this.filePath).then(r => {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({
