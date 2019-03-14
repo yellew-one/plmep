@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-      <el-button @click="gongao" type="primary" icon="el-icon-warning">公告</el-button>
+      <!--<el-button @click="gongao" type="primary" icon="el-icon-warning">公告</el-button>-->
     </div>
 </template>
 <script>

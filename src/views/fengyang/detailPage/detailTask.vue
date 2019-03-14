@@ -240,19 +240,19 @@
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('TableTile.files.number')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.number)}}
+                      {{scope.row.number}}
                     </template>
                   </el-table-column>
                   <el-table-column v-if="false" align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.version)}}
+                      {{scope.row.version}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('TableTile.files.name')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.name)}}
+                      {{scope.row.name}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="status"  :label="$t('TableTile.files.status')" width="180">
@@ -270,7 +270,7 @@
                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="approval"  :label="$t('TableTile.files.approval')" width="180">
                     <template
                       slot-scope="scope">
-                      {{$t(scope.row.assignment)}}
+                      {{scope.row.assignment}}
                     </template>
                   </el-table-column>
                   <el-table-column align="center"  prop="attachment"  :label="$t('TableTile.files.attachment')" width="180">
@@ -294,15 +294,15 @@
                 <!--<el-button size="mini" @mousedown="dragEagle" title="拖动">x</el-button>-->
               </el-col>
             </el-row>
-            <div class="longcheer_hr" style="margin-top: 20px">
+            <div v-if="state === 'true'" class="longcheer_hr" style="margin-top: 20px">
               <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
             </div>
-            <el-row class="card_row">
+            <el-row v-if="state === 'true'" class="card_row">
               <el-col span="4" style="text-align: right">备注：</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col  span="12"><el-input  :disabled="state !== 'true'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
-            <el-row class="card_row">
+            <el-row v-if="state === 'true'" class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
@@ -310,7 +310,7 @@
                 <el-radio :disabled="state !== 'true'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
               </el-col>
             </el-row>
-            <el-row class="card_row">
+            <el-row v-if="state === 'true'" class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
@@ -388,6 +388,8 @@ import updateSampleDoc from '../../../components/UploadSampleDoc/update'
 export default {
   name: 'detailTask',
   mounted: function () {
+    var tagsView = this.$store.state.tagsView.visitedViews
+    this.nowTags = tagsView[tagsView.length - 1]
   },
   components: {
     sealeInfoEdit,
@@ -410,7 +412,6 @@ export default {
     this.oid = this.$route.params.oid
     if (this.oid) {
       this.getDetailInfo(this.oid)
-      this.showRelatedWLFYDocs(this.oid)
     }
   },
   methods: {
@@ -441,12 +442,6 @@ export default {
       this.$refs.docUpdate.openDialog(this.model.materialNumber)
       this.$refs.docUpdate.setModel({ftype: 'create', oid: this.oid, materialNumber: this.model.materialNumber})
     },
-    submitAprive () {
-      this.$store.commit('SET_LOADING', true)
-      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
-        console.log(r)
-      })
-    },
     filesUploadClick () {
       this.$refs.fileUpload.openDialog()
       // http://172.16.9.170:8081/files/upLoad
@@ -454,7 +449,7 @@ export default {
       this.$refs.fileUpload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '', 'fileList', {number: this.model.materialNumber})
     },
     showRelatedWLFYDocs () {
-      showRelatedWLFYDocs(this.oid).then(r => {
+      showRelatedWLFYDocs('MS' + this.model.materialNumber).then(r => {
         this.filesList = r.data
       })
     },
@@ -466,6 +461,7 @@ export default {
         this.model = r.data[0]
         this.model.oid = this.$route.params.oid
         this.getProcessHistory()
+        this.showRelatedWLFYDocs(this.oid)
       })
     },
     getProcessHistory () {
@@ -481,7 +477,7 @@ export default {
       this.$refs.infoEdit.openDialog(true, this.model)
     },
     uploadSampDoc () {
-      this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid)
+      this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid, this.model.materialNumber)
     },
     handleSelectionChange (val) {
       this.filesOids = ''
@@ -508,7 +504,7 @@ export default {
         return
       }
       this.$store.commit('SET_LOADING', true)
-      removeRelatedWLFYDocs(this.oid, this.filesOids).then(r => {
+      removeRelatedWLFYDocs('MS' + this.model.materialNumber, this.filesOids).then(r => {
         console.log(r)
         if (r.data.mes === '移除成功！') {
           this.$message({
@@ -525,10 +521,47 @@ export default {
           })
         }
       })
+    },
+    submitAprive () {
+      this.$store.commit('SET_LOADING', true)
+      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
+        console.log(r)
+        if (r.data.mes.indexOf('成功') !== -1) {
+          this.$message({
+            message: this.$t('success.finsh_task_success'),
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.closePage()
+        } else {
+          this.$message({
+            message: r.data.mes,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        }
+      })
+    },
+    closePage () {
+      this.$router.replace({name: 'fMytasks'})
+      this.closeSelectedTag(this.nowTags)
+    },
+    closeSelectedTag (view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/home')
+          }
+        }
+      })
     }
   },
   data () {
     return {
+      nowTags: {},
       msg: 'Welcome to Your Vue.js App',
       model: {},
       oid: '',

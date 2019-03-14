@@ -40,17 +40,32 @@
 <script>
 // import { setToken } from '@/utils/auth' // getToken from cookie
 import { login } from '@/api/login'
-
+import langen from 'element-ui/lib/locale/lang/en'
+import langzh from 'element-ui/lib/locale/lang/zh-CN'
+import locale from 'element-ui/lib/locale'
 export default {
   name: 'login',
   Created: function () {
   },
   mounted: function () {
-    this.langValue = this.$store.getters.guojihua === 'zh' ? '中文' : 'English'
+    // 设置语言
+    if (this.$store.getters.guojihua === 'zh') {
+      locale.use(langzh)
+      this.langValue = '中文'
+    } else {
+      locale.use(langen)
+      this.langValue = 'English'
+    }
   },
   methods: {
     langChage (command) {
-      this.langValue = command === 'zh' ? '中文' : 'English'
+      if (command === 'zh') {
+        this.langValue = '中文'
+        locale.use(langzh)
+      } else {
+        this.langValue = 'English'
+        locale.use(langen)
+      }
       this.$i18n.locale = command
       this.$store.commit('SET_GUOJIHUA', command)
     },

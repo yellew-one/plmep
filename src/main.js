@@ -7,10 +7,12 @@ import store from './stores'
 import '@/permission'
 import '@/icons' // icon
 import '@/styles/index.scss'
-// 引用全局UI
+// 引用全局U
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import i18n from './lang/index'
+
+// 设置语言
 
 Vue.use(ElementUI, store, {i18n: (key, value) => i18n.t(key, value)}, router)
 Vue.config.productionTip = false

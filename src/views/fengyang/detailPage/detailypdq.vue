@@ -206,29 +206,84 @@
               {{model.lq_deadline_sign}}
             </el-col>
           </el-row>
-          <div class="longcheer_hr" style="margin-top: 20px">
+          <div v-if="state === 'true'" class="longcheer_hr" style="margin-top: 20px">
             <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
           </div>
-          <el-row class="card_row">
+          <el-row v-if="state === 'true'" class="card_row">
             <el-col span="4" style="text-align: right">备注：</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
-            <el-col  span="12"><el-input :disabled="state !== 'true'" type="textarea" :rows="3"></el-input></el-col>
+            <el-col  span="12"><el-input v-model="model.comment" :disabled="state !== 'true'" type="textarea" :rows="3"></el-input></el-col>
           </el-row>
-          <el-row class="card_row">
+          <el-row v-if="state === 'true'" class="card_row">
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
               <!--:disabled="state !== 'state.REWORK' && state !== 'state.INWORK' && state !== 'state.SAMPLE_EXPIRE'"SAMPLE_EXPIRE-->
-              <el-radio :disabled="state !== 'true'" v-model="radio" label="1">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-              <el-radio :disabled="state !== 'true'" v-model="radio" label="2">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
             </el-col>
           </el-row>
-          <el-row class="card_row">
+          <el-row v-if="state === 'true'" class="card_row">
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
               <!--v-if="state === 'state.REWORK' || state === 'state.INWORK' || state === 'state.SAMPLE_EXPIRE'"-->
-              <el-button v-if="state === 'true'" :loading="$store.getters.loading" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+              <el-button v-if="state === 'true'" :loading="$store.getters.loading" @click="submitAprive" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+            </el-col>
+          </el-row>
+          <div class="longcheer_hr" style="margin-top: 40px">
+            <span class="longcheer_hr_span">{{$t('huanbaoTable.detailTable.approval')}}</span>
+          </div>
+          <el-row class="card_row">
+            <el-col span="24">
+              <el-table
+                :data="approvalTable"
+                border
+                size="mini"
+                style="width: 100%">
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.approval.state')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{$t('huanbaoTable.approval.' + scope.row.status)}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="activityName"  :label="$t('huanbaoTable.approval.activityName')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.activityName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="roleName"  :label="$t('huanbaoTable.approval.roleName')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.roleName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="ownerName"  :label="$t('huanbaoTable.approval.ownerName')">
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.ownerName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="vote"  :label="$t('huanbaoTable.approval.vote')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.vote}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="comment"  :label="$t('huanbaoTable.approval.comment')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.comment}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="finishTime"  :label="$t('huanbaoTable.approval.finishTime')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.finishTime}}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-col>
           </el-row>
         </el-card>
@@ -239,12 +294,14 @@
   </div>
 </template>
 <script>
-import { showTaskDetails, editSealedSampleDocInfo } from '@/api/index'
+import { showTaskDetails, processHistory, editSealedSampleDocInfo, completeSealedTask } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/mini'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
 export default {
   name: 'detailTask',
   mounted: function () {
+    var tagsView = this.$store.state.tagsView.visitedViews
+    this.nowTags = tagsView[tagsView.length - 1]
   },
   components: {
     sealeInfoEdit,
@@ -254,7 +311,9 @@ export default {
     console.log('oid:  ', this.$route.params.oid)
     this.oid = this.$route.params.oid
     this.state = this.$route.params.state
-    if (this.oid) this.getDetailInfo(this.oid)
+    if (this.oid) {
+      this.getDetailInfo(this.oid)
+    }
   },
   methods: {
     getDetailInfo (oid) {
@@ -264,6 +323,7 @@ export default {
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
         this.model.oid = this.$route.params.oid
+        this.getProcessHistory()
       })
     },
     editSealedSampleDocInfo (oid) {
@@ -274,15 +334,59 @@ export default {
     },
     uploadSampDoc () {
       this.$refs.uploadSamDoc.setDialogFormVisible(true)
+    },
+    getProcessHistory () {
+      processHistory('sealed', this.model.materialNumber).then(r => {
+        console.log(r)
+        this.approvalTable = r.data
+      })
+    },
+    submitAprive () {
+      this.$store.commit('SET_LOADING', true)
+      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
+        console.log(r)
+        if (r.data.mes.indexOf('成功') !== -1) {
+          this.$message({
+            message: this.$t('success.finsh_task_success'),
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.closePage()
+        } else {
+          this.$message({
+            message: r.data.mes,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        }
+      })
+    },
+    closePage () {
+      this.$router.replace({name: 'fMytasks'})
+      this.closeSelectedTag(this.nowTags)
+    },
+    closeSelectedTag (view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/home')
+          }
+        }
+      })
     }
   },
   data () {
     return {
+      nowTags: {},
       msg: 'Welcome to Your Vue.js App',
       model: {},
       oid: '',
+      approvalTable: [],
       filesList: [],
-      radio: '1',
+      radio: 'Supply(供货)',
       state: ''
     }
   }

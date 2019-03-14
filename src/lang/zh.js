@@ -10,7 +10,9 @@ export default {
   },
   success: {
     update_success: '修改成功',
-    remove_success: '移除成功'
+    create_success: '创建成功',
+    remove_success: '移除成功',
+    finsh_task_success: '完成任务成功'
   },
   table: {
     name: '名称',
@@ -286,6 +288,7 @@ export default {
   m: {
     music: '音乐',
     login: '登录',
+    zdsc: '自动生成',
     loginTitle: '环保封样系统',
     homepage: '首页',
     Logout: '注销',

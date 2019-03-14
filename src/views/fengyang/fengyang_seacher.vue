@@ -53,7 +53,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-                <el-col :span="8">
+                <el-col :span="9">
                   <el-form-item prop="dateValue" :label="$t('fengyangTable.seacher.Seal_recognition_time')">
                     <!--:change="datePicker"-->
                     <el-date-picker
@@ -66,7 +66,7 @@
                     </el-date-picker>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="7">
                   <el-form-item >
                   </el-form-item>
                 </el-col>
@@ -187,7 +187,7 @@ export default {
     },
     searchResult () {
       console.log('xoxo', this.dateValue)
-      if (this.model.serchItems.searchDateFrom && this.model.serchItems.searchDateFrom !== null) {
+      if (this.dateValue) {
         this.model.serchItems.searchDateFrom = this.dateValue[0]
         this.model.serchItems.searchDateTo = this.dateValue[1]
       } else {

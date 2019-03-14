@@ -10,7 +10,7 @@
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
                 <el-form-item :label="$t('TableTile.files.number')" prop="number">
-                  <el-input disabled="true" v-model="model.number"></el-input>
+                  <el-input :placeholder="$t('m.zdsc')"  disabled="true" v-model="model.number"></el-input>
                 </el-form-item>
               </el-col>
               <el-col span=" 10">&nbsp;</el-col>
@@ -18,7 +18,7 @@
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
                 <el-form-item :label="$t('TableTile.files.name')" prop="name">
-                  <el-input :disabled="true" v-model="model.name"></el-input>
+                  <el-input :placeholder="$t('m.zdsc')" :disabled="true" v-model="model.name"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -64,10 +64,12 @@
                     size="mini"
                     :data="filesList"
                     border
+                    ref="multipleTable"
                     height="200px"
                     @selection-change="handleSelectionChange"
                     style="width: 100%">
                     <el-table-column
+                      :selectable="changeFlagHandle"
                       type="selection"
                       width="55">
                     </el-table-column>
@@ -122,10 +124,20 @@ export default {
       console.log('xxoo', data)
       var that = this
       data.forEach(function (value, index) {
-        that.filePath += value.response.data[0] + ';'
-        that.filesList.push({name: value.name, url: '', desc: '', ftype: 'new'})
+        // that.filePath += value.response.data[0] + ';'
+        var path = value.response.data[0]
+        that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
+    },
+    changeFlagHandle (row, index) {
+      console.log('row', row)
+      /* if (row.ftype === 'oid') {
+        return false
+      } else {
+        return true
+      } */
+      return true
     },
     setModel (data) {
       this.model = Object.assign(data)
@@ -183,15 +195,32 @@ export default {
           sz.push({name: value, url: '', desc: '', ftype: 'oid'})
         })
         this.filesList = sz
+        // this.$refs.multipleTable.toggleAllSelection()
       }
     },
     openDialog (materialNumber) { // 打开弹窗
       this.updatedialogFlag = true
       this.materialNumber = materialNumber
     },
+    toggleSelection (rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
     handleSelectionChange (data) {
       if (data) {
+        var path = ''
         this.selectionData = data
+        this.selectionData.forEach(function (value, index) {
+          if (value.filepath && value.filepath !== 'undefined') {
+            path = path + value.filepath + ';'
+          }
+        })
+        this.filePath = path
       }
     },
     submit () { // 提交
@@ -227,7 +256,7 @@ export default {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({
-            message: this.$t('success.update_success'),
+            message: this.$t('success.create_success'),
             type: 'success',
             duration: 5 * 1000
           })

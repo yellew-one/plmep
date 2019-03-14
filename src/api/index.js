@@ -479,7 +479,7 @@ export function lqThirdLevel () {
   })
 }
 // 搜索封样文档接口
-export function searchSealedDocs (number, name, thirdLevel) {
+export function searchSealedDocs (e) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -493,14 +493,16 @@ export function searchSealedDocs (number, name, thirdLevel) {
     data: {
       operation: 'searchSealedDocs',
       username: store.getters.userInfo.username,
-      number: number,
-      name: name,
-      lq_third_level: thirdLevel
+      number: e.serchItems.inputnumber,
+      name: e.serchItems.name,
+      lq_third_level: e.serchItems.thirdLevel,
+      nowPage: e.counts.nowPage,
+      pageSize: e.counts.pageSize
     }
   })
 }
 // addDoc  勾选物料封养文档，点击“确定“将物料封样和物料封样文档关联
-export function addDoc (oid, oids) {
+export function addDoc (number, oids) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -514,7 +516,7 @@ export function addDoc (oid, oids) {
     data: {
       operation: 'addDoc',
       username: store.getters.userInfo.username,
-      oid: oid,
+      number: number,
       oids: oids
     }
   })
@@ -653,7 +655,7 @@ export function getMSDSInfo (type, e) {
 }
 
 // 封样信息信息页面加载完成后展示关联的物料封样文档接口
-export function showRelatedWLFYDocs (oid) {
+export function showRelatedWLFYDocs (number) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -666,13 +668,13 @@ export function showRelatedWLFYDocs (oid) {
     }],
     data: {
       operation: 'showRelatedWLFYDocs',
-      oid: oid
+      number: number
     }
   })
 }
 
 // 封样信息信息页面移除相关物料封样文档
-export function removeRelatedWLFYDocs (oid, oids) {
+export function removeRelatedWLFYDocs (number, oids) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -685,7 +687,7 @@ export function removeRelatedWLFYDocs (oid, oids) {
     }],
     data: {
       operation: 'removeRelatedWLFYDocs',
-      oid: oid,
+      number: number,
       oids: oids
     }
   })
@@ -818,7 +820,7 @@ export function completeSealedTask (oid, comment, route) {
 }
 
 // 创建物料封样文档接口
-export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
+export function createWLFYDoc (number, lqThirdLevel, description, ftpFilePath) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -832,7 +834,7 @@ export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
     data: {
       operation: 'createWLFYDoc',
       username: store.getters.userInfo.username,
-      oid: oid,
+      number: number,
       lqThirdLevel: lqThirdLevel,
       description: description,
       ftpFilePath: ftpFilePath

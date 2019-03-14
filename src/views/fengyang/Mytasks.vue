@@ -59,6 +59,9 @@ export default {
   mounted: function () {
     this.getDataList()
   },
+  activated: function () {
+    this.getDataList()
+  },
   methods: {
     getDataList () {
       showSealedSampleTasks().then(r => {

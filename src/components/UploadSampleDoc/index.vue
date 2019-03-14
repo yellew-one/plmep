@@ -15,21 +15,21 @@
                 <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="10">
                     <el-form-item prop="RoHSNumber" :label="$t('fengyangTable.seacher.doc_number')">
-                      <el-input   v-model="number"></el-input>
+                      <el-input   v-model="model.serchItems.inputnumber"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="10">
                     <el-form-item prop="RoHSType" :label="$t('fengyangTable.seacher.doc_name')">
-                      <el-input   v-model="name"></el-input>
+                      <el-input   v-model="model.serchItems.name"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="10">
                     <el-form-item prop="RoHSNumber" :label="$t('fengyangTable.seacher.type3')">
-                      <el-select style="width: 100%" v-model="thirdLevel" placeholder="">
+                      <el-select style="width: 100%" v-model="model.serchItems.thirdLevel" placeholder="">
                         <el-option
                           v-for="item in options2"
                           :key="item.value"
@@ -65,8 +65,10 @@
         </el-row>
         <el-table
           ref="docTable"
-          :data="tableData"
+          :data="model.dataList"
           border
+          size="mini"
+          height="450px"
           style="width: 100%;margin-top: 10px"
           @selection-change="handleSelectionChange">
           <el-table-column
@@ -111,6 +113,16 @@
           </el-table-column>
 
         </el-table>
+        <div style="width: 100%;text-align: right">
+          <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="model.counts.nowPage"
+            layout="total, prev, pager, next"
+            :total="model.counts.totalCount"
+            :page-size="model.counts.pageSize">
+          </el-pagination>
+        </div>
       </el-card>
       <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
@@ -121,14 +133,18 @@
 </template>
 <script>
 import { lqThirdLevel, searchSealedDocs, addDoc } from '@/api/index'
+import { initPage } from '@/utils/index'
 export default {
   components: {},
   name: 'EscapeClause',
   props: ['acceptSonValue', 'restData'],
   mounted: function () {
+    initPage(this.model, searchSealedDocs)
+    this.model.searchCurrent(1)
   },
   data () {
     return {
+      model: {serchItems: {}, dataList: []},
       dialogVisible: false,
       temp: {
         RoHSNumber: '',
@@ -143,18 +159,25 @@ export default {
       number: '',
       name: '',
       thirdLevel: '',
-      SelectionList: []
+      SelectionList: [],
+      inputnumber: ''
     }
   },
   methods: {
-    setDialogFormVisible (item, oid) {
+    setDialogFormVisible (item, oid, number) {
       this.dialogVisible = item
       this.oid = oid
+      this.number = number
       this.getlqThirdLevel()
-      this.getSearchSealedDocs()
+      this.model.searchCurrent(1)
+      // this.getSearchSealedDocs()
+    },
+    handleCurrentChange (val) {
+      this.model.searchCurrent(val)
     },
     searchResult () {
-      this.getSearchSealedDocs()
+      this.model.searchCurrent(1)
+      // this.getSearchSealedDocs()
     },
     // 处理多选数据
     handleSelectionChange (val) {
@@ -182,7 +205,7 @@ export default {
     },
     getSearchSealedDocs () {
       this.$store.commit('SET_LOADING', true)
-      searchSealedDocs(this.number, this.name, this.thirdLevel).then(r => {
+      searchSealedDocs(this.inputnumber, this.name, this.thirdLevel).then(r => {
         this.tableData = r.data.slice(0, 9)
         console.log(this.tableData)
       })
@@ -198,7 +221,7 @@ export default {
           str += ','
         }
       })
-      addDoc(this.oid, str).then(r => {
+      addDoc('MS' + this.number, str).then(r => {
         console.log(r)
         if (r.data[0].mes && r.data[0].mes === '添加成功！') {
           this.$message({

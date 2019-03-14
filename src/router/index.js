@@ -34,7 +34,7 @@ export const asyncRouterMap = [
       path: 'fMytasks',
       component: () => import('@/views/fengyang/Mytasks'),
       name: 'fMytasks',
-      meta: { title: 'fengyangRoute.myTasks', icon: 'issue' }
+      meta: { title: 'fengyangRoute.myTasks', icon: 'dtj' }
     }]
   },
   {
@@ -46,7 +46,7 @@ export const asyncRouterMap = [
       path: 'ypdq_task',
       component: () => import('@/views/fengyang/ypdq_task'),
       name: 'ypdq_task',
-      meta: { title: 'fengyangRoute.ypdq_task', icon: 'issue' }
+      meta: { title: 'fengyangRoute.ypdq_task', icon: 'fydq3' }
     }]
   },
   // {
@@ -70,7 +70,7 @@ export const asyncRouterMap = [
       path: 'fengyang_seacher',
       component: () => import('@/views/fengyang/fengyang_seacher'),
       name: 'fengyang_seacher',
-      meta: { title: 'fengyangRoute.fengyang_seacher', icon: 'issue' }
+      meta: { title: 'fengyangRoute.fengyang_seacher', icon: 'fsearch' }
     }]
   },
   {

@@ -10,7 +10,9 @@ export default {
   },
   success: {
     update_success: 'update info success',
-    remove_success: 'remove success'
+    create_success: 'create success',
+    remove_success: 'remove success',
+    finsh_task_success: 'finsh task success'
   },
   table: {
     name: 'Name',
@@ -282,6 +284,7 @@ export default {
   m: {
     music: 'Music',
     login: 'Login',
+    zdsc: 'Automatic generation',
     loginTitle: 'Environmental Protection',
     homepage: 'Home Page',
     Logout: 'Logout',
