@@ -15,7 +15,7 @@
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -23,7 +23,8 @@
             :data="totalReport"
             border
             size="mini"
-            style="width: 100%;margin-top: 10px">
+            style="width: 100%;margin-top: 10px"
+            @select="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -55,7 +56,7 @@
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
                 <el-button type="text" size="small">下载</el-button>
-                <el-button v-if="type === 'edit'" @click="editRoHSReport(scope.$index)" type="text" size="small">编辑</el-button>
+                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -255,7 +256,8 @@
         <el-button v-if="type=== 'itemview'" size="mini" @click="rohsDialog = false">关闭</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
-      <processing-general-report ref="processingGeneralReport"></processing-general-report>
+      <processing-general-report ref="processingGeneralReport"
+                                 :getBABAData="getBABAData"></processing-general-report>
       <escape-clause
                       ref="myChild"
                       :acceptSonValue = 'acceptSonValue'></escape-clause>
@@ -280,21 +282,24 @@ export default {
       rohsOid: '',
       temp: {},
       ifEdit: true,
-      oid: ''
+      oid: '',
+      removeOid: '',
+      addOid: '',
+      totalReportBefore: []
     }
   },
   methods: {
     setRohsDialogVisible (e, rohsOid, oid) {
+      this.totalReportBefore = []
+      this.removeOid = ''
+      this.addOid = ''
       this.rohsDialog = true
       this.type = e
       this.oid = oid
       this.rohsOid = rohsOid
       this.temp = {}
       if (e === 'itemedit' || e === 'itemview') {
-        viewRohs(rohsOid).then(r => {
-          this.temp = r.data
-          this.totalReport = r.data.reports
-        })
+        this.getDataList(rohsOid)
         if (e === 'itemedit') {
           this.ifEdit = false
         } else {
@@ -302,10 +307,26 @@ export default {
         }
       }
     },
-    addRoHSReport () {
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible()
+    getDataList (oid) {
+      viewRohs(oid).then(r => {
+        this.temp = r.data
+        this.totalReport = r.data.reports
+      })
     },
-    editRoHSReport (row) {},
+    getBABAData (oid, item, data) {
+      this.getDataList(oid)
+      this.addOid = data.add + ',' + this.addOid
+      if (data.hasOwnProperty('remove')) {
+        this.removeOid = data.remove + ',' + this.removeOid
+      }
+    },
+    addRoHSReport () {
+      var temp = {}
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', temp, this.rohsOid, 'ADD', 'RoHS')
+    },
+    editRoHSReport (row) {
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.rohsOid, 'EDIT', 'RoHS')
+    },
     escapeClick () {
       this.$refs.myChild.setDialogFormVisible()
     },
@@ -313,16 +334,35 @@ export default {
     acceptSonValue (e) {
       this.temp.exemptions = e
     },
+    handleSelectionChange (val) {
+      this.totalReportBefore = val
+      if (val.length < 1) {
+        this.removeOid = ''
+      } else {
+        for (let i in val) {
+          this.removeOid = val[i].reportOid + ',' + this.removeOid
+        }
+        this.removeOid = this.removeOid.substring(0, this.removeOid.length - 1)
+      }
+    },
+    deleteRoHSReport () {
+      for (let i in this.totalReport) {
+        for (let j in this.totalReportBefore) {
+          if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {
+            this.totalReport.splice(i, 1)
+          }
+        }
+      }
+    },
     completeReport () {
-      execute(this.rohsOid).then(r => {
-        console.log('xoxo', r)
+      execute(this.rohsOid, this.temp, this.removeOid, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.$message.success({
             message: '修改成功'
           })
         } else {
-          this.$message.success({
-            message: '修改成功'
+          this.$message.error({
+            message: r.data.info
           })
         }
         this.rohsDialog = false

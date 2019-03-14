@@ -14,7 +14,7 @@
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
-        <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+        <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -22,7 +22,8 @@
             :data="totalReport"
             border
             size="mini"
-            style="width: 100%;margin-top: 10px">
+            style="width: 100%;margin-top: 10px"
+            @select="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -63,15 +64,17 @@
       <span slot="footer" class="dialog-footer">
         <el-button v-if="type === 'edit'" size="mini" @click="generalReportDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
         <el-button v-if="type === 'view'" size="mini" @click="generalReportDialog = false">关闭</el-button>
-        <el-button v-if="type === 'edit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
+        <el-button v-if="type === 'edit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeGeneralReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
-      <processing-general-report ref="processingGeneralReport"></processing-general-report>
+      <processing-general-report ref="processingGeneralReport"
+                                 :getBABAData="getBABAData"></processing-general-report>
     </el-dialog>
   </div>
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
 import { envpFinalReport } from '@/api/index'
+import { saveFinalReport } from '@/api/huanbaoAPI'
 export default {
   components: {ProcessingGeneralReport},
   name: 'GeneralReport',
@@ -82,31 +85,86 @@ export default {
     return {
       generalReportDialog: false,
       totalReport: [{
-        reportType: '1',
-        reportNumber: '2',
-        reportDate: '3',
-        examUnit: '4',
-        modifyTime: '2012'
+        reportType: '',
+        reportNumber: '',
+        reportDate: '',
+        examUnit: '',
+        modifyTime: ''
       }],
       type: '',
-      title: ''
+      title: '',
+      item: '',
+      oid: '',
+      totalReportBefore: [],
+      removeOid: '',
+      addOid: ''
     }
   },
   methods: {
     setgeneralReportDialogisible (type, title, oid, item) {
+      this.removeOid = ''
+      this.addOid = ''
+      this.totalReportBefore = []
       this.generalReportDialog = true
       this.type = type
       this.title = title
+      this.item = item
+      this.oid = oid
+      this.getDataList(this.oid, this.item)
+    },
+    getBABAData (oid, item, data) {
+      this.getDataList(oid, item)
+      this.addOid = data.add + ',' + this.addOid
+      if (data.hasOwnProperty('remove')) {
+        this.removeOid = data.remove + ',' + this.removeOid
+      }
+    },
+    getDataList (oid, item) {
       envpFinalReport(oid, item).then(r => {
         console.log('envpFinalReport', r)
-        // this.totalReport = r.data
+        this.totalReport = r.data
       })
     },
     addRoHSReport () {
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible()
+      var temp = {}
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('TOTAL', temp, this.oid, 'ADD', this.item)
     },
     editGeneralReport (row) {
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible(row)
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('TOTAL', row, this.oid, 'EDIT', this.item)
+    },
+    handleSelectionChange (val) {
+      this.totalReportBefore = val
+      if (val.length < 1) {
+        this.removeOid = ''
+      } else {
+        for (let i in val) {
+          this.removeOid = val[i].reportOid + ',' + this.removeOid
+        }
+        this.removeOid = this.removeOid.substring(0, this.removeOid.length - 1)
+      }
+    },
+    deleteRoHSReport () {
+      for (let i in this.totalReport) {
+        for (let j in this.totalReportBefore) {
+          if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {
+            this.totalReport.splice(i, 1)
+          }
+        }
+      }
+    },
+    completeGeneralReport () {
+      saveFinalReport(this.item, '1', this.oid, this.removeOid, this.addOid).then(r => {
+        if (r.data.status === 'success') {
+          this.generalReportDialog = false
+          this.$message.success({
+            message: '编辑完成'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+      })
     }
   }
 }

@@ -115,6 +115,14 @@
           </el-table-column>
         </el-table>
       </el-card>
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        :current-page="counts.nowPage"
+        layout="total, prev, pager, next"
+        :total="counts.total"
+        :page-size="counts.pageCount">
+      </el-pagination>
       <span slot="footer" class="dialog-footer">
           <el-button @click="cancelValue">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
           <el-button type="primary" @click="setBabaValue">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
@@ -134,7 +142,7 @@ export default {
     return {
       str: '',
       dialogVisible: false,
-      dateValue: '',
+      dateValue: [],
       temp: {
         RoHSNumber: '',
         RoHSType: '',
@@ -142,24 +150,34 @@ export default {
         endDate: '',
         RoHSDescription: ''
       },
-      tableData: []
+      tableData: [],
+      counts: {
+        total: 0,
+        nowPage: 1,
+        pageCount: 10,
+        nextPage: 0,
+        lastPage: 0
+      }
     }
   },
   methods: {
     searchResult () {
-      this.temp.startDate = this.dateValue[0]
-      this.temp.endDate = this.dateValue[1]
+      if (this.dateValue) {
+        this.temp.startDate = this.dateValue[0]
+        this.temp.endDate = this.dateValue[1]
+      } else {
+        this.temp.startDate = ''
+        this.temp.endDate = ''
+      }
       this.tableData = []
-      this.getDataList(this.temp)
+      this.getDataList(this.temp, this.counts)
     },
-    getDataList (e) {
-      selectRoHSExemption(e).then(r => {
+    getDataList (e, counts) {
+      this.counts.nowPage = 1
+      selectRoHSExemption(e, counts).then(r => {
         console.log('escapeClause', r)
-        if (r.data.length > 10) {
-          this.tableData = r.data.slice(0, 9)
-        } else {
-          this.tableData = r.data
-        }
+        this.tableData = r.data.result
+        this.counts.total = r.data.totalCount
       })
     },
     // 确认时回调父组件传值
@@ -178,6 +196,13 @@ export default {
         RoHSDescription: ''
       }
       this.tableData = []
+      this.counts = {
+        total: 0,
+        nowPage: 1,
+        pageCount: 10,
+        nextPage: 0,
+        lastPage: 0
+      }
     },
     // 处理多选数据
     handleSelectionChange (val) {
@@ -192,6 +217,14 @@ export default {
     cancelValue () {
       this.dialogVisible = false
       this.$refs.multipleTable.clearSelection()
+    },
+    handleCurrentChange (val) {
+      this.counts.nowPage = val
+      selectRoHSExemption(this.temp, this.counts).then(r => {
+        console.log('search result', r)
+        this.tableData = r.data.result
+        this.counts.total = r.data.totalCount
+      })
     }
   }
 }

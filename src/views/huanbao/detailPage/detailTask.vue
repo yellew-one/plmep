@@ -155,7 +155,7 @@
                   v-if="state === 'INWORK' || state === 'REWORK' ">
                   <template slot-scope="scope">
                     <el-button @click="editFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
-                    <el-button @click="deleteFMD(scope.$index, tableDataFMD)" type="text" size="small">{{$t('huanbaoTable.FMD.delete')}}</el-button>
+                    <el-button @click="deleteFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.delete')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -224,7 +224,8 @@
               <el-row>
                 <el-button size="mini" type="primary" plain>下载导入模板</el-button>
                 <el-button size="mini" type="success" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">上传环保数据</el-button>
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="ROHSUpload">上传环保数据</el-button>
                 <el-button size="mini" type="warning" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
                            @click="editRoHSReport">编辑RoHS总报告</el-button>
@@ -770,7 +771,9 @@
               </el-table>
             </el-col>
           </el-row>
-          <edit-f-m-d-dialog  ref="myChild"
+          <files-upload ref="fileUpload"
+                        :returnFilePath="returnFilePath"></files-upload>
+          <edit-f-m-d-dialog  ref="editFMDDialog"
                               :updateFMDData = 'updateFMDData'></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
@@ -778,7 +781,7 @@
                      :updateMSDSData = 'updateMSDSData'></edit-msds>
           <rohs-dialog ref="editRohs"
                        :updateRoHSData = 'updateRoHSData'></rohs-dialog>
-          <general-report ref="editRohsReportDialog"></general-report>
+          <general-report ref="generalReport"></general-report>
         </el-card>
       </el-col>
     </el-row>
@@ -786,13 +789,16 @@
 </template>
 <script>
 import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, completeEnvp } from '@/api/index'
+import { executeUploadFMDData, executeUploadItemData, deleteFmdItem } from '@/api/huanbaoAPI'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
 import RohsDialog from '../../../components/huanbaoDialog/editRohs'
 import GeneralReport from '../../../components/huanbaoDialog/generalReport'
+import FilesUpload from '../../../components/filesUpload/index'
 export default {
   components: {
+    FilesUpload,
     GeneralReport,
     RohsDialog,
     EditMsds,
@@ -941,6 +947,7 @@ export default {
       showEnvprotectionTask(e).then(r => {
         console.log('DETAILTASKS', r)
         this.model = r.data[0]
+        this.$store.commit('SET_HUANBAONUM', r.data[0].materialNumber)
         processHistory('envp', r.data[0].number).then(r => {
           console.log('processHistory', r)
           this.approvalTable = r.data
@@ -997,11 +1004,34 @@ export default {
       } else {
         this.isSub = 'NOSUB'
       }
-      this.$refs.myChild.setDialogFormVisible(row, this.oid, this.isSub)
+      this.$refs.editFMDDialog.seteditFMDDialogFormVisible(row, this.oid, this.isSub)
     },
     // FMD删除
-    deleteFMD (index, rows) {
-      rows.splice(index, 1)
+    deleteFMD (row) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteFmdItem(row).then(r => {
+          if (r.data.status === 'success') {
+            this.getDataList(this.oid)
+            this.$message.success({
+              message: '删除成功'
+            })
+          } else {
+            this.$message.error({
+              message: r.data.warning
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+      this.updateFMDData()
     },
     // 提交
     submit () {
@@ -1036,11 +1066,11 @@ export default {
     },
     // 编辑rohs 总报告
     editRoHSReport () {
-      this.$refs.editRohsReportDialog.setgeneralReportDialogisible('edit', 'RoHS总报告', this.oid, 'RoHS')
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'RoHS总报告', this.oid, 'RoHS')
     },
     // 查看总报告
     checkRoHSReport () {
-      this.$refs.editRohsReportDialog.setgeneralReportDialogisible('view', 'RoHS总报告', this.oid, 'RoHS')
+      this.$refs.generalReport.setgeneralReportDialogisible('view', 'RoHS总报告', this.oid, 'RoHS')
     },
     // rohs 编辑
     editRoHS (row) {
@@ -1050,53 +1080,74 @@ export default {
     checkRoHS (row) {
       this.$refs.editRohs.setRohsDialogVisible('itemview', row.rohsOid, this.oid)
     },
-    // fmd 下载
-    fmdUpload () {},
+    // fmd 上传数据
+    fmdUpload () {
+      this.$refs.fileUpload.openDialog()
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '上传FMD数据', 'fileList', {
+        number: this.$store.getters.huanbaoNum,
+        userName: this.$store.getters.userInfo.username
+      }, 'FMD')
+    },
+    // rohs 上传数据
+    ROHSUpload () {
+      this.$refs.fileUpload.openDialog()
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '上传RoHS数据', 'fileList', {
+        number: this.$store.getters.huanbaoNum,
+        userName: this.$store.getters.userInfo.username
+      }, 'RoHS')
+    },
+    // 更新 fmd 条目
     updateFMDData () {
       selectFMD(this.oid).then(r => {
         console.log('FMD', r)
         this.tableDataFMD = r.data
       })
     },
+    // 更新 msds 条目
     updateMSDSData () {
       selectMSDS(this.oid).then(r => {
         console.log('MSDS', r)
         this.tableDataMSDS = r.data
       })
     },
+    // 更新 rohs 条目
     updateRoHSData () {
       selectRoHS(this.oid).then(r => {
         console.log('RoHS', r)
         this.tableDataROHS = r.data
       })
     },
-    test () {
-      var str1 = 'OR:ext.longcheer.envprotection.model.EnvprotectionAttachment:352396068'
-      var str2 = 'OR:ext.longcheer.envprotection.model.EnvprotectionAttachment:352396068'
-      if (str1 === str2) {
-        alert(str1.length)
-      } else {
-        alert(false)
-      }
-      var s = []
-      var a = [{id: '2'}, {id: '3'}, {id: '1'}, {id: '4'}]
-      var b = [{id: '2'}, {id: '3'}, {id: '1'}]
-      for (let i in a) {
-        for (let j in b) {
-          if (a[i].id === b[j].id) {
-            a.splice(a[i], 1)
+    // 文件路径传给后台
+    returnFilePath (e, type) {
+      this.$refs.fileUpload.closeDialog()
+      if (type === 'FMD') {
+        executeUploadFMDData(this.oid, e[0].response.data[0]).then(r => {
+          if (r.data.status === 'success') {
+            this.updateFMDData()
+            this.$message.success({
+              message: '上传FMD数据成功'
+            })
+          } else {
+            this.$message.error({
+              message: r.data.info
+            })
           }
-        }
+        })
       }
-      for (var i = 0; i < s.length; i++) {
-        for (var j = i + 1; j < s.length; j++) {
-          if (s[i].id === s[j].id) {
-            s.splice(j, 1)
-            j--
+      if (type === 'RoHS') {
+        executeUploadItemData(this.oid, e[0].response.data[0]).then(r => {
+          if (r.data.status === 'success') {
+            this.updateRoHSData()
+            this.$message.success({
+              message: '上传RoHS数据成功'
+            })
+          } else {
+            this.$message.error({
+              message: r.data.info
+            })
           }
-        }
+        })
       }
-      console.log('xoxo2', s)
     }
   }
 }

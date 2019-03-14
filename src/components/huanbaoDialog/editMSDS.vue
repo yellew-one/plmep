@@ -210,13 +210,13 @@ export default {
       this.getReportInfo()
     },
     getReportInfo () {
-      getMSDSInfo('01', this.tableData[0].msdsOid).then(r => {
+      getMSDSInfo('02', this.tableData[0].msdsOid).then(r => {
         this.approvalTable1 = r.data
       })
-      getMSDSInfo('02', this.tableData[0].msdsOid).then(r => {
+      getMSDSInfo('03', this.tableData[0].msdsOid).then(r => {
         this.approvalTable2 = r.data
       })
-      getMSDSInfo('03', this.tableData[0].msdsOid).then(r => {
+      getMSDSInfo('01', this.tableData[0].msdsOid).then(r => {
         this.approvalTable3 = r.data
       })
     },
@@ -265,20 +265,20 @@ export default {
     completeMSDS () {
       this.dialogVisible = false
       var oid = this.msdsAttachmentOid + ',' + this.patentAttachmentOid + ',' + this.ipAttachmentOid
-      editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
-        console.log('editMSDSTable', r.data.result)
-        if (r.data.result === 'success') {
-          this.getReportInfo()
-          this.$props.updateMSDSData()
-          this.$message.success({
-            message: '操作文件成功'
-          })
-        }
-      })
+      if (this.fileType !== '') {
+        editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
+          if (r.data.result === 'success') {
+            this.$props.updateMSDSData()
+            this.$message.success({
+              message: '操作文件成功'
+            })
+          }
+        })
+      }
     },
     uploadMsds () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
     },
     deleteMsds () {
       for (let i in this.approvalTable1) {
@@ -291,7 +291,7 @@ export default {
     },
     uploadPatent () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
     },
     deletePatent () {
       for (let i in this.approvalTable2) {
@@ -304,7 +304,7 @@ export default {
     },
     uploadIPFORM () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
     },
     deleteIPFORM () {
       for (let i in this.approvalTable3) {
@@ -319,26 +319,22 @@ export default {
       window.open('http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews')
     },
     returnFilePath (e, type) {
-      var strPath = ''
-      var strType = ''
       for (let i in e) {
-        strPath = e[i].response.data[0] + ',' + strPath
-        strType = type + ',' + strType
-        if (type === '01') {
+        if (type === '02') {
           this.approvalTable1.push({
             attachmentOid: '',
             endTime: '',
             fileName: e[i].name
           })
         }
-        if (type === '02') {
+        if (type === '03') {
           this.approvalTable2.push({
             attachmentOid: '',
             endTime: '',
             fileName: e[i].name
           })
         }
-        if (type === '03') {
+        if (type === '01') {
           this.approvalTable3.push({
             attachmentOid: '',
             endTime: '',
@@ -346,8 +342,9 @@ export default {
           })
         }
       }
-      this.path = strPath.substring(0, strPath.length - 1)
-      this.fileType = strType.substring(0, strType.length - 1)
+      this.path = e[0].response.data[0] + ',' + this.path
+      this.fileType = type + ',' + this.fileType
+      console.log('xoxo', this.path)
       this.$refs.upload.closeDialog()
     }
   }

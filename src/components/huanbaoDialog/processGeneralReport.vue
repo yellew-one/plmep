@@ -4,7 +4,7 @@
 <template>
   <div class="app-container">
     <el-dialog
-      :visible.sync="rohsReportDialog"
+      :visible.sync="ProcessingGeneralReportDialog"
       :show-close="false"
       :close-on-press-escape="false"
       width="50%"
@@ -37,7 +37,7 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="materialWeight" label="报告编号">
-                  <el-input v-model="temp.materialGroup"></el-input>
+                  <el-input v-model="temp.reportNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -48,7 +48,7 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="materialGroup" label="检测单位">
-                  <el-select v-model="temp.materialGroup" placeholder="" style="width: 100%">
+                  <el-select v-model="temp.examUnit" placeholder="" style="width: 100%">
                     <el-option
                       v-for="item in options"
                       :key="item.value"
@@ -64,12 +64,13 @@
               </el-col>
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
-              <el-col :span="16">
+              <el-col :span="20">
                 <el-form-item prop="manufacturer" label="报告">
                   <el-button size="mini" type="primary" plain @click="choseFile" >选择文件</el-button>
+                  <el-input :disabled="true" v-model="fileName"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="4">
                 <el-form-item >
                 </el-form-item>
               </el-col>
@@ -77,36 +78,151 @@
           </el-form>
         </el-col>
       </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="rohsReportDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="rohsReportDialog = false">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
+      <span slot="footer" class="dialog-footer" style="margin-top: 10px">
+        <el-button size="mini" @click="ProcessingGeneralReportDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="complete">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
+      <files-upload ref="fileUpload"
+                    :returnFilePath="returnFilePath"></files-upload>
     </el-dialog>
   </div>
 </template>
 <script>
-// import {  } from '@/api/index'
+import FilesUpload from '../filesUpload/index'
+import { addReport, examUnit, editReport } from '@/api/huanbaoAPI'
 export default {
-  components: {},
+  components: {FilesUpload},
   name: 'ProcessingGeneralReport',
-  props: [''],
+  props: ['getBABAData'],
   mounted: function () {
   },
   data () {
     return {
       rohsReportDateValue: '',
-      rohsReportDialog: false,
+      ProcessingGeneralReportDialog: false,
       temp: {},
       tableData: [],
       options: [],
-      type: ''
+      type: '',
+      fileName: '',
+      filePath: '',
+      fileType: '',
+      category: '',
+      itemCategory: ''
     }
   },
   methods: {
-    setprocessingGeneralReportFormVisible (e) {
-      this.rohsReportDialog = true
+    setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
+      this.fileName = ''
+      this.filePath = ''
+      this.options = []
+      this.category = ''
+      this.itemCategory = ''
+      this.ProcessingGeneralReportDialog = true
+      this.temp = e
+      this.type = type
+      this.oid = oid
+      this.itemCategory = itemCategory
+      this.rohsReportDateValue = e.reportDate
+      examUnit().then(r => {
+        for (let i in r.data) {
+          this.options.push({
+            label: r.data[i].name,
+            value: r.data[i].id
+          })
+        }
+      })
+      this.category = category
     },
     choseFile () {
+      this.$refs.fileUpload.openDialog()
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加总报告', 'fileList', {
+        number: this.$store.getters.huanbaoNum,
+        userName: this.$store.getters.userInfo.username
+      }, this.itemCategory)
+    },
+    complete () {
+      // 判断是否是总报告
+      if (this.type === 'TOTAL') {
+        // 判断是否选择文件
+        if (this.fileType === '') {
+          this.$alert('请选择文件', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          })
+        } else {
+          // 判断是编辑 还是添加 分别调用不同接口
+          this.ProcessingGeneralReportDialog = false
+          this.temp.reportDate = this.rohsReportDateValue
+          // 判断哪个条目的总报告
+          if (this.fileType === 'RoHS') {
+            if (this.category === 'EDIT') {
+              this.editReport('1', 'RoHS')
+            } else {
+              this.addReport('1', 'RoHS')
+            }
+          }
+        }
+      } else {
+        if (this.fileType === '') {
+          this.$alert('请选择文件', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          })
+        } else {
+          // 判断是编辑 还是添加 分别调用不同接口
+          this.ProcessingGeneralReportDialog = false
+          this.temp.reportDate = this.rohsReportDateValue
+          // 判断哪个条目的总报告
+          if (this.fileType === 'RoHS') {
+            if (this.category === 'EDIT') {
+              this.editReport('0', 'RoHS')
+            } else {
+              this.addReport('0', 'RoHS')
+            }
+          }
+        }
+      }
+    },
+    // 编辑报告
+    editReport (num, type) {
+      editReport(this.temp, num, this.filePath).then(r => {
+        if (r.data.status === 'success') {
+          this.$props.getBABAData(this.oid, type, r.data)
+          this.$message.success({
+            message: '编辑成功'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+      })
+    },
+    // 添加报告
+    addReport (num, type) {
+      addReport(this.oid, this.temp, num, type, this.filePath).then(r => {
+        if (r.data.status === 'success') {
+          this.$props.getBABAData(this.oid, type, r.data)
+          this.$message.success({
+            message: '添加成功'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+      })
+    },
+    returnFilePath (e, type) {
+      this.$refs.fileUpload.closeDialog()
+      if (type === 'RoHS') {
+        this.fileName = e[0].name
+      }
+      this.fileType = type
+      this.filePath = e[0].response.data[0]
     }
   }
 }

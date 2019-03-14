@@ -22,24 +22,6 @@ export function expiredSealedSampleTasks () {
     }
   })
 }
-// 封样待提交任务
-export function showSealedSampleTasks () {
-  return request({
-    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    transformRequest: [function (data) {
-      data = Qs.stringify(data)
-      return data
-    }],
-    data: {
-      operation: 'showSealedSampleTasks',
-      username: store.getters.userInfo.username
-    }
-  })
-}
 // 正在审阅信息接口
 export function getReviewedSealDoc () {
   return request({
@@ -481,7 +463,7 @@ export function lqThirdLevel () {
   })
 }
 // 搜索封样文档接口
-export function searchSealedDocs (e) {
+export function searchSealedDocs (number, name, thirdLevel) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -495,16 +477,14 @@ export function searchSealedDocs (e) {
     data: {
       operation: 'searchSealedDocs',
       username: store.getters.userInfo.username,
-      number: e.serchItems.inputnumber,
-      name: e.serchItems.name,
-      lq_third_level: e.serchItems.thirdLevel,
-      nowPage: e.counts.nowPage,
-      pageSize: e.counts.pageSize
+      number: number,
+      name: name,
+      lq_third_level: thirdLevel
     }
   })
 }
 // addDoc  勾选物料封养文档，点击“确定“将物料封样和物料封样文档关联
-export function addDoc (number, oids) {
+export function addDoc (oid, oids) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -518,7 +498,7 @@ export function addDoc (number, oids) {
     data: {
       operation: 'addDoc',
       username: store.getters.userInfo.username,
-      number: number,
+      oid: oid,
       oids: oids
     }
   })
@@ -657,7 +637,7 @@ export function getMSDSInfo (type, e) {
 }
 
 // 封样信息信息页面加载完成后展示关联的物料封样文档接口
-export function showRelatedWLFYDocs (number) {
+export function showRelatedWLFYDocs (oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -670,13 +650,13 @@ export function showRelatedWLFYDocs (number) {
     }],
     data: {
       operation: 'showRelatedWLFYDocs',
-      number: number
+      oid: oid
     }
   })
 }
 
 // 封样信息信息页面移除相关物料封样文档
-export function removeRelatedWLFYDocs (number, oids) {
+export function removeRelatedWLFYDocs (oid, oids) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -689,7 +669,7 @@ export function removeRelatedWLFYDocs (number, oids) {
     }],
     data: {
       operation: 'removeRelatedWLFYDocs',
-      number: number,
+      oid: oid,
       oids: oids
     }
   })
@@ -822,7 +802,7 @@ export function completeSealedTask (oid, comment, route) {
 }
 
 // 创建物料封样文档接口
-export function createWLFYDoc (number, lqThirdLevel, description, ftpFilePath) {
+export function createWLFYDoc (oid, lqThirdLevel, description, ftpFilePath) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
     method: 'post',
@@ -836,7 +816,7 @@ export function createWLFYDoc (number, lqThirdLevel, description, ftpFilePath) {
     data: {
       operation: 'createWLFYDoc',
       username: store.getters.userInfo.username,
-      number: number,
+      oid: oid,
       lqThirdLevel: lqThirdLevel,
       description: description,
       ftpFilePath: ftpFilePath
@@ -952,6 +932,195 @@ export function attachmentLink (number, fileName) {
       operation: 'attachmentLink',
       number: number,
       fileName: fileName
+    }
+  })
+}
+
+// 上传环保fmd数据
+export function executeUploadFMDData (oid, uploadPath) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/uploadEnvpData.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeUploadFMDData',
+      oid: oid,
+      uploadPath: uploadPath
+    }
+  })
+}
+// 上传环保ROHS数据
+export function executeUploadItemData (oid, uploadPath) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/uploadEnvpData.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeUploadItemData',
+      oid: oid,
+      uploadPath: uploadPath
+    }
+  })
+}
+// FMD原材料条目编辑
+export function editMaterial (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editMaterial',
+      oid: e.fmdOid,
+      materialGroup: e.materialGroup,
+      manufacturer: e.manufacturer
+    }
+  })
+}
+// FMD子物质编辑
+export function editSubstance (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editSubstance',
+      oid: e.fmdOid,
+      casNumber: e.casNo,
+      substanceWeight: e.substanceWeight,
+      exemptionNameInput: e.exemptions,
+      substanceName: e.subMaterialName
+
+    }
+  })
+}
+// FMD条目删除
+export function deleteFmdItem (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'deleteFmdItem',
+      oid: e.fmdOid
+    }
+  })
+}
+// 新增环保报告
+export function addReport (oid, data, isFinal, type, filePath) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'addReport',
+      reportType: data.reportType,
+      reportDate: data.reportDate,
+      reportNum: data.reportNumber,
+      examUnit: data.examUnit,
+      isFinal: isFinal,
+      oid: oid,
+      documentType: type,
+      filePath: filePath
+    }
+  })
+}
+// 环保检测单位
+export function examUnit () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'examUnit'
+    }
+  })
+}
+// 编辑环保报告
+export function editReport (data, isFinal, filePath) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editReport',
+      reportOid: data.reportOid,
+      reportType: data.reportType,
+      reportDate: data.reportDate,
+      reportNum: data.reportNumber,
+      examUnit: data.examUnit,
+      isFinal: isFinal,
+      filePath: filePath
+    }
+  })
+}
+// 总报告编辑完成按钮处理
+export function saveFinalReport (docType, isFinal, oid, removeOid, addOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'saveFinalReport',
+      docType: docType,
+      isFinal: isFinal,
+      oid: oid,
+      removeOid: removeOid,
+      addOid: addOid
+
     }
   })
 }

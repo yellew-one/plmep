@@ -9,6 +9,7 @@ const app = {
     huanbaoTaskNum: 0,
     fengyangTaskNum: 0,
     fengyangdaoqiNum: 0,
+    huanbaoNum: '',
     device: 'desktop',
     guojihua: localStorage.getItem('guojihua') || 'zh',
     loading: false
@@ -22,6 +23,9 @@ const app = {
     },
     SET_HUANBAOTASKNUM: (state, huanbaoTaskNum) => {
       state.huanbaoTaskNum = huanbaoTaskNum
+    },
+    SET_HUANBAONUM: (state, huanbaoNum) => {
+      state.huanbaoNum = huanbaoNum
     },
     SET_LOADING: (state, loading) => {
       state.loading = loading

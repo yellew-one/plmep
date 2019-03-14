@@ -149,11 +149,11 @@
 </template>
 <script>
 import EscapeClause from './escapeClause'
-// import {  } from '@/api/index'
+import { editMaterial, editSubstance } from '@/api/huanbaoAPI'
 export default {
   components: {EscapeClause},
   name: 'EditFMDDialog',
-  props: ['acceptSonValueByEdit'],
+  props: ['updateFMDData'],
   mounted: function () {
   },
   data () {
@@ -166,7 +166,7 @@ export default {
     }
   },
   methods: {
-    setDialogFormVisible (row, oid, sub) {
+    seteditFMDDialogFormVisible (row, oid, sub) {
       this.temp = {}
       this.oid = ''
       this.isSub = ''
@@ -177,7 +177,33 @@ export default {
     },
     completeFMD () {
       this.dialog = false
-      this.$props.acceptSonValueByEdit(this.oid)
+      if (this.isSub === 'NOSUB') {
+        editMaterial(this.temp).then(r => {
+          if (r.data.status === 'success') {
+            this.$props.updateFMDData()
+            this.$message.success({
+              message: '修改数据成功'
+            })
+          } else {
+            this.$message.error({
+              message: r.data.info
+            })
+          }
+        })
+      } else {
+        editSubstance(this.temp).then(r => {
+          if (r.data.status === 'success') {
+            this.$props.updateFMDData()
+            this.$message.success({
+              message: '修改数据成功'
+            })
+          } else {
+            this.$message.error({
+              message: r.data.info
+            })
+          }
+        })
+      }
     },
     escapeClick () {
       this.$refs.myChild.setDialogFormVisible()

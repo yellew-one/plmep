@@ -276,8 +276,13 @@ export default {
     // 搜索结果
     searchResult () {
       this.$store.commit('SET_LOADING', true)
-      this.temp.searchDateFrom = this.dateValue[0]
-      this.temp.searchDateTo = this.dateValue[1]
+      if (this.dateValue) {
+        this.temp.searchDateFrom = this.dateValue[0]
+        this.temp.searchDateTo = this.dateValue[1]
+      } else {
+        this.temp.searchDateFrom = ''
+        this.temp.searchDateTo = ''
+      }
       this.getDataList(this.temp, this.counts)
     },
     // 获取搜索结果

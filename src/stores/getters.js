@@ -14,6 +14,7 @@ const getters = {
   visitedviews: state => state.tagsview.visitedviews,
   huanbaoTaskNum: state => state.app.huanbaoTaskNum,
   fengyangTaskNum: state => state.app.fengyangTaskNum,
-  fengyangdaoqiNum: state => state.app.fengyangdaoqiNum
+  fengyangdaoqiNum: state => state.app.fengyangdaoqiNum,
+  huanbaoNum: state => state.app.huanbaoNum
 }
 export default getters
