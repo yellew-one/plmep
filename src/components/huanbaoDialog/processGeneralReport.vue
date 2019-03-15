@@ -190,7 +190,7 @@ export default {
     editReport (num, type) {
       editReport(this.temp, num, this.filePath).then(r => {
         if (r.data.status === 'success') {
-          this.$props.getBABAData(this.oid, type, r.data)
+          this.$props.getBABAData(this.oid, type, r.data, this.temp)
           this.$message.success({
             message: '编辑成功'
           })
@@ -205,7 +205,7 @@ export default {
     addReport (num, type) {
       addReport(this.oid, this.temp, num, type, this.filePath).then(r => {
         if (r.data.status === 'success') {
-          this.$props.getBABAData(this.oid, type, r.data)
+          this.$props.getBABAData(this.oid, type, r.data, this.temp)
           this.$message.success({
             message: '添加成功'
           })

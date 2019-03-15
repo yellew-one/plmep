@@ -313,12 +313,17 @@ export default {
         this.totalReport = r.data.reports
       })
     },
-    getBABAData (oid, item, data) {
-      this.getDataList(oid)
+    getBABAData (oid, item, data, e) {
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
         this.removeOid = data.remove + ',' + this.removeOid
+        for (let i in this.totalReport) {
+          if (this.totalReport[i].reportOid === data.remove) {
+            this.totalReport.splice(i, 1)
+          }
+        }
       }
+      this.totalReport.push(e)
     },
     addRoHSReport () {
       var temp = {}
@@ -336,13 +341,14 @@ export default {
     },
     handleSelectionChange (val) {
       this.totalReportBefore = val
+      var str = ''
       if (val.length < 1) {
         this.removeOid = ''
       } else {
         for (let i in val) {
-          this.removeOid = val[i].reportOid + ',' + this.removeOid
+          str = val[i].reportOid + ',' + str
         }
-        this.removeOid = this.removeOid.substring(0, this.removeOid.length - 1)
+        this.removeOid = str.substring(0, str.length - 1)
       }
     },
     deleteRoHSReport () {
