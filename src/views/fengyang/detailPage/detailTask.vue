@@ -208,7 +208,7 @@
             </el-row>
             <el-row class="card_row" style="margin-top: 30px">
               <el-col :span="11" class="card_lable">
-               <a style="color: blue">生成的承认书EXCEL附件</a>
+               <a style="color: blue" @click="Acknowledgment">生成的承认书EXCEL附件</a>
               </el-col>
               <el-col :span="13" class="card_lable">
 
@@ -381,7 +381,7 @@
     </div>
 </template>
 <script>
-import { showTaskDetails, attachmentLink, completeSealedTask, editSealedSampleDocInfo, processHistory, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
+import { showTaskDetails, downloadAcknowledgment, attachmentLink, completeSealedTask, editSealedSampleDocInfo, processHistory, showRelatedWLFYDocs, removeRelatedWLFYDocs } from '@/api/index'
 import sealeInfoEdit from '../../../components/SealedInfoEdit/index'
 import uploadSampleDoc from '../../../components/UploadSampleDoc/index'
 import updateSampleDoc from '../../../components/UploadSampleDoc/update'
@@ -415,6 +415,20 @@ export default {
     }
   },
   methods: {
+    Acknowledgment () {
+      downloadAcknowledgment('MS' + this.model.materialNumber).then(r => {
+        console.log(r)
+        if (!r.data.flag || r.data.flag === 'false') {
+          this.$message({
+            message: r.data.filePath,
+            type: 'warning',
+            duration: 5 * 1000
+          })
+        } else if (r.data.flag && r.data.flag === 'true') {
+          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        }
+      })
+    },
     attachmentClick2 (number, data) {
       if (data && data.indexOf(';') === -1) {
         this.attachmentClick(number, data)
@@ -490,6 +504,7 @@ export default {
             str += ','
           }
         })
+        console.log('xx00', str)
         this.filesOids = str
         this.checkedone = val[0]
       }
