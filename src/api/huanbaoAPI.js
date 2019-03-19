@@ -389,6 +389,24 @@ export function selectHF (e) {
     }
   })
 }
+// HF条目详细信息展示   HF条目
+export function getHFTable (e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvprotectionHF.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getHFTable',
+      itemOid: e
+    }
+  })
+}
 // 展示环保条目   REACH条目
 export function selectREACH (e) {
   return request({
@@ -1121,6 +1139,52 @@ export function saveFinalReport (docType, isFinal, oid, removeOid, addOid) {
       removeOid: removeOid,
       addOid: addOid
 
+    }
+  })
+}
+// 环保其他文件展示
+export function attachmentInfo (type, oid, documentType) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpAttachmentOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'attachmentInfo',
+      attachmentType: type,
+      oid: oid,
+      documentType: documentType
+
+    }
+  })
+}
+/**
+ * @param oid 物料环保对象oid
+ * @param addDel 添加总声明文件路径，以“;"分隔
+ * @param removeDel 删除总声明文件路径，以“;"分隔，若删除的不是临时声明则使用声明oid
+ */
+export function executeFinalDel (oid, addDel, removeDel) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpAttachmentOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeFinalDel',
+      oid: oid,
+      attachmentType: 'REACH',
+      addDel: addDel,
+      removeDel: removeDel
     }
   })
 }

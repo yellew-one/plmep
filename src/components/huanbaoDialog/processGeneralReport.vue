@@ -112,6 +112,13 @@ export default {
     }
   },
   methods: {
+    /**
+     * @param type 是否是总报告 TOTAL  ENTRY
+     * @param e  条目对象
+     * @param oid 对应的oid 环保对象oid 或是 环保条目oid
+     * @param category 判断是 EDIT 或 ADD
+     * @param itemCategory 判断是哪个条目
+     */
     setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
       this.fileName = ''
       this.filePath = ''
@@ -163,6 +170,20 @@ export default {
               this.addReport('1', 'RoHS')
             }
           }
+          if (this.fileType === 'HF') {
+            if (this.category === 'EDIT') {
+              this.editReport('1', 'HF')
+            } else {
+              this.addReport('1', 'HF')
+            }
+          }
+          if (this.fileType === 'REACH') {
+            if (this.category === 'EDIT') {
+              this.editReport('1', 'REACH')
+            } else {
+              this.addReport('1', 'REACH')
+            }
+          }
         }
       } else {
         if (this.fileType === '') {
@@ -181,6 +202,13 @@ export default {
               this.editReport('0', 'RoHS')
             } else {
               this.addReport('0', 'RoHS')
+            }
+          }
+          if (this.fileType === 'HF') {
+            if (this.category === 'EDIT') {
+              this.editReport('0', 'HF')
+            } else {
+              this.addReport('0', 'HF')
             }
           }
         }
@@ -218,9 +246,7 @@ export default {
     },
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
-      if (type === 'RoHS') {
-        this.fileName = e[0].name
-      }
+      this.fileName = e[0].name
       this.fileType = type
       this.filePath = e[0].response.data[0]
     }

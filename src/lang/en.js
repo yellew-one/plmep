@@ -48,9 +48,11 @@ export default {
   huanbaoTable: {
     third: {
       taskName: 'TaskName',
-      theme: 'Theme',
+      theme: 'Number',
       state: 'Status',
-      specification: 'Task Deadlines'
+      specification: 'Task Deadlines',
+      startTime: 'Start Time',
+      allNumber: 'All Number'
     },
     submitted: {
       taskName: 'TaskName',

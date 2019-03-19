@@ -48,9 +48,11 @@ export default {
   huanbaoTable: {
     third: {
       taskName: '任务名',
-      theme: '主题',
+      theme: '流程编号',
       state: '状态',
-      specification: '任务最后期限'
+      specification: '任务最后期限',
+      startTime: '流程开始时间',
+      allNumber: '所有环保报告的编号'
     },
     submitted: {
       taskName: '任务名',

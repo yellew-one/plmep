@@ -1,11 +1,10 @@
 /**
-* Created by yaoyuan on 2019/3/7.
-* 编辑  rohs
+* Created by yaoyuan on 2019/3/18.
 */
 <template>
   <div class="app-container">
     <el-dialog
-      :visible.sync="rohsDialog"
+      :visible.sync="hfDialog"
       :show-close="false"
       :close-on-press-escape="false"
       width="50%"
@@ -14,7 +13,7 @@
         <span class="longcheer_hr_span">RoHS报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加HF报告</el-button>
         <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
       </el-row>
       <el-row class="card_row">
@@ -96,8 +95,8 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="pb"  label="Pb">
-                <el-input :disabled="ifEdit" v-model="temp.pb">
+              <el-form-item prop="cl"  label="Cl">
+                <el-input :disabled="ifEdit" v-model="temp.cl">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -108,8 +107,8 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="cd"  label="Cd">
-                <el-input :disabled="ifEdit" v-model="temp.cd">
+              <el-form-item prop="br"  label="Br">
+                <el-input :disabled="ifEdit" v-model="temp.br">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -120,9 +119,15 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="hg"  label="Hg">
-                <el-input :disabled="ifEdit" v-model="temp.hg">
-                </el-input>
+              <el-form-item prop="hg"  label="是否阻燃剂">
+                <el-select v-model="value" placeholder="">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -132,106 +137,8 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="cr6p"  label="Cr6+">
-                <el-input :disabled="ifEdit" v-model="temp.cr6p">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="pbbs"  label="PBBs">
-                <el-input :disabled="ifEdit" v-model="temp.pbbs">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="pbdes"  label="PBDEs">
-                <el-input :disabled="ifEdit" v-model="temp.pbdes">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="dehp"   label="DEHP">
-                <el-input :disabled="ifEdit" v-model="temp.dehp">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="bbp"  label="BBP">
-                <el-input :disabled="ifEdit" v-model="temp.bbp">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="dbp"  label="DBP">
-                <el-input :disabled="ifEdit" v-model="temp.dbp">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="dibp"  label="DIBP">
-                <el-input :disabled="ifEdit" v-model="temp.dibp">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="exemptions"  label="豁免条款">
-                <el-input disabled="true" v-model="temp.exemptions">
-                  <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="rohsState"  label="状态">
-                <el-input disabled="true" v-model="temp.rohsState">
-                </el-input>
+              <el-form-item prop="state"  label="状态">
+                <span :disabled="ifEdit" >{{$t('huanbaoTable.HF.' + temp.state)}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -252,34 +159,35 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="type=== 'itemedit'" size="mini" @click="rohsDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type=== 'itemview'" size="mini" @click="rohsDialog = false">关闭</el-button>
+        <el-button v-if="type=== 'itemedit'" size="mini" @click="hfDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+        <el-button v-if="type=== 'itemview'" size="mini" @click="hfDialog = false">关闭</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"
                                  :getBABAData="getBABAData"></processing-general-report>
       <escape-clause
-                      ref="myChild"
-                      :acceptSonValue = 'acceptSonValue'></escape-clause>
+        ref="myChild"
+        :acceptSonValue = 'acceptSonValue'></escape-clause>
     </el-dialog>
   </div>
 </template>
 <script>
 import EscapeClause from '../../components/huanbaoDialog/escapeClause'
 import ProcessingGeneralReport from './processGeneralReport'
-import { viewRohs, execute } from '@/api/index'
+import { execute } from '@/api/index'
+import { getHFTable } from '@/api/huanbaoAPI'
 export default {
   components: {ProcessingGeneralReport, EscapeClause},
-  name: 'RohsDialog',
-  props: ['updateRoHSData'],
+  name: 'HFDialog',
+  props: ['updateHFData'],
   mounted: function () {
   },
   data () {
     return {
-      rohsDialog: false,
+      hfDialog: false,
       totalReport: [],
       type: '',
-      rohsOid: '',
+      hfOid: '',
       temp: {},
       ifEdit: true,
       oid: '',
@@ -287,31 +195,42 @@ export default {
       addOid: '',
       totalReportBefore: [],
       str: '',
-      str2: ''
+      str2: '',
+      options: [{
+        value: '是',
+        label: '是'
+      }, {
+        value: '否',
+        label: '否'
+      }],
+      value: '',
+      remark: ''
     }
   },
   methods: {
-    setRohsDialogVisible (e, rohsOid, oid) {
+    setHFDialogVisible (e, row, oid) {
+      console.log('xoxo', row)
       this.totalReportBefore = []
       this.removeOid = ''
       this.addOid = ''
-      this.rohsDialog = true
+      this.hfDialog = true
       this.type = e
       this.oid = oid
-      this.rohsOid = rohsOid
+      this.hfOid = row.hfOid
       this.temp = {}
+      this.temp = row
       if (e === 'itemedit' || e === 'itemview') {
-        this.getDataList(rohsOid)
+        this.getDataList(row.hfOid)
         if (e === 'itemedit') {
           this.ifEdit = false
         } else {
           this.ifEdit = true
         }
       }
+      this.value = row.fileRetardant
     },
     getDataList (oid) {
-      viewRohs(oid).then(r => {
-        this.temp = r.data
+      getHFTable(oid).then(r => {
         this.totalReport = r.data.reports
       })
     },
@@ -329,10 +248,10 @@ export default {
     },
     addRoHSReport () {
       var temp = {}
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', temp, this.rohsOid, 'ADD', 'RoHS')
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', temp, this.hfOid, 'ADD', 'HF')
     },
     editRoHSReport (row) {
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.rohsOid, 'EDIT', 'RoHS')
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.hfOid, 'EDIT', 'HF')
     },
     escapeClick () {
       this.$refs.myChild.setDialogFormVisible()
@@ -348,9 +267,7 @@ export default {
         this.removeOid = ''
       } else {
         for (let i in val) {
-          if (val[i].hasOwnProperty('reportOid')) {
-            this.str = val[i].reportOid + ',' + this.str
-          }
+          this.str = val[i].reportOid + ',' + this.str
         }
       }
     },
@@ -376,8 +293,8 @@ export default {
             message: r.data.info
           })
         }
-        this.rohsDialog = false
-        this.$props.updateRoHSData()
+        this.hfDialog = false
+        this.$props.updateHFData()
       })
     }
   }

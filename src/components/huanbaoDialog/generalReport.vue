@@ -13,7 +13,7 @@
         <span class="longcheer_hr_span">{{title}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
+        <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加报告</el-button>
         <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
       </el-row>
       <el-row class="card_row">
@@ -28,25 +28,25 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportNumber"  label="报告编号" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="报告日期" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportDate"  label="报告日期" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="检测单位" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="examUnit"  label="检测单位" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  label="上次修改时间" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
@@ -141,17 +141,18 @@ export default {
     },
     handleSelectionChange (val) {
       this.totalReportBefore = val
-      var str = ''
+      this.str = ''
       if (val.length < 1) {
         this.removeOid = ''
       } else {
         for (let i in val) {
-          str = val[i].reportOid + ',' + str
+          this.str = val[i].reportOid + ',' + this.str
         }
-        this.removeOid = str.substring(0, str.length - 1)
       }
     },
     deleteRoHSReport () {
+      this.str2 = this.str + this.str2
+      this.removeOid = this.str2.substring(0, this.str2.length - 1)
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
           if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {

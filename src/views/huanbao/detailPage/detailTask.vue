@@ -370,8 +370,8 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
-                           @click="editRoHSReport">编辑HF总报告</el-button>
-                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看HF总报告</el-button>
+                           @click="editHFReport">编辑HF总报告</el-button>
+                <el-button @click="checkHFReport" size="mini" type="info" plain>查看HF总报告</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -448,8 +448,8 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
-                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editHF(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkHF(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -458,11 +458,11 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
-                           @click="editRoHSReport">编辑RoHS总报告</el-button>
-                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看RoHS总报告</el-button>
-                <el-button size="mini" type="primary" plain>编辑REACH总声明</el-button>
+                           @click="editREACHTotalReport">编辑REACH总报告</el-button>
+                <el-button @click="checkREACHTotalReport" size="mini" type="info" plain>查看REACH总报告</el-button>
+                <el-button size="mini" type="primary" plain @click="editGeneralStatement">编辑REACH总声明</el-button>
                 <el-button size="mini" type="success" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' ">查看REACH总声明</el-button>
+                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' " @click="checkGeneralStatement">查看REACH总声明</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -781,7 +781,10 @@
                      :updateMSDSData = 'updateMSDSData'></edit-msds>
           <rohs-dialog ref="editRohs"
                        :updateRoHSData = 'updateRoHSData'></rohs-dialog>
+          <h-f-dialog ref="editHF"
+                      :updateHFData = 'updateHFData'></h-f-dialog>
           <general-report ref="generalReport"></general-report>
+          <general-statement ref="generalStatement"></general-statement>
         </el-card>
       </el-col>
     </el-row>
@@ -796,8 +799,12 @@ import EditMsds from '../../../components/huanbaoDialog/editMSDS'
 import RohsDialog from '../../../components/huanbaoDialog/editRohs'
 import GeneralReport from '../../../components/huanbaoDialog/generalReport'
 import FilesUpload from '../../../components/filesUpload/index'
+import HFDialog from '../../../components/huanbaoDialog/editHF'
+import GeneralStatement from '../../../components/huanbaoDialog/generalStatement'
 export default {
   components: {
+    GeneralStatement,
+    HFDialog,
     FilesUpload,
     GeneralReport,
     RohsDialog,
@@ -1064,11 +1071,11 @@ export default {
     checkMSDS (row) {
       this.$refs.editMsds.setDialogFormVisible(this.model.number, row, 'check')
     },
-    // 编辑rohs 总报告
+    // 编辑rohs总报告
     editRoHSReport () {
       this.$refs.generalReport.setgeneralReportDialogisible('edit', 'RoHS总报告', this.oid, 'RoHS')
     },
-    // 查看总报告
+    // 查看rohs总报告
     checkRoHSReport () {
       this.$refs.generalReport.setgeneralReportDialogisible('view', 'RoHS总报告', this.oid, 'RoHS')
     },
@@ -1079,6 +1086,38 @@ export default {
     // rohs 查看
     checkRoHS (row) {
       this.$refs.editRohs.setRohsDialogVisible('itemview', row.rohsOid, this.oid)
+    },
+    // 编辑 HF 总报告
+    editHFReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'HF总报告', this.oid, 'HF')
+    },
+    // 查看 HF 总报告
+    checkHFReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('view', 'HF总报告', this.oid, 'HF')
+    },
+    // HF 编辑
+    editHF (row) {
+      this.$refs.editHF.setHFDialogVisible('itemedit', row, this.oid)
+    },
+    // HF 查看
+    checkHF (row) {
+      this.$refs.editHF.setHFDialogVisible('itemview', row, this.oid)
+    },
+    // 编辑 REACH 总报告
+    editREACHTotalReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'REACH总报告', this.oid, 'REACH')
+    },
+    // 查看 REACH 总报告
+    checkREACHTotalReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('view', 'REACH总报告', this.oid, 'REACH')
+    },
+    // 编辑REACH总声明
+    editGeneralStatement () {
+      this.$refs.generalStatement.setgeneralStatementDialogisible('edit', this.oid)
+    },
+    // 查看REACH总声明
+    checkGeneralStatement () {
+      this.$refs.generalStatement.setgeneralStatementDialogisible('view', this.oid)
     },
     // fmd 上传数据
     fmdUpload () {
@@ -1115,6 +1154,13 @@ export default {
       selectRoHS(this.oid).then(r => {
         console.log('RoHS', r)
         this.tableDataROHS = r.data
+      })
+    },
+    // 更新 hf 条目
+    updateHFData () {
+      selectHF(this.oid).then(r => {
+        console.log('HF', r)
+        this.tableDataHF = r.data
       })
     },
     // 文件路径传给后台
