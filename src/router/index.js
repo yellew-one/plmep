@@ -5,6 +5,7 @@ import Layout from '../views/layout/Layout.vue'
 Vue.use(Router)
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/reset', component: () => import('@/views/login/reset'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
     path: '',
@@ -123,26 +124,26 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/fdetailTask/:oid/:state',
+    path: '/fdetailTask', // /:oid/:state
     component: Layout,
     redirect: '/fdetailTask',
     meta: { title: 'fengyangRoute.details', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: 'fdetailTask',
+      path: '/fdetailTask',
       component: () => import('@/views/fengyang/detailPage/detailTask'),
       name: 'fdetailTask',
       meta: { title: 'fengyangRoute.details', icon: 'dashboard', noCache: true }
     }]
   },
   {
-    path: '/fdetailypdq/:oid/:state',
+    path: '/fdetailypdq',
     component: Layout,
     redirect: '/fdetailypdq',
     meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: 'fdetailypdq',
+      path: '/fdetailypdq',
       component: () => import('@/views/fengyang/detailPage/detailypdq'),
       name: 'fdetailypdq',
       meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard', noCache: true }

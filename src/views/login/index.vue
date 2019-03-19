@@ -47,6 +47,8 @@ export default {
   name: 'login',
   Created: function () {
   },
+  activated: function () {
+  },
   mounted: function () {
     // 设置语言
     if (this.$store.getters.guojihua === 'zh') {
@@ -85,14 +87,22 @@ export default {
           }
           this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type, activation: r.data.activation})
           this.$store.commit('SET_ISLOGIN', true)
-          this.$router.push({ path: '/home' })
+          if (this.$route.query && this.$route.query.path) {
+            this.$router.push({ path: '/' + this.$route.query.path, query: this.$route.query })
+          } else {
+            this.$router.push({ path: '/home' })
+          }
           this.loading = false
         }, r => {
           this.$message('服务器连接出现未知错误')
           this.loading = false
           this.$store.commit('SET_USERINFO', {username: 'headaa', password: '1234567', type: '环保'})
           this.$store.commit('SET_ISLOGIN', true)
-          this.$router.push({ path: '/home' })
+          if (this.$route.query && this.$route.query.path) {
+            this.$router.push({ path: '/' + this.$route.query.path, query: this.$route.query })
+          } else {
+            this.$router.push({ path: '/home' })
+          }
         })
       }
     }

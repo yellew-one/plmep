@@ -7,7 +7,7 @@ import { getUserInfo } from '@/utils/auth' // getToken from cookie
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-const whiteList = ['/login']// no redirect whitelist
+const whiteList = ['/login', '/404', '/reset']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -24,7 +24,11 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       console.log('退出登录..')
-      next('/login') // 否则全部重定向到登录页
+      // next('/login') // 否则全部重定向到登录页
+      next({
+        path: '/login',
+        query: to.query // 把要跳转的地址作为参数传到下一步
+      })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }
   }

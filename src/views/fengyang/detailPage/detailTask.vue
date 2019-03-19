@@ -407,9 +407,9 @@ export default {
     }
   },
   activated: function () {
-    console.log('oid:  ', this.$route.params.oid)
-    this.state = this.$route.params.state
-    this.oid = this.$route.params.oid
+    console.log('oid:  ', this.$route.query.oid)
+    this.state = this.$route.query.state
+    this.oid = this.$route.query.oid
     if (this.oid) {
       this.getDetailInfo(this.oid)
     }
@@ -473,7 +473,7 @@ export default {
       }
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
-        this.model.oid = this.$route.params.oid
+        this.model.oid = this.$route.query.oid
         this.getProcessHistory()
         this.showRelatedWLFYDocs(this.oid)
       })
