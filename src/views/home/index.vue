@@ -9,7 +9,22 @@ export default {
   name: 'HelloWorld',
   mounted: function () {
     //      { path: '*', redirect: '/404', hidden: true }])
-    this.getNum()
+    // this.getNum()
+    var tagsView = this.$store.state.tagsView.visitedViews
+    this.nowTags = tagsView[tagsView.length - 1]
+    if (tagsView.length !== 1) {
+      var last = tagsView[tagsView.length - 1]
+      if (last.name === 'home') {
+        last = tagsView[tagsView.length - 2]
+        this.closePage()
+      }
+      console.log('last', last)
+      this.$router.push({name: last.name, params: last.params})
+    }
+  },
+  activated: function () {
+    // var tagsView = this.$store.state.tagsView.visitedViews
+    // this.nowTags = tagsView[tagsView.length - 1]
   },
   methods: {
     getNum () {
@@ -28,6 +43,22 @@ export default {
     },
     gongao () {
       window.open('http://plmtest.longcheer.com/Windchill/ptc1/ext/longcheer/helpDoc/helpDocSS', '_blank')
+    },
+    closePage () {
+      this.$router.replace({name: 'fMytasks'})
+      this.closeSelectedTag(this.nowTags)
+    },
+    closeSelectedTag (view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/home')
+          }
+        }
+      })
     }
   },
   data () {

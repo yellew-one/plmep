@@ -130,7 +130,7 @@ export const asyncRouterMap = [
     meta: { title: 'fengyangRoute.details', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: '/fdetailTask',
+      path: '/fdetailTask/:oid/:state',
       component: () => import('@/views/fengyang/detailPage/detailTask'),
       name: 'fdetailTask',
       meta: { title: 'fengyangRoute.details', icon: 'dashboard', noCache: true }
@@ -143,7 +143,7 @@ export const asyncRouterMap = [
     meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: '/fdetailypdq',
+      path: '/fdetailypdq/:oid/:state',
       component: () => import('@/views/fengyang/detailPage/detailypdq'),
       name: 'fdetailypdq',
       meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard', noCache: true }

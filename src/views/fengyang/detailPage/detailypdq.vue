@@ -308,9 +308,9 @@ export default {
     uploadSampleDoc
   },
   activated: function () {
-    console.log('oid:  ', this.$route.query.oid)
-    this.oid = this.$route.query.oid
-    this.state = this.$route.query.state
+    console.log('oid:  ', this.$route.params.oid)
+    this.oid = this.$route.params.oid
+    this.state = this.$route.params.state
     if (this.oid) {
       this.getDetailInfo(this.oid)
     }
@@ -322,7 +322,7 @@ export default {
       }
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
-        this.model.oid = this.$route.query.oid
+        this.model.oid = this.$route.params.oid
         this.getProcessHistory()
       })
     },

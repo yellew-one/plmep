@@ -230,7 +230,7 @@
                   size="mini"
                   :data="filesList"
                   border
-                  height="250px"
+                  height="350px"
                   @selection-change="handleSelectionChange"
                   style="width: 100%">
                   <el-table-column
@@ -407,9 +407,9 @@ export default {
     }
   },
   activated: function () {
-    console.log('oid:  ', this.$route.query.oid)
-    this.state = this.$route.query.state
-    this.oid = this.$route.query.oid
+    console.log('oid:  ', this.$route.params.oid)
+    this.state = this.$route.params.state
+    this.oid = this.$route.params.oid
     if (this.oid) {
       this.getDetailInfo(this.oid)
     }

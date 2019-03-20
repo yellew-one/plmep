@@ -87,12 +87,12 @@ export default {
           }
           this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type, activation: r.data.activation})
           this.$store.commit('SET_ISLOGIN', true)
-          if (this.$route.query && this.$route.query.path) {
-            this.$router.push({ path: '/' + this.$route.query.path, query: this.$route.query })
+          this.loading = false
+          if (this.$route.query && this.$route.query.name) {
+            this.$router.push({ name: this.$route.query.name, params: this.$route.query })
           } else {
             this.$router.push({ path: '/home' })
           }
-          this.loading = false
         }, r => {
           this.$message('服务器连接出现未知错误')
           this.loading = false

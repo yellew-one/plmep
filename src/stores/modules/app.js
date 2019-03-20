@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
 
 const app = {
   state: {
@@ -53,14 +54,25 @@ const app = {
     }
   },
   actions: {
-    ToggleSideBar: ({ commit }) => {
+    ToggleSideBar: ({commit}) => {
       commit('TOGGLE_SIDEBAR')
     },
-    CloseSideBar ({ commit }, { withoutAnimation }) {
+    CloseSideBar ({commit}, {withoutAnimation}) {
       commit('CLOSE_SIDEBAR', withoutAnimation)
     },
-    ToggleDevice ({ commit }, device) {
+    ToggleDevice ({commit}, device) {
       commit('TOGGLE_DEVICE', device)
+    },
+    getNum ({ commit }) {
+      showSealedSampleTasks().then(r => {
+        commit('SET_FENGYANGTASKNUM', r.data.length)
+      })
+      expiredSealedSampleTasks().then(r => {
+        commit('SET_FENGYANGDAOQINUM', r.data.length)
+      })
+      showEnvProtectionTasks().then(r => {
+        commit('SET_HUANBAOTASKNUM', r.data.length)
+      })
     }
   }
 }

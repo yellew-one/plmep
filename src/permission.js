@@ -11,6 +11,10 @@ const whiteList = ['/login', '/404', '/reset']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
+  console.log('xxoo', store.getters.fengyangTaskNum)
+  if (store.getters.fengyangTaskNum === 0) {
+    store.dispatch('getNum', store.commit)
+  }
   if (getUserInfo() && getUserInfo() !== 'false') { // determine if there has tokena
     if (!store.getters.permission_routers) {
       store.dispatch('GenerateRoutes', JSON.parse(getUserInfo()))
@@ -25,9 +29,10 @@ router.beforeEach((to, from, next) => {
     } else {
       console.log('退出登录..')
       // next('/login') // 否则全部重定向到登录页
+      to.params.name = to.name
       next({
         path: '/login',
-        query: to.query // 把要跳转的地址作为参数传到下一步
+        query: to.params // 把要跳转的地址作为参数传到下一步
       })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }

@@ -58,7 +58,7 @@
             <el-row style="padding-left: 10px">
               <el-col span="24">
                 <el-button-group>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">选取文件</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">上传文件</el-button>
                   <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
                   <el-table
                     size="mini"
@@ -126,6 +126,7 @@ export default {
       data.forEach(function (value, index) {
         // that.filePath += value.response.data[0] + ';'
         var path = value.response.data[0]
+        that.submitPath = that.submitPath + path + ';'
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
@@ -166,6 +167,7 @@ export default {
                   duration: 5 * 1000
                 })
               }
+              that.$props.restData()
             })
           } else {
             that.$message({
@@ -177,7 +179,6 @@ export default {
           }
         })
         this.filesList = sz
-        this.$props.restData()
       } else {
         this.$message({
           message: this.$t('error.please_selector'),
@@ -224,6 +225,14 @@ export default {
       }
     },
     submit () { // 提交
+      if (this.filesList.length < 1) {
+        this.$message({
+          message: '必须含有附件',
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return
+      }
       this.$store.commit('SET_LOADING', true)
       if (this.model.ftype && this.model.ftype === 'create') {
         this.oncreateWLFYDoc()
@@ -232,7 +241,7 @@ export default {
       }
     },
     onEditWLFYDoc () {
-      editWLFYDoc(this.model.number, this.filePath, this.model.lq_third_level, this.model.explain).then(r => {
+      editWLFYDoc(this.model.number, this.submitPath, this.model.lq_third_level, this.model.explain).then(r => {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({
@@ -252,7 +261,7 @@ export default {
       })
     },
     oncreateWLFYDoc () {
-      createWLFYDoc('MS' + this.model.materialNumber, this.model.lq_third_level, this.model.explain, this.filePath).then(r => {
+      createWLFYDoc('MS' + this.model.materialNumber, this.model.lq_third_level, this.model.explain, this.submitPath).then(r => {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({
@@ -298,7 +307,8 @@ export default {
       filesList: [],
       materialNumber: '',
       filePath: '',
-      selectionData: []
+      selectionData: [],
+      submitPath: ''
     }
   }
 }

@@ -69,6 +69,7 @@ export default {
     },
     success (response, file, fileList) {
       if (response.type === 'success') {
+        this.fileList = []
         this.$props.returnFilePath(fileList, this.type)
       }
     }

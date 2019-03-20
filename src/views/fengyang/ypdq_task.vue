@@ -70,7 +70,7 @@ export default {
     },
     goDetail (data) {
       // console.log('data', data)
-      this.$router.push({path: '/fdetailypdq', query: {oid: data.oid, state: 'true'}})
+      this.$router.push({name: 'fdetailypdq', params: {oid: data.oid, state: 'true'}})
     }
   },
   data () {
