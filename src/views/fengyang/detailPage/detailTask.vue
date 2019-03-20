@@ -2,7 +2,17 @@
     <div class="app-container">
       <el-row>
         <el-col :span="24">
-          <div class="card_title">{{model.mainDocInfo}}</div>
+          <div class="card_title">
+            <el-row class="card_row">
+              <el-col :span="20">
+                {{model.mainDocInfo}}
+              </el-col>
+              <el-col :span="4">
+                <el-tag  color="#ffff">{{$t(stateName)}}</el-tag>
+              </el-col>
+            </el-row>
+
+          </div>
           <el-card shadow="hover" class="card">
             <div class="longcheer_hr">
               <span class="longcheer_hr_span">{{$t('fengyangTable.detail.title_attribute')}}</span>
@@ -410,6 +420,7 @@ export default {
     console.log('oid:  ', this.$route.params.oid)
     this.state = this.$route.params.state
     this.oid = this.$route.params.oid
+    this.stateName = this.$route.params.stateName
     if (this.oid) {
       this.getDetailInfo(this.oid)
     }
@@ -551,6 +562,7 @@ export default {
         } else {
           this.$message({
             message: r.data.mes,
+            dangerouslyUseHTMLString: true,
             type: 'warning',
             duration: 5 * 1000
           })
@@ -584,7 +596,8 @@ export default {
       radio: 'Supply(供货)',
       state: '',
       filesOids: '',
-      checkedone: {}
+      checkedone: {},
+      stateName: ''
     }
   }
 }

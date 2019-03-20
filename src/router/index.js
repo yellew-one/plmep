@@ -130,7 +130,7 @@ export const asyncRouterMap = [
     meta: { title: 'fengyangRoute.details', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: '/fdetailTask/:oid/:state',
+      path: '/fdetailTask/:oid/:state/:stateName',
       component: () => import('@/views/fengyang/detailPage/detailTask'),
       name: 'fdetailTask',
       meta: { title: 'fengyangRoute.details', icon: 'dashboard', noCache: true }

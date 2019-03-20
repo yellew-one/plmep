@@ -109,7 +109,7 @@ export default {
     goDetail (data) {
       // console.log('data', data)
       // this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true'}})
-      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true'}})
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true', stateName: data.state}})
     }
   },
   data () {
