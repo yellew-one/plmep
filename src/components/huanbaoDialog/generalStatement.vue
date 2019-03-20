@@ -99,6 +99,7 @@ export default {
     },
     getDataList (oid) {
       attachmentInfo('05', oid, 'REACH').then(r => {
+        console.log('attachmentInfo', r)
         this.totalReport = r.data
       })
     },
@@ -116,9 +117,7 @@ export default {
         this.removeOid = ''
       } else {
         for (let i in val) {
-          if (val[i].hasOwnProperty('oid')) {
-            this.str = val[i].oid + ',' + this.str
-          }
+          this.str = val[i].oid + ',' + this.str
         }
       }
     },
@@ -146,6 +145,7 @@ export default {
           })
         }
       })
+      this.filePath = ''
     },
     /**
      * @param e 文件列表
@@ -154,7 +154,7 @@ export default {
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
       this.fileName = e[0].name
-      this.filePath = e[0].response.data[0] + this.filePath
+      this.filePath = e[0].response.data[0] + ',' + this.filePath
       this.filePath = this.filePath.substring(0, this.filePath.length - 1)
       this.totalReport.push({
         fileName: this.fileName,

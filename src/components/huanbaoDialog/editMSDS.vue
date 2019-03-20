@@ -344,7 +344,6 @@ export default {
       }
       this.path = e[0].response.data[0] + ',' + this.path
       this.fileType = type + ',' + this.fileType
-      console.log('xoxo', this.path)
       this.$refs.upload.closeDialog()
     }
   }

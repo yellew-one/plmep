@@ -117,7 +117,7 @@ export const asyncRouterMap = [
     meta: { title: 'huanbaoRoute.details', icon: 'dashboard' },
     hidden: true,
     children: [{
-      path: 'detailTask',
+      path: '/detailTask/:oid/:state/:approvalType',
       component: () => import('@/views/huanbao/detailPage/detailTask'),
       name: 'detailTask',
       meta: { title: 'huanbaoRoute.details', icon: 'dashboard', noCache: true }

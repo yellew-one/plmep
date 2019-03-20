@@ -211,6 +211,13 @@ export default {
               this.addReport('0', 'HF')
             }
           }
+          if (this.fileType === 'REACH') {
+            if (this.category === 'EDIT') {
+              this.editReport('0', 'REACH')
+            } else {
+              this.addReport('0', 'REACH')
+            }
+          }
         }
       }
     },

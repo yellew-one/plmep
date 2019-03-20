@@ -16,7 +16,6 @@ export default {
       var last = tagsView[tagsView.length - 1]
       if (last.name === 'home') {
         last = tagsView[tagsView.length - 2]
-        this.closePage()
       }
       console.log('last', last)
       this.$router.push({name: last.name, params: last.params})

@@ -527,8 +527,8 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
-                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editREACH(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkREACH(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -783,6 +783,8 @@
                        :updateRoHSData = 'updateRoHSData'></rohs-dialog>
           <h-f-dialog ref="editHF"
                       :updateHFData = 'updateHFData'></h-f-dialog>
+          <reach-dialog ref="editREACH"
+                        :updateREACHData = 'updateREACHData'></reach-dialog>
           <general-report ref="generalReport"></general-report>
           <general-statement ref="generalStatement"></general-statement>
         </el-card>
@@ -801,8 +803,10 @@ import GeneralReport from '../../../components/huanbaoDialog/generalReport'
 import FilesUpload from '../../../components/filesUpload/index'
 import HFDialog from '../../../components/huanbaoDialog/editHF'
 import GeneralStatement from '../../../components/huanbaoDialog/generalStatement'
+import ReachDialog from '../../../components/huanbaoDialog/editREACH'
 export default {
   components: {
+    ReachDialog,
     GeneralStatement,
     HFDialog,
     FilesUpload,
@@ -1119,6 +1123,14 @@ export default {
     checkGeneralStatement () {
       this.$refs.generalStatement.setgeneralStatementDialogisible('view', this.oid)
     },
+    // REACH 编辑
+    editREACH (row) {
+      this.$refs.editREACH.setReachDialogVisible('itemedit', row, this.oid)
+    },
+    // REACH 编辑
+    checkREACH (row) {
+      this.$refs.editREACH.setReachDialogVisible('itemview', row, this.oid)
+    },
     // fmd 上传数据
     fmdUpload () {
       this.$refs.fileUpload.openDialog()
@@ -1161,6 +1173,13 @@ export default {
       selectHF(this.oid).then(r => {
         console.log('HF', r)
         this.tableDataHF = r.data
+      })
+    },
+    // 更新 reach 条目
+    updateREACHData () {
+      selectREACH(this.oid).then(r => {
+        console.log('REACH', r)
+        this.tableDataREACH = r.data
       })
     },
     // 文件路径传给后台

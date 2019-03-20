@@ -1182,9 +1182,91 @@ export function executeFinalDel (oid, addDel, removeDel) {
     data: {
       operation: 'executeFinalDel',
       oid: oid,
-      attachmentType: 'REACH',
+      documentType: 'REACH',
       addDel: addDel,
       removeDel: removeDel
+    }
+  })
+}
+/**
+ * HF条目编辑完成处理
+ * @param oid
+ * @param e
+ * @param removeOid
+ * @param addOid
+ */
+export function executeEditHFItem (oid, e, removeOid, addOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeEditHFItem',
+      oid: oid,
+      cl: e.cl,
+      br: e.br,
+      isFireRetardant: e.fileRetardant,
+      remark: e.remake,
+      removeOid: removeOid,
+      addOid: addOid
+    }
+  })
+}
+/**
+ * 环保分报告展示数据接口
+ * @param oid
+ * @param itemReport 环保条目oid
+ */
+export function itemReport (oid, itemReport) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'itemReport',
+      oid: oid,
+      itemReport: itemReport
+    }
+  })
+}
+/**
+ * REACH条目编辑完成处理
+ * @param oid reach条目oid
+ * @param addFile 添加的申报物质报告路径
+ * @param removeFile 删除的oid
+ * @param addReport 添加的分报告oid
+ * @param removeReport 删除的分报告oid
+ */
+export function executeEditReachItem (oid, addFile, removeFile, addReport, removeReport) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeEditReachItem',
+      oid: oid,
+      addFile: addFile,
+      removeFile: removeFile,
+      addReport: addReport,
+      removeReport: removeReport
     }
   })
 }

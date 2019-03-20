@@ -1,10 +1,10 @@
 /**
-* Created by yaoyuan on 2019/3/18.
+* Created by yaoyuan on 2019/3/19.
 */
 <template>
   <div class="app-container">
     <el-dialog
-      :visible.sync="hfDialog"
+      :visible.sync="reachDialog"
       :show-close="false"
       :close-on-press-escape="false"
       width="50%"
@@ -13,7 +13,7 @@
         <span class="longcheer_hr_span">RoHS报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加HF报告</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加REACH报告</el-button>
         <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
       </el-row>
       <el-row class="card_row">
@@ -61,6 +61,46 @@
           </el-table>
         </el-col>
       </el-row>
+      <div class="longcheer_hr" style="margin-top: -10px;">
+        <span class="longcheer_hr_span">申报物质报告</span>
+      </div>
+      <el-row style="margin-top: 10px;margin-left: 20px">
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain >下载报告模板</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addFile">上传新文件</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteFile">移除</el-button>
+      </el-row>
+      <el-row class="card_row">
+        <el-col span="24">
+          <el-table
+            :data="totalReport2"
+            border
+            size="mini"
+            style="width: 100%;margin-top: 10px"
+            @select="handleSelectionChange2">
+            <el-table-column
+              type="selection"
+              width="35">
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+              <template
+                slot-scope="scope">
+                <span>{{$t(scope.row.fileName)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  label="上次修改时间" >
+              <template
+                slot-scope="scope">
+                <span>{{scope.row.modifyTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" fixed="right" label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button type="text" size="small">下载</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
       <div class="boxtext" v-if="type === 'itemview' || type === 'itemedit'">
         <div class="longcheer_hr" style="margin-top: 10px;">
           <span class="longcheer_hr_span">属性</span>
@@ -95,39 +135,9 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="cl"  label="Cl">
-                <el-input :disabled="ifEdit" v-model="temp.cl">
+              <el-form-item prop="fileRetardant"  label="是否阻燃剂">
+                <el-input disabled="true" v-model="temp.fileRetardant">
                 </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="br"  label="Br">
-                <el-input :disabled="ifEdit" v-model="temp.br">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="hg"  label="是否阻燃剂">
-                <el-select :disabled="ifEdit" v-model="value" placeholder="">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -138,19 +148,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item prop="state"  label="状态">
-                <span :disabled="ifEdit" >{{$t('huanbaoTable.HF.' + temp.state)}}</span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-            </el-col>
-          </el-row>
-          <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-            <el-col :span="2">
-            </el-col>
-            <el-col :span="16">
-              <el-form-item prop="remark"  label="备注">
-                <el-input type="textarea" :rows="3" :disabled="ifEdit" v-model="remark">
-                </el-input>
+                <span disabled="true" >{{$t('huanbaoTable.HF.' + temp.state)}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -159,82 +157,73 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="type=== 'itemedit'" size="mini" @click="hfDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type=== 'itemview'" size="mini" @click="hfDialog = false">关闭</el-button>
+        <el-button v-if="type=== 'itemedit'" size="mini" @click="reachDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
+        <el-button v-if="type=== 'itemview'" size="mini" @click="reachDialog = false">关闭</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"
                                  :getBABAData="getBABAData"></processing-general-report>
-      <escape-clause
-        ref="myChild"
-        :acceptSonValue = 'acceptSonValue'></escape-clause>
+      <files-upload ref="fileUpload"
+                    :returnFilePath="returnFilePath"></files-upload>
     </el-dialog>
   </div>
 </template>
 <script>
-import EscapeClause from '../../components/huanbaoDialog/escapeClause'
 import ProcessingGeneralReport from './processGeneralReport'
-import { getHFTable, executeEditHFItem } from '@/api/huanbaoAPI'
+import { itemReport, executeEditReachItem, attachmentInfo } from '@/api/huanbaoAPI'
+import FilesUpload from '../filesUpload/index'
 export default {
-  components: {ProcessingGeneralReport, EscapeClause},
-  name: 'HFDialog',
-  props: ['updateHFData'],
+  components: {
+    FilesUpload,
+    ProcessingGeneralReport},
+  name: 'ReachDialog',
+  props: ['updateREACHData'],
   mounted: function () {
   },
   data () {
     return {
-      hfDialog: false,
+      reachDialog: false,
       totalReport: [],
+      totalReport2: [],
       type: '',
-      hfOid: '',
+      reachOid: '',
       temp: {},
       ifEdit: true,
       oid: '',
       removeOid: '',
+      removeOid2: '',
       addOid: '',
       totalReportBefore: [],
+      totalReport2Before: [],
       str: '',
       str2: '',
-      options: [{
-        value: '1',
-        label: '是'
-      }, {
-        value: '0',
-        label: '否'
-      }],
-      value: '',
-      remark: ''
+      str3: '',
+      str4: '',
+      filePath: ''
     }
   },
   methods: {
-    setHFDialogVisible (e, row, oid) {
+    setReachDialogVisible (e, row, oid) {
       this.totalReportBefore = []
       this.removeOid = ''
+      this.removeOid2 = ''
       this.addOid = ''
-      this.hfDialog = true
+      this.reachDialog = true
       this.type = e
       this.oid = oid
-      this.hfOid = row.hfOid
+      this.reachOid = row.reachOid
       this.temp = {}
       this.temp = row
       if (e === 'itemedit' || e === 'itemview') {
-        this.getDataList(row.hfOid)
-        if (e === 'itemedit') {
-          this.ifEdit = false
-        } else {
-          this.ifEdit = true
-        }
-      }
-      if (row.fileRetardant === '是') {
-        this.value = '1'
-      } else {
-        this.value = '0'
+        this.getDataList(row.reachOid)
       }
     },
-    getDataList (hfOid) {
-      getHFTable(hfOid).then(r => {
-        this.totalReport = r.data.reports
-        this.remark = r.data.remake
+    getDataList (reachOid) {
+      itemReport(reachOid).then(r => {
+        this.totalReport = r.data
+      })
+      attachmentInfo('04', reachOid, '').then(r => {
+        this.totalReport2 = r.data
       })
     },
     getBABAData (oid, item, data, e) {
@@ -251,26 +240,48 @@ export default {
     },
     addRoHSReport () {
       var temp = {}
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', temp, this.hfOid, 'ADD', 'HF')
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', temp, this.reachOid, 'ADD', 'REACH')
     },
     editRoHSReport (row) {
-      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.hfOid, 'EDIT', 'HF')
+      this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.reachOid, 'EDIT', 'REACH')
     },
-    escapeClick () {
-      this.$refs.myChild.setDialogFormVisible()
+    addFile () {
+      this.$refs.fileUpload.openDialog()
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加总声明', 'fileList', {
+        number: this.$store.getters.huanbaoNum,
+        userName: this.$store.getters.userInfo.username
+      }, 'REACH')
     },
-    // 接受子组件传值
-    acceptSonValue (e) {
-      this.temp.exemptions = e
+    deleteFile () {
+      this.str4 = this.str + this.str4
+      this.removeOid2 = this.str4.substring(0, this.str4.length - 1)
+      for (let i in this.totalReport2) {
+        for (let j in this.totalReport2Before) {
+          if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
+            this.totalReport2.splice(i, 1)
+          }
+        }
+      }
     },
     handleSelectionChange (val) {
       this.totalReportBefore = val
       this.str = ''
       if (val.length < 1) {
-        this.removeOid = ''
+        this.removeOid2 = ''
       } else {
         for (let i in val) {
           this.str = val[i].reportOid + ',' + this.str
+        }
+      }
+    },
+    handleSelectionChange2 (val) {
+      this.totalReport2Before = val
+      this.str3 = ''
+      if (val.length < 1) {
+        this.removeOid = ''
+      } else {
+        for (let i in val) {
+          this.str3 = val[i].oid + ',' + this.str3
         }
       }
     },
@@ -287,10 +298,9 @@ export default {
     },
     completeReport () {
       this.temp.fileRetardant = this.value
-      this.temp.remake = this.remark
-      executeEditHFItem(this.hfOid, this.temp, this.removeOid, this.addOid).then(r => {
+      executeEditReachItem(this.reachOid, this.filePath, this.removeOid2, this.addOid, this.removeOid).then(r => {
         if (r.data.status === 'success') {
-          this.$props.updateHFData()
+          this.$props.updateREACHData()
           this.$message.success({
             message: '修改成功'
           })
@@ -299,7 +309,22 @@ export default {
             message: r.data.info
           })
         }
-        this.hfDialog = false
+        this.reachDialog = false
+      })
+      this.filePath = ''
+    },
+    /**
+     * @param e 文件列表
+     * @param type 文件所属条目
+     */
+    returnFilePath (e, type) {
+      this.$refs.fileUpload.closeDialog()
+      this.fileName = e[0].name
+      this.filePath = e[0].response.data[0] + ',' + this.filePath
+      this.filePath = this.filePath.substring(0, this.filePath.length - 1)
+      this.totalReport2.push({
+        fileName: this.fileName,
+        modifyTime: ''
       })
     }
   }

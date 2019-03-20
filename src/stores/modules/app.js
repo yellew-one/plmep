@@ -8,7 +8,7 @@ const app = {
       withoutAnimation: false
     },
     huanbaoTaskNum: 0,
-    fengyangTaskNum: 0,
+    fengyangTaskNum: -1,
     fengyangdaoqiNum: 0,
     huanbaoNum: '',
     device: 'desktop',
