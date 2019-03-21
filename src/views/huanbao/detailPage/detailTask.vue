@@ -2,7 +2,16 @@
   <div class="app-container">
     <el-row>
       <el-col :span="24">
-        <div class="card_title">{{model.materialEnvironmental}}</div>
+        <div class="card_title">
+            <el-row class="card_row">
+              <el-col :span="20">
+                {{model.materialEnvironmental}}
+              </el-col>
+              <el-col :span="4">
+                <el-tag v-if="state !== ''" color="#ffff">{{$t('huanbaoTable.OTHER2.' + state)}}</el-tag>
+              </el-col>
+            </el-row>
+        </div>
         <el-card shadow="hover" class="card">
           <div class="longcheer_hr">
             <span>{{$t('huanbaoTable.detailTable.envProtectionStatus')}}</span>
@@ -537,8 +546,8 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
-                           @click="editRoHSReport">编辑其他总报告</el-button>
-                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看其他总报告</el-button>
+                           @click="editOtherReport">编辑其他总报告</el-button>
+                <el-button @click="checkOtherReport" size="mini" type="info" plain>查看其他总报告</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -649,7 +658,7 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
-                           @click="editRoHSReport">编辑客户特殊需求申报</el-button>
+                           @click="editSpecialNeeds">编辑客户特殊需求申报</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -686,6 +695,11 @@
                   <template
                     slot-scope="scope">
                     <span>{{$t('huanbaoTable.OTHER2.'+scope.row.state)}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <el-button type="text" size="small">下载</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -785,6 +799,8 @@
                       :updateHFData = 'updateHFData'></h-f-dialog>
           <reach-dialog ref="editREACH"
                         :updateREACHData = 'updateREACHData'></reach-dialog>
+          <special-needs ref="editSpecialNeeds"
+                         :updateOther2Data = 'updateOther2Data'></special-needs>
           <general-report ref="generalReport"></general-report>
           <general-statement ref="generalStatement"></general-statement>
         </el-card>
@@ -804,8 +820,10 @@ import FilesUpload from '../../../components/filesUpload/index'
 import HFDialog from '../../../components/huanbaoDialog/editHF'
 import GeneralStatement from '../../../components/huanbaoDialog/generalStatement'
 import ReachDialog from '../../../components/huanbaoDialog/editREACH'
+import SpecialNeeds from '../../../components/huanbaoDialog/specialNeeds'
 export default {
   components: {
+    SpecialNeeds,
     ReachDialog,
     GeneralStatement,
     HFDialog,
@@ -926,25 +944,19 @@ export default {
       reachOpinion: '',
       otherOpinion: '',
       other2Opinion: '',
-      approvalType: ''
+      approvalType: '',
+      envprotectionDocumentOid: ''
     }
   },
   mounted: function () {
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
-    if (this.$route.params.oid) {
-      localStorage.setItem('oid', this.$route.params.oid)
+    this.oid = this.$route.params.oid
+    if (this.$route.params.state !== '1') {
+      this.state = this.$route.params.state
     }
-    if (this.$route.params.state) {
-      localStorage.setItem('state', this.$route.params.state)
-    }
-    if (this.$route.params.approvalType) {
-      localStorage.setItem('approvalType', this.$route.params.approvalType)
-    }
-    this.oid = localStorage.getItem('oid')
-    this.state = localStorage.getItem('state')
-    this.approvalType = localStorage.getItem('approvalType')
+    this.approvalType = this.$route.params.approvalType
     if (this.oid) {
       this.getDataList(this.oid)
     }
@@ -1005,7 +1017,8 @@ export default {
       })
       selectOTHER2(e).then(r => {
         console.log('OTHER2', r)
-        this.tableDataOTHER2 = r.data
+        this.tableDataOTHER2 = r.data.items
+        this.envprotectionDocumentOid = r.data.envprotectionDocumentOid
       })
     },
     // FMD编辑
@@ -1131,6 +1144,18 @@ export default {
     checkREACH (row) {
       this.$refs.editREACH.setReachDialogVisible('itemview', row, this.oid)
     },
+    // 编辑 other 总报告
+    editOtherReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', '编辑总报告', this.oid, 'OTHER')
+    },
+    // 查看 other 总报告
+    checkOtherReport () {
+      this.$refs.generalReport.setgeneralReportDialogisible('view', '编辑总报告', this.oid, 'OTHER')
+    },
+    // 编辑特殊需求
+    editSpecialNeeds () {
+      this.$refs.editSpecialNeeds.setspecialNeedsDialogDialogisible('edit', this.envprotectionDocumentOid)
+    },
     // fmd 上传数据
     fmdUpload () {
       this.$refs.fileUpload.openDialog()
@@ -1180,6 +1205,14 @@ export default {
       selectREACH(this.oid).then(r => {
         console.log('REACH', r)
         this.tableDataREACH = r.data
+      })
+    },
+    // 更新 other2 条目
+    updateOther2Data () {
+      selectOTHER2(this.oid).then(r => {
+        console.log('OTHER2', r)
+        this.tableDataOTHER2 = r.data.items
+        this.envprotectionDocumentOid = r.data.envprotectionDocumentOid
       })
     },
     // 文件路径传给后台

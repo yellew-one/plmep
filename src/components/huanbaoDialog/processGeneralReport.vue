@@ -184,6 +184,13 @@ export default {
               this.addReport('1', 'REACH')
             }
           }
+          if (this.fileType === 'OTHER') {
+            if (this.category === 'EDIT') {
+              this.editReport('1', 'OTHER')
+            } else {
+              this.addReport('1', 'OTHER')
+            }
+          }
         }
       } else {
         if (this.fileType === '') {

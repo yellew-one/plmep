@@ -1270,6 +1270,34 @@ export function executeEditReachItem (oid, addFile, removeFile, addReport, remov
     }
   })
 }
+/**
+ * 编辑客户特殊需求申报条目
+ * @param oid 对象oid
+ * @param filePath 06为联想，07为索尼
+ * @param attachmentType
+ * @param attachmentOid
+ */
+export function editOther2 (oid, filePath, attachmentType, attachmentOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskEnvprotectionOther2.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editOther2',
+      envprotectionDocumentOid: oid,
+      filePath: filePath,
+      attachmentType: attachmentType,
+      attachmentOid: attachmentOid
+
+    }
+  })
+}
 export function getExpiringReportInfo (oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
