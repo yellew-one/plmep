@@ -420,6 +420,7 @@ export default {
     console.log('oid:  ', this.$route.params.oid)
     this.state = this.$route.params.state
     this.oid = this.$route.params.oid
+    alert(this.$route.params.oid)
     this.stateName = this.$route.params.stateName
     if (this.oid) {
       this.getDetailInfo(this.oid)
@@ -484,7 +485,7 @@ export default {
       }
       showTaskDetails(oid).then(r => {
         this.model = r.data[0]
-        this.model.oid = this.$route.query.oid
+        this.model.oid = this.$route.params.oid
         this.getProcessHistory()
         this.showRelatedWLFYDocs(this.oid)
       })
