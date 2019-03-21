@@ -70,7 +70,8 @@ export default {
       })
     },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.state}})
+      console.log('row', row)
+      this.$router.push({name: 'detailthird', params: {oid: row.pnOid, state: row.state}})
     }
   }
 }

@@ -124,6 +124,19 @@ export const asyncRouterMap = [
     }]
   },
   {
+    path: '/detailthird',
+    component: Layout,
+    redirect: '/detailthird',
+    meta: { title: 'huanbaoRoute.detailthird', icon: 'dashboard' },
+    hidden: true,
+    children: [{
+      path: '/detailthird/:oid/:state',
+      component: () => import('@/views/huanbao/detailPage/detailthird'),
+      name: 'detailthird',
+      meta: { title: 'huanbaoRoute.detailthird', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
     path: '/fdetailTask', // /:oid/:state
     component: Layout,
     redirect: '/fdetailTask',

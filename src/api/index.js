@@ -814,7 +814,7 @@ export function completeSealedTask (oid, comment, route) {
     data: {
       operation: 'completeSealedTask',
       username: store.getters.userInfo.username,
-      oid: oid,
+      number: oid,
       comment: comment,
       route: route
     }

@@ -183,7 +183,7 @@ export default {
   methods: {
     goDetail (data) {
       console.log('data', data)
-      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false'}})
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false', stateName: 'huanbaoTable.searchStatus.' + data.status}})
     },
     searchResult () {
       console.log('xoxo', this.dateValue)

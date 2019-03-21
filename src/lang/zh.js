@@ -43,7 +43,8 @@ export default {
     third_report: '第三方报告到期任务',
     Material_submitted: '待提交物料环保',
     Material_Search: '物料环保搜索',
-    details: '任务详情'
+    details: '任务详情',
+    detailthird: '第三方到期详情'
   },
   huanbaoTable: {
     third: {
@@ -52,7 +53,14 @@ export default {
       state: '状态',
       specification: '任务最后期限',
       startTime: '流程开始时间',
-      allNumber: '所有环保报告的编号'
+      allNumber: '所有环保报告的编号',
+      lqNumber: '龙旗料号',
+      rawmaterial: '原材料',
+      ReportType: '报告类型',
+      ReportNumber: '报告编号',
+      ReportDate: '报告日期',
+      TestingUnit: '检测单位',
+      operation: '操作'
     },
     submitted: {
       taskName: '任务名',
@@ -135,7 +143,8 @@ export default {
       unSupply: '不供货',
       remark: '备注',
       complete: '完成任务',
-      approval: '审批日志'
+      approval: '审批日志',
+      third: '过期第三方报告'
     },
     approval: {
       false: '未完成',
@@ -343,7 +352,8 @@ export default {
     Approval: '审批',
     delete: '删除',
     check: '查看',
-    ensure: '确定'
+    ensure: '确定',
+    relatedMaterials: '相关物料'
   },
   fengyangTable: {
     detail: {

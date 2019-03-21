@@ -550,7 +550,7 @@ export default {
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)
-      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
+      completeSealedTask('MS' + this.model.materialNumber, this.model.comment, this.radio).then(r => {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({

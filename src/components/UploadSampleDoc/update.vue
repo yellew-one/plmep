@@ -48,7 +48,7 @@
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
                 <el-form-item label="模板下载" prop="explain">
-                  【<a style="color: blue">点击下载模板</a>】
+                  【<a style="color: blue" @click="downloadModel">点击下载模板</a>】
                 </el-form-item>
               </el-col>
             </el-row>
@@ -101,7 +101,7 @@
   </el-dialog>
 </template>
 <script>
-import { lqThirdLevel, editWLFYDoc, createWLFYDoc, removeAttachment } from '@/api/index'
+import { attachmentLink, lqThirdLevel, editWLFYDoc, createWLFYDoc, removeAttachment } from '@/api/index'
 import filesUpload from '../../components/filesUpload/index'
 export default {
   name: 'update',
@@ -295,6 +295,12 @@ export default {
           }
         })
         this.options2 = sz
+      })
+    },
+    downloadModel () {
+      attachmentLink('', '封样模板').then(r => {
+        console.log(r)
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   },

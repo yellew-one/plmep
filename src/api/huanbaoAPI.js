@@ -1270,3 +1270,20 @@ export function executeEditReachItem (oid, addFile, removeFile, addReport, remov
     }
   })
 }
+export function getExpiringReportInfo (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'getExpiringReportInfo',
+      oid: oid
+    }
+  })
+}

@@ -43,7 +43,8 @@ export default {
     third_report: 'Third party report due task',
     Material_submitted: 'Material to be submitted',
     Material_Search: 'Material Environmental Search',
-    details: 'Detailed Information'
+    details: 'Detailed Information',
+    detailthird: 'Detailed Third Information'
   },
   huanbaoTable: {
     third: {
@@ -52,7 +53,14 @@ export default {
       state: 'Status',
       specification: 'Task Deadlines',
       startTime: 'Start Time',
-      allNumber: 'All Number'
+      allNumber: 'All Number',
+      lqNumber: 'LongCheer Number',
+      rawmaterial: 'Raw Material',
+      ReportType: 'Report Type',
+      ReportNumber: 'Report Number',
+      ReportDate: 'Report Date',
+      TestingUnit: 'Testing Unit',
+      operation: 'operation'
     },
     submitted: {
       taskName: 'TaskName',
@@ -131,7 +139,8 @@ export default {
       unSupply: 'unSupply',
       remark: 'Remark',
       complete: 'Complete',
-      approval: 'Approval opinion'
+      approval: 'Approval opinion',
+      third: 'detailTable.third'
     },
     approval: {
       false: 'Unfinished',
@@ -339,7 +348,8 @@ export default {
     delete: 'Delete',
     check: 'Check',
     ensure: 'Ensure',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
+    relatedMaterials: 'Related Materials'
   },
   fengyangTable: {
     detail: {

@@ -184,6 +184,17 @@ const permission = {
               name: 'detailTask',
               meta: { title: 'huanbaoRoute.details', icon: 'permission' }
             }]
+        },
+        {
+          redirect: '/detailthird',
+          title: 'huanbaoRoute.detailthird',
+          meta: { title: 'huanbaoRoute.detailthird', icon: 'permission' },
+          children: [
+            {
+              title: 'huanbaoRoute.detailthird',
+              name: 'detailthird',
+              meta: { title: 'huanbaoRoute.detailthird', icon: 'permission' }
+            }]
         }]
         var accessedRouters
         if (data.type === '封样') {
