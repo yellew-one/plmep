@@ -1223,7 +1223,7 @@ export function executeEditHFItem (oid, e, removeOid, addOid) {
  * @param oid
  * @param itemReport 环保条目oid
  */
-export function itemReport (oid, itemReport) {
+export function itemReport (oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
     method: 'post',
@@ -1236,8 +1236,7 @@ export function itemReport (oid, itemReport) {
     }],
     data: {
       operation: 'itemReport',
-      oid: oid,
-      itemReport: itemReport
+      oid: oid
     }
   })
 }
@@ -1298,6 +1297,10 @@ export function editOther2 (oid, filePath, attachmentType, attachmentOid) {
     }
   })
 }
+/**
+ * 过期任务信息展示
+ * @param oid
+ */
 export function getExpiringReportInfo (oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
@@ -1311,6 +1314,87 @@ export function getExpiringReportInfo (oid) {
     }],
     data: {
       operation: 'getExpiringReportInfo',
+      oid: oid
+    }
+  })
+}
+/**
+ * 其他物质含量展示
+ * @param oid 物料环保其他条目oid
+ */
+export function itemMaterialInfo (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'itemMaterialInfo',
+      oid: oid
+    }
+  })
+}
+/**
+ * OTHER条目编辑完成处理
+ * @param oid
+ * @param e
+ * @param removeOid 删除报告oid
+ * @param addOid 添加报告oid
+ * @param removeMaterialOid 删除自定义管控物质oid
+ * @param addMaterialOid 添加自定义管控物质
+ */
+export function executeEditOtherItem (oid, e, removeOid, addOid, removeMaterialOid, addMaterialOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeEditOtherItem',
+      oid: oid,
+      ni: e.ni,
+      pahs: e.pahs,
+      didp: e.didp,
+      dinp: e.dinp,
+      dnhp: e.dnhp,
+      sccp: e.sccp,
+      be: e.be,
+      sb: e.sb,
+      remark: e.remark,
+      removeOid: removeOid,
+      addOid: addOid,
+      removeMaterialOid: removeMaterialOid,
+      addMaterialOid: addMaterialOid
+    }
+  })
+}
+/**
+ * 环保报告类型信息接口
+ * @param oid 环保条目oid
+ */
+export function reportType (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'reportType',
       oid: oid
     }
   })

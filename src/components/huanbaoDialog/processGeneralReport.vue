@@ -17,6 +17,24 @@
         <el-col :span="24">
           <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
                    style=' margin-left:0px;'>
+            <el-row v-if="itemCategory === 'OTHER'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
+              <el-col :span="16">
+                <el-form-item prop="materialGroup" label="报告类型">
+                  <el-select v-model="value" multiple  placeholder="" style="width: 100%">
+                    <el-option
+                      v-for="item in options2"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item >
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="materialName" label="报告日期">
@@ -89,7 +107,7 @@
 </template>
 <script>
 import FilesUpload from '../filesUpload/index'
-import { addReport, examUnit, editReport } from '@/api/huanbaoAPI'
+import { addReport, examUnit, editReport, reportType } from '@/api/huanbaoAPI'
 export default {
   components: {FilesUpload},
   name: 'ProcessingGeneralReport',
@@ -103,12 +121,14 @@ export default {
       temp: {},
       tableData: [],
       options: [],
+      options2: [],
       type: '',
       fileName: '',
       filePath: '',
       fileType: '',
       category: '',
-      itemCategory: ''
+      itemCategory: '',
+      value: []
     }
   },
   methods: {
@@ -123,12 +143,15 @@ export default {
       this.fileName = ''
       this.filePath = ''
       this.options = []
+      this.options2 = []
       this.category = ''
       this.itemCategory = ''
+      this.value = []
       this.ProcessingGeneralReportDialog = true
       this.temp = e
       this.type = type
       this.oid = oid
+      this.category = category
       this.itemCategory = itemCategory
       this.rohsReportDateValue = e.reportDate
       examUnit().then(r => {
@@ -139,7 +162,21 @@ export default {
           })
         }
       })
-      this.category = category
+      if (this.type === 'ENTRY') {
+        var v = []
+        v = this.temp.reportType.split('\n')
+        console.log('this.temp', v)
+        this.value = v.slice(0, -1)
+        console.log('this.temp', this.value)
+        reportType(this.oid).then(r => {
+          for (let i in r.data) {
+            this.options2.push({
+              label: r.data[i].name,
+              value: r.data[i].id
+            })
+          }
+        })
+      }
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()
@@ -223,6 +260,14 @@ export default {
               this.editReport('0', 'REACH')
             } else {
               this.addReport('0', 'REACH')
+            }
+          }
+          if (this.fileType === 'OTHER') {
+            this.temp.reportType = this.value.join('\n')
+            if (this.category === 'EDIT') {
+              this.editReport('0', 'OTHER')
+            } else {
+              this.addReport('0', 'OTHER')
             }
           }
         }

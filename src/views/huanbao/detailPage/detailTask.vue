@@ -622,6 +622,12 @@
                     <span>{{scope.row.sb}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column  align="center" v-for = "index in otherSubstances" :key="index" show-overflow-tooltip="true"  prop="extra"  :label="index.materialName" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row | substancesFilters(index.materialName)}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="reportCount" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.OTHER.reportCount')" >
                   <template
                     slot-scope="scope">
@@ -648,8 +654,8 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
-                    <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
+                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editOther(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button @click="checkOther(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -799,6 +805,8 @@
                       :updateHFData = 'updateHFData'></h-f-dialog>
           <reach-dialog ref="editREACH"
                         :updateREACHData = 'updateREACHData'></reach-dialog>
+          <other-dialog ref="editOther"
+                        :updateOtherData = 'updateOtherData'></other-dialog>
           <special-needs ref="editSpecialNeeds"
                          :updateOther2Data = 'updateOther2Data'></special-needs>
           <general-report ref="generalReport"></general-report>
@@ -821,8 +829,10 @@ import HFDialog from '../../../components/huanbaoDialog/editHF'
 import GeneralStatement from '../../../components/huanbaoDialog/generalStatement'
 import ReachDialog from '../../../components/huanbaoDialog/editREACH'
 import SpecialNeeds from '../../../components/huanbaoDialog/specialNeeds'
+import OtherDialog from '../../../components/huanbaoDialog/editOther'
 export default {
   components: {
+    OtherDialog,
     SpecialNeeds,
     ReachDialog,
     GeneralStatement,
@@ -945,7 +955,13 @@ export default {
       otherOpinion: '',
       other2Opinion: '',
       approvalType: '',
-      envprotectionDocumentOid: ''
+      envprotectionDocumentOid: '',
+      otherSubstances: []
+    }
+  },
+  filters: {
+    substancesFilters: function (data, value) {
+      return data[value]
     }
   },
   mounted: function () {
@@ -1014,6 +1030,8 @@ export default {
       selectOTHER(e).then(r => {
         console.log('OTHER', r)
         this.tableDataOTHER = r.data
+        this.otherSubstances = []
+        this.otherSubstances = r.data[0].extra
       })
       selectOTHER2(e).then(r => {
         console.log('OTHER2', r)
@@ -1152,6 +1170,14 @@ export default {
     checkOtherReport () {
       this.$refs.generalReport.setgeneralReportDialogisible('view', '编辑总报告', this.oid, 'OTHER')
     },
+    // Other 编辑
+    editOther (row) {
+      this.$refs.editOther.setOtherDialogVisible('itemedit', row, this.oid)
+    },
+    // Other 查看
+    checkOther (row) {
+      this.$refs.editOther.setOtherDialogVisible('itemview', row, this.oid)
+    },
     // 编辑特殊需求
     editSpecialNeeds () {
       this.$refs.editSpecialNeeds.setspecialNeedsDialogDialogisible('edit', this.envprotectionDocumentOid)
@@ -1205,6 +1231,15 @@ export default {
       selectREACH(this.oid).then(r => {
         console.log('REACH', r)
         this.tableDataREACH = r.data
+      })
+    },
+    // 更新 other 条目
+    updateOtherData () {
+      selectOTHER(this.oid).then(r => {
+        console.log('OTHER', r)
+        this.tableDataOTHER = r.data
+        this.otherSubstances = []
+        this.otherSubstances = r.data[0].extra
       })
     },
     // 更新 other2 条目

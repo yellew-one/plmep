@@ -303,7 +303,6 @@ export default {
       this.$refs.myChild.setDialogFormVisible()
     },
     cellClick (row, column, cell, event) {
-      console.log('xoxo', row)
       this.$router.push({name: 'detailTask', params: {oid: row.oid, state: '1', approvalType: ''}})
     },
     handleCurrentChange (val) {
