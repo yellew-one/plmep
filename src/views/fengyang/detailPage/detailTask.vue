@@ -420,7 +420,6 @@ export default {
     console.log('oid:  ', this.$route.params.oid)
     this.state = this.$route.params.state
     this.oid = this.$route.params.oid
-    alert(this.$route.params.oid)
     this.stateName = this.$route.params.stateName
     if (this.oid) {
       this.getDetailInfo(this.oid)
@@ -430,13 +429,13 @@ export default {
     Acknowledgment () {
       downloadAcknowledgment('MS' + this.model.materialNumber).then(r => {
         console.log(r)
-        if (!r.data.flag || r.data.flag === 'false') {
+        if (!r.data.flag || r.data.flag === false) {
           this.$message({
             message: r.data.filePath,
             type: 'warning',
             duration: 5 * 1000
           })
-        } else if (r.data.flag && r.data.flag === 'true') {
+        } else if (!r.data.flag || r.data.flag === true) {
           window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
@@ -461,8 +460,17 @@ export default {
         })
         return
       }
-      this.$refs.docUpdate.openDialog(this.model.materialNumber)
-      this.$refs.docUpdate.setModel(this.checkedone)
+      console.log('asas', this.checkedone)
+      if (this.checkedone.state === 'state.INWORK' || this.checkedone.state === 'state.REWORK' || this.checkedone.state === 'state.CANCELLED') {
+        this.$refs.docUpdate.openDialog(this.model.materialNumber)
+        this.$refs.docUpdate.setModel(this.checkedone)
+      } else {
+        this.$message({
+          message: this.$t('error.no_state'),
+          type: 'warning',
+          duration: 5 * 1000
+        })
+      }
     },
     filesCreadClick () {
       this.$refs.docUpdate.openDialog(this.model.materialNumber)

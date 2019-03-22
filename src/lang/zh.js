@@ -6,7 +6,8 @@ export default {
     username_not_exist: '账号不存在',
     password_error: '密码错误',
     required: '必填',
-    please_selector: '请选择'
+    please_selector: '请选择',
+    no_state: '仅可编辑正在工作、驳回、已取消的封样文档'
   },
   success: {
     update_success: '修改成功',
@@ -306,7 +307,8 @@ export default {
     back_home: '返回首页',
     Notice: '公告',
     editUserInfo: '编辑接口人信息',
-    SealedInfoEdit: '编辑封样详细信息'
+    SealedInfoEdit: '编辑封样详细信息',
+    editReport: '编辑报告'
   },
   placeholder: {
     date: '选择日期',

@@ -70,6 +70,7 @@
             :data="dataList"
             border
             size="mini"
+            height="350px"
             style="width: 100%">
             <el-table-column :label="$t('huanbaoTable.third.lqNumber')" align="center" show-overflow-tooltip="true"  prop="activityName"   >
               <template
@@ -114,23 +115,104 @@
               width="160">
               <template slot-scope="scope">
                 <el-button @click="toRelatedClick(scope.row)" type="text" size="small">{{$t('formButton.relatedMaterials')}}</el-button>
-                <el-button type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                <el-button @click="toEditReport(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <div  class="longcheer_hr" style="margin-top: 20px">
+            <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
+          </div>
+          <el-row  class="card_row">
+            <el-col span="4" style="text-align: right">备注：</el-col>
+            <el-col span="1" style="text-align: right">&nbsp;</el-col>
+            <el-col  span="12"><el-input  :disabled="state !== 'true'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
+          </el-row>
+          <el-row  class="card_row">
+            <el-col span="4" style="text-align: right">&nbsp;</el-col>
+            <el-col span="1" style="text-align: right">&nbsp;</el-col>
+            <el-col span="12" style="text-align: right">
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+              <el-radio :disabled="state !== 'true'" v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+            </el-col>
+          </el-row>
+          <el-row  class="card_row">
+            <el-col span="4" style="text-align: right">&nbsp;</el-col>
+            <el-col span="1" style="text-align: right">&nbsp;</el-col>
+            <el-col span="12" style="text-align: right">
+              <el-button  :loading="$store.getters.loading" @click="submitAprive" size="mini" type="primary">{{$t('formButton.submit')}}</el-button>
+            </el-col>
+          </el-row>
+          <div class="longcheer_hr" style="margin-top: 40px">
+            <span class="longcheer_hr_span">{{$t('huanbaoTable.detailTable.approval')}}</span>
+          </div>
+          <el-row class="card_row">
+            <el-col span="24">
+              <el-table
+                :data="approvalTable"
+                border
+                size="mini"
+                style="width: 100%">
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="status"  :label="$t('huanbaoTable.approval.state')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{$t('huanbaoTable.approval.' + scope.row.status)}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="activityName"  :label="$t('huanbaoTable.approval.activityName')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.activityName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="roleName"  :label="$t('huanbaoTable.approval.roleName')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.roleName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="ownerName"  :label="$t('huanbaoTable.approval.ownerName')">
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.ownerName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="vote"  :label="$t('huanbaoTable.approval.vote')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.vote}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="comment"  :label="$t('huanbaoTable.approval.comment')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.comment}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" show-overflow-tooltip="true"  prop="finishTime"  :label="$t('huanbaoTable.approval.finishTime')" >
+                  <template
+                    slot-scope="scope">
+                    <span>{{scope.row.finishTime}}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
         </el-card>
       </el-col>
     </el-row>
     <RelevantMaterials ref="relMater"></RelevantMaterials>
+    <editReport ref="editReport"></editReport>
   </div>
 </template>
 <script>
-import { showEnvprotectionTask, getExpiringReportInfo } from '@/api/huanbaoAPI'
+import { showEnvprotectionTask, getExpiringReportInfo, getReportProcessingStatus } from '@/api/huanbaoAPI'
 import RelevantMaterials from '@/components/huanbaoDialog/relevantMaterials'
+import editReport from '@/components/huanbaoDialog/editReport'
 export default {
   name: 'detailthird',
   components: {
-    RelevantMaterials
+    RelevantMaterials,
+    editReport
   },
   data () {
     return {
@@ -151,7 +233,8 @@ export default {
         state: ''
       },
       approvalType: '',
-      dataList: []
+      dataList: [],
+      approvalTable: []
     }
   },
   mounted: function () {
@@ -163,11 +246,21 @@ export default {
     if (this.oid) {
       this.getDetailInfo(this.oid)
       this.getDataList()
+      this.getApprovalTable()
     }
   },
   methods: {
+    getApprovalTable () {
+      getReportProcessingStatus(this.oid).then(r => {
+        console.log('xxoo', r.data)
+        this.approvalTable = r.data
+      })
+    },
     toRelatedClick (row) {
       this.$refs.relMater.setDialogFormVisible(row)
+    },
+    toEditReport (row) {
+      this.$refs.editReport.openDialog(row)
     },
     getDetailInfo (oid) {
       showEnvprotectionTask(oid).then(r => {

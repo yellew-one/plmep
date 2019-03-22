@@ -6,7 +6,8 @@ export default {
     username_not_exist: 'account is not exist',
     password_error: 'password error',
     required: 'is required',
-    please_selector: 'please selector data'
+    please_selector: 'please selector data',
+    no_state: 'error.no_state'
   },
   success: {
     update_success: 'update info success',
@@ -302,7 +303,8 @@ export default {
     Notice: 'Notice',
     back_home: 'Back to home page',
     editUserInfo: 'Editing  Person Information',
-    SealedInfoEdit: 'Sealed Info Edit'
+    SealedInfoEdit: 'Sealed Info Edit',
+    editReport: 'editReport'
   },
   placeholder: {
     date: 'select date',

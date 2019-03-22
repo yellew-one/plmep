@@ -145,38 +145,42 @@ export default {
       this.loadingFileList()
       console.log('xxoo', this.model)
     },
+    submitRemove () {
+      var that = this
+      this.removeList.forEach(function (value, index) {
+        removeAttachment(that.model.number, value.name.split('.')[0]).then(r => {
+          console.log(r)
+          if (r.data.mes.indexOf('成功') !== -1) {
+            /* that.$message({
+              message: that.$t('success.remove_success') + ':' + value.name,
+              type: 'success',
+              duration: 5 * 1000
+            }) */
+          } else {
+            that.$message({
+              message: r.data.mes,
+              type: 'warning',
+              duration: 5 * 1000
+            })
+          }
+        })
+      })
+    },
     removeRelatedWLFYDocs () {
       var that = this
       if (this.selectionData.length > 0) {
         var sz = this.filesList
         this.selectionData.forEach(function (value, index) {
           if (value.ftype === 'oid') {
-            removeAttachment(that.model.number, value.name.split('.')[0]).then(r => {
-              console.log(r)
-              if (r.data.mes.indexOf('成功') !== -1) {
-                that.$message({
-                  message: that.$t('success.remove_success') + ':' + value.name,
-                  type: 'success',
-                  duration: 5 * 1000
-                })
-                sz.splice(sz.indexOf(value), 1)
-              } else {
-                that.$message({
-                  message: r.data.mes,
-                  type: 'warning',
-                  duration: 5 * 1000
-                })
-              }
-              that.$props.restData()
-            })
+            that.removeList.push(value)
           } else {
             that.$message({
               message: '移除成功',
-              type: 'warning',
+              type: 'success',
               duration: 5 * 1000
             })
-            sz.splice(sz.indexOf(value), 1)
           }
+          sz.splice(sz.indexOf(value), 1)
         })
         this.filesList = sz
       } else {
@@ -201,6 +205,7 @@ export default {
     },
     openDialog (materialNumber) { // 打开弹窗
       this.updatedialogFlag = true
+      this.removeList = []
       this.materialNumber = materialNumber
     },
     toggleSelection (rows) {
@@ -234,6 +239,7 @@ export default {
         return
       }
       this.$store.commit('SET_LOADING', true)
+      this.submitRemove()
       if (this.model.ftype && this.model.ftype === 'create') {
         this.oncreateWLFYDoc()
       } else {
@@ -314,7 +320,8 @@ export default {
       materialNumber: '',
       filePath: '',
       selectionData: [],
-      submitPath: ''
+      submitPath: '',
+      removeList: []
     }
   }
 }
