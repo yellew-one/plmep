@@ -7,9 +7,9 @@ const app = {
       opened: !+Cookies.get('sidebarStatus'),
       withoutAnimation: false
     },
-    huanbaoTaskNum: 0,
+    huanbaoTaskNum: -1,
     fengyangTaskNum: -1,
-    fengyangdaoqiNum: 0,
+    fengyangdaoqiNum: -1,
     huanbaoNum: '',
     device: 'desktop',
     guojihua: localStorage.getItem('guojihua') || 'zh',

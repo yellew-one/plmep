@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import store from '../stores'
 // 创建axios实例
 const service = axios.create({
-  // baseURL: process.env.API_BASEURL, // api的base_url
+  // baseURL: process.env.API_BASEURL, // ap  i的base_url
   baseURL: 'http://plmtest.longcheer.com',
   timeout: 15000 // 请求超时时间
 })

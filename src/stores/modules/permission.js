@@ -196,11 +196,73 @@ const permission = {
               meta: { title: 'huanbaoRoute.detailthird', icon: 'permission' }
             }]
         }]
+        const dynamicRouter3 = [
+          {
+            cfunid: '5',
+            fun_code: '5',
+            redirect: '/mypcn',
+            fun_level: 1,
+            fun_name: '',
+            // funurl: '/fengyang',
+            title: 'pcn.title.mypcn',
+            meta: { title: 'pcn.title.mypcn', icon: 'permission' },
+            children: [
+              {
+                cfunid: '51',
+                title: 'pcn.title.mypcn',
+                fun_level: 2,
+                parent_id: '51',
+                name: 'mypcn',
+                funurl: '/mypcn',
+                meta: { title: 'pcn.title.mypcn', icon: 'permission' }
+              }]
+          },
+          {
+            cfunid: '6',
+            fun_code: '6',
+            redirect: '/editPcn',
+            fun_level: 1,
+            fun_name: '',
+            // funurl: '/fengyang',
+            title: 'pcn.title.rejectPcn',
+            meta: { title: 'pcn.title.rejectPcn', icon: 'permission' },
+            children: [
+              {
+                cfunid: '61',
+                title: 'pcn.title.rejectPcn',
+                fun_level: 2,
+                parent_id: '61',
+                name: 'editPcn',
+                funurl: '/editPcn',
+                meta: { title: 'pcn.title.rejectPcn', icon: 'permission' }
+              }]
+          },
+          {
+            cfunid: '7',
+            fun_code: '7',
+            redirect: '/createPcn',
+            fun_level: 1,
+            fun_name: '',
+            // funurl: '/fengyang',
+            title: 'pcn.title.createPcn',
+            meta: { title: 'pcn.title.createPcn', icon: 'permission' },
+            children: [
+              {
+                cfunid: '71',
+                title: 'pcn.title.createPcn',
+                fun_level: 2,
+                parent_id: '71',
+                name: 'createPcn',
+                funurl: '/createPcn',
+                meta: { title: 'pcn.title.createPcn', icon: 'permission' }
+              }]
+          }
+        ]
         var accessedRouters
         if (data.type === '封样') {
-          accessedRouters = recursionRouter(dynamicRouter, asyncRouterMap)
+          accessedRouters = recursionRouter(dynamicRouter.concat(dynamicRouter3), asyncRouterMap)
         } else {
-          accessedRouters = recursionRouter(dynamicRouter2, asyncRouterMap)
+          accessedRouters = recursionRouter(dynamicRouter2.concat(dynamicRouter3), asyncRouterMap)
         }
         commit('SET_ROUTERS', accessedRouters)
         resolve()

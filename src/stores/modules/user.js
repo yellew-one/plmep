@@ -45,6 +45,7 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_USERINFO', false)
         commit('SET_TOKEN', '')
+        commit('SET_FENGYANGTASKNUM', -1)
         // removeName()
         // removeToken()
       })

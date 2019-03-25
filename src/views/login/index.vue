@@ -89,8 +89,10 @@ export default {
           this.$store.commit('SET_ISLOGIN', true)
           this.loading = false
           if (this.$route.query && this.$route.query.name && this.$route.query.name !== 'home') {
+            this.$store.dispatch('getNum', this.$store.commit)
             this.$router.push({ name: this.$route.query.name, params: this.$route.query })
           } else {
+            this.$store.dispatch('getNum', this.$store.commit)
             this.$router.push({ path: '/home' })
           }
         }, r => {

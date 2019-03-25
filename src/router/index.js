@@ -162,5 +162,41 @@ export const asyncRouterMap = [
       meta: { title: 'fengyangRoute.ypdqdetails', icon: 'dashboard', noCache: true }
     }]
   },
+  {
+    path: '/mypcn',
+    component: Layout,
+    redirect: '/mypcn',
+    meta: { title: 'pcn.title.mypcn', icon: 'issue' },
+    children: [{
+      path: 'mypcn',
+      component: () => import('@/views/PCN/my_pcn'),
+      name: 'mypcn',
+      meta: { title: 'pcn.title.mypcn', icon: 'dtj' }
+    }]
+  },
+  {
+    path: '/editPcn',
+    component: Layout,
+    redirect: '/editPcn',
+    meta: { title: 'pcn.title.rejectPcn', icon: 'issue' },
+    children: [{
+      path: 'editPcn',
+      component: () => import('@/views/PCN/edit_pcn'),
+      name: 'editPcn',
+      meta: { title: 'pcn.title.rejectPcn', icon: 'dtj' }
+    }]
+  },
+  {
+    path: '/createPcn',
+    component: Layout,
+    redirect: '/createPcn',
+    meta: { title: 'pcn.title.createPcn', icon: 'issue' },
+    children: [{
+      path: 'createPcn',
+      component: () => import('@/views/PCN/create_pcn'),
+      name: 'createPcn',
+      meta: { title: 'pcn.title.createPcn', icon: 'dtj' }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

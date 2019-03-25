@@ -479,5 +479,21 @@ export default {
       business: '业务',
       Enclosure: '附件'
     }
+  },
+  pcn: {
+    title: {
+      mypcn: '我的PCN',
+      createPcn: '创建PCN',
+      rejectPcn: '驳回PCN',
+      information: '基本信息'
+    },
+    form: {
+      ChangeType: '变更类型',
+      Name: '名称',
+      project: '项目',
+      DetailedDescription: '详细描述',
+      RequireCompletionTime: '要求完成时间',
+      ResourceEngineer: '龙旗资源工程师'
+    }
   }
 }
