@@ -452,9 +452,16 @@ export default {
       })
     },
     fileseditClick () {
-      if (!this.filesOids && this.filesOids.length === 0) {
+      if (this.selectCount === 0) {
         this.$message({
           message: this.$t('error.please_selector'),
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return
+      } else if (this.selectCount > 1) {
+        this.$message({
+          message: '当前选择数量过多',
           type: 'warning',
           duration: 5 * 1000
         })
@@ -514,6 +521,7 @@ export default {
       this.$refs.uploadSamDoc.setDialogFormVisible(true, this.oid, this.model.materialNumber)
     },
     handleSelectionChange (val) {
+      this.selectCount = val.length
       this.filesOids = ''
       if (val && val.length > 0) {
         var str = ''
@@ -604,6 +612,7 @@ export default {
       filesList: [],
       radio: 'Supply(供货)',
       state: '',
+      selectCount: 0,
       filesOids: '',
       checkedone: {},
       stateName: ''

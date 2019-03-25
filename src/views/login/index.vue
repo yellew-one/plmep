@@ -88,7 +88,7 @@ export default {
           this.$store.commit('SET_USERINFO', {username: this.temp.username, password: this.temp.password, type: r.data.type, activation: r.data.activation})
           this.$store.commit('SET_ISLOGIN', true)
           this.loading = false
-          if (this.$route.query && this.$route.query.name) {
+          if (this.$route.query && this.$route.query.name && this.$route.query.name !== 'home') {
             this.$router.push({ name: this.$route.query.name, params: this.$route.query })
           } else {
             this.$router.push({ path: '/home' })

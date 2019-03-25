@@ -206,6 +206,7 @@ export default {
     openDialog (materialNumber) { // 打开弹窗
       this.updatedialogFlag = true
       this.removeList = []
+      this.submitPath = ''
       this.materialNumber = materialNumber
     },
     toggleSelection (rows) {
