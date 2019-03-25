@@ -40,6 +40,14 @@
                 <span>{{scope.row.endTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column
+              fixed="right"
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -75,6 +83,14 @@
                 <span>{{scope.row.endTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column
+              fixed="right"
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -83,7 +99,7 @@
         <span>IP FORM</span>
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
-        <el-button size="mini" type="primary" plain @click="uploadIP" >下载IP Form模板</el-button>
+        <el-button size="mini" type="primary" plain @click="downloadloadIP" >下载IP Form模板</el-button>
         <el-button size="mini" type="primary" plain @click="uploadIPFORM">上传新文件</el-button>
         <el-button size="mini" type="danger"  plain @click="deleteIPFORM">移除</el-button>
       </el-row>
@@ -109,6 +125,14 @@
               <template
                 slot-scope="scope">
                 <span>{{scope.row.endTime}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -157,6 +181,7 @@
 </template>
 <script>
 import { getMSDSInfo, editMSDSTable } from '@/api/index'
+import { downloadAttach, downloadEnvpTemplate } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {FilesUpload},
@@ -189,7 +214,7 @@ export default {
     }
   },
   methods: {
-    setDialogFormVisible (envpNumber, e, action) {
+    setMSDSDialogFormVisible (envpNumber, e, action) {
       this.approvalTable1 = []
       this.approvalTable2 = []
       this.approvalTable3 = []
@@ -315,8 +340,15 @@ export default {
         }
       }
     },
-    uploadIP () {
-      window.open('http://plmtest.longcheer.com/Windchill/servlet/WindchillGW/ext.longcheer.envprotection.task.FileDownLoadController/createBZUpdateNews')
+    downloadloadIP () {
+      downloadEnvpTemplate('IPFORM').then(r => {
+        console.log('IPFORM', r)
+      })
+    },
+    download (row) {
+      downloadAttach(row.attachmentOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
     },
     returnFilePath (e, type) {
       for (let i in e) {

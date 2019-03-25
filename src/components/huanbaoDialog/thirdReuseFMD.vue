@@ -136,15 +136,13 @@
               </template>
             </el-table-column>
             <el-table-column
+              width="120"
+              fixed="right"
               align="center"
               label="操作">
               <template slot-scope="scope">
-                <el-button
-                  @click="relevant(scope.row)"
-                  type="text"
-                  size="small">
-                  相关物料
-                </el-button>
+                <el-button @click="relevant(scope.row)" type="text" size="small">相关物料</el-button>
+                <el-button @click="uploadMaterial(scope.row)" type="text" size="small">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -230,6 +228,7 @@
 <script>
 import RelevantMaterials from './relevantMaterials'
 import { searchReuseReport, getMaterialName, reuseReportsExecute } from '@/api/index'
+import { downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {RelevantMaterials},
   name: 'ThirdReuse',
@@ -255,7 +254,7 @@ export default {
     }
   },
   methods: {
-    setDialogFormVisible (e) {
+    setThirdReuseDialogFormVisible (e) {
       this.temp = {
         selectedDocumentType: '',
         selectedMaterial: '',
@@ -319,6 +318,12 @@ export default {
     },
     relevant (row) {
       this.$refs.relevantMaterials.setDialogFormVisible(row)
+    },
+    uploadMaterial (row) {
+      console.log('relevantMaterial', row)
+      downloadAttach(row.reportId).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
     }
   }
 }

@@ -55,7 +55,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
                 <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
@@ -268,6 +268,7 @@
 import EscapeClause from '../../components/huanbaoDialog/escapeClause'
 import ProcessingGeneralReport from './processGeneralReport'
 import { viewRohs, execute } from '@/api/index'
+import { downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {ProcessingGeneralReport, EscapeClause},
   name: 'RohsDialog',
@@ -333,6 +334,11 @@ export default {
     },
     editRoHSReport (row) {
       this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.rohsOid, 'EDIT', 'RoHS')
+    },
+    upload (row) {
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
     },
     escapeClick () {
       this.$refs.myChild.setDialogFormVisible()

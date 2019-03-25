@@ -10,7 +10,7 @@
       width="50%"
       top="2%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">RoHS报告</span>
+        <span class="longcheer_hr_span">REACH报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加REACH报告</el-button>
@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
                 <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
@@ -65,7 +65,7 @@
         <span class="longcheer_hr_span">申报物质报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain >下载报告模板</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="downloadFile">下载报告模板</el-button>
         <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addFile">上传新文件</el-button>
         <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteFile">移除</el-button>
       </el-row>
@@ -95,7 +95,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -170,7 +170,7 @@
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
-import { itemReport, executeEditReachItem, attachmentInfo } from '@/api/huanbaoAPI'
+import { itemReport, executeEditReachItem, attachmentInfo, downloadAttach, downloadEnvpTemplate } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {
@@ -213,7 +213,7 @@ export default {
       this.oid = oid
       this.reachOid = row.reachOid
       this.temp = {}
-      this.temp = row
+      this.temp = Object.assign(row)
       if (e === 'itemedit' || e === 'itemview') {
         this.getDataList(row.reachOid)
       }
@@ -325,6 +325,17 @@ export default {
       this.totalReport2.push({
         fileName: this.fileName,
         modifyTime: ''
+      })
+    },
+    download (row) {
+      console.log('申报物质', row)
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
+    },
+    downloadFile () {
+      downloadEnvpTemplate('REACHREPORT').then(r => {
+        console.log('REACHREPORT', r)
       })
     }
   }

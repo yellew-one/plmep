@@ -78,7 +78,7 @@
           <el-tabs type="border-card">
             <el-tab-pane :label="$t('huanbaoTable.submitted.FMD')">
               <el-row>
-                <el-button size="mini" type="primary" plain>{{$t('huanbaoTable.FMD.download')}}</el-button>
+                <el-button size="mini" type="primary" plain @click="fmdDownload">{{$t('huanbaoTable.FMD.download')}}</el-button>
                 <el-button size="mini" type="success" plain
                            @click="fmdUpload">{{$t('huanbaoTable.FMD.upload')}}</el-button>
                 <el-button size="mini" v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
@@ -231,7 +231,7 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.RoHS')">
               <el-row>
-                <el-button size="mini" type="primary" plain>下载导入模板</el-button>
+                <el-button size="mini" type="primary" plain @click="downloadRoHS">下载导入模板</el-button>
                 <el-button size="mini" type="success" plain
                            v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
                            @click="ROHSUpload">上传环保数据</el-button>
@@ -705,7 +705,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small">下载</el-button>
+                    <el-button type="text" size="small" @click="downloadNeeds(scope.row)">下载</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -718,14 +718,14 @@
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">{{$t('huanbaoTable.detailTable.remark')}} :</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
-              <el-col span="12"><el-input  type="textarea" :rows="3"></el-input></el-col>
+              <el-col span="12"><el-input v-model="comment" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-radio v-model="radio" label="1">{{$t('huanbaoTable.detailTable.Supply')}}</el-radio>
-                <el-radio v-model="radio" label="2">{{$t('huanbaoTable.detailTable.unSupply')}}</el-radio>
+                <el-radio v-model="radio" label="Supply(供货)">{{$t('huanbaoTable.detailTable.Supply')}}</el-radio>
+                <el-radio v-model="radio" label="No supply(不供货)">{{$t('huanbaoTable.detailTable.unSupply')}}</el-radio>
               </el-col>
             </el-row>
             <el-row class="card_row">
@@ -818,7 +818,7 @@
 </template>
 <script>
 import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, completeEnvp } from '@/api/index'
-import { executeUploadFMDData, executeUploadItemData, deleteFmdItem } from '@/api/huanbaoAPI'
+import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate } from '@/api/huanbaoAPI'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
@@ -849,7 +849,8 @@ export default {
       isShow: false,
       isSub: '',
       state: '',
-      radio: '1',
+      radio: 'Supply(供货)',
+      comment: '',
       oid: '',
       activeName2: 'first',
       model: {
@@ -1087,7 +1088,7 @@ export default {
           duration: 3 * 1000
         })
       })
-      completeEnvp(this.oid).then(r => {
+      completeEnvp(this.oid, this.comment, this.radio).then(r => {
         console.log('completeSealedTask', r)
         this.$message.success({
           message: '这是一条成功的消息'
@@ -1096,15 +1097,15 @@ export default {
     },
     // FMD 第三方复用
     thirdreuseFMD () {
-      this.$refs.thirdReuse.setDialogFormVisible(this.model.number)
+      this.$refs.thirdReuse.setThirdReuseDialogFormVisible(this.model.number)
     },
     // MSDS 编辑
     editMSDS (row) {
-      this.$refs.editMsds.setDialogFormVisible(this.model.number, row, 'edit')
+      this.$refs.editMsds.setMSDSDialogFormVisible(this.model.number, row, 'edit')
     },
     // msds 查看
     checkMSDS (row) {
-      this.$refs.editMsds.setDialogFormVisible(this.model.number, row, 'check')
+      this.$refs.editMsds.setMSDSDialogFormVisible(this.model.number, row, 'check')
     },
     // 编辑rohs总报告
     editRoHSReport () {
@@ -1180,7 +1181,7 @@ export default {
     },
     // 编辑特殊需求
     editSpecialNeeds () {
-      this.$refs.editSpecialNeeds.setspecialNeedsDialogDialogisible('edit', this.envprotectionDocumentOid)
+      this.$refs.editSpecialNeeds.setspecialNeedsDialogDialogisible('edit', this.oid, this.envprotectionDocumentOid)
     },
     // fmd 上传数据
     fmdUpload () {
@@ -1281,6 +1282,21 @@ export default {
           }
         })
       }
+    },
+    downloadNeeds (row) {
+      downloadAttach(row.attachmentOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
+    },
+    fmdDownload () {
+      downloadEnvpTemplate('FMD').then(r => {
+        console.log('FMD', r)
+      })
+    },
+    downloadRoHS () {
+      downloadEnvpTemplate('ROHS').then(r => {
+        console.log('ROHS', r)
+      })
     }
   }
 }

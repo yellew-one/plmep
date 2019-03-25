@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
                 <el-button v-if="type === 'edit'" @click="editGeneralReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
@@ -74,7 +74,7 @@
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
 import { envpFinalReport } from '@/api/index'
-import { saveFinalReport } from '@/api/huanbaoAPI'
+import { saveFinalReport, downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {ProcessingGeneralReport},
   name: 'GeneralReport',
@@ -173,6 +173,11 @@ export default {
             message: r.data.info
           })
         }
+      })
+    },
+    upload (row) {
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }

@@ -716,7 +716,7 @@ export function editMSDSTable (type, envprotectionDocumentOid, path, oid, attach
   })
 }
 // completeEnvp 环保任务完成
-export function completeEnvp (oid) {
+export function completeEnvp (oid, comment, routing) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
     method: 'post',
@@ -730,8 +730,8 @@ export function completeEnvp (oid) {
     data: {
       operation: 'completeEnvp',
       oid: oid,
-      comment: '',
-      routing: '供货'
+      comment: comment,
+      routing: routing
     }
   })
 }
@@ -1399,6 +1399,10 @@ export function reportType (oid) {
     }
   })
 }
+/**
+ * 到期第三方报告审批日志
+ * @param oid
+ */
 export function getReportProcessingStatus (oid) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
@@ -1413,6 +1417,101 @@ export function getReportProcessingStatus (oid) {
     data: {
       operation: 'getReportProcessingStatus',
       oid: oid
+    }
+  })
+}
+/**
+ * 到期报告编辑
+ * @param oid
+ * @param e
+ */
+export function executeReportImediately (oid, e) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeReportImediately',
+      oid: oid,
+      reportType: e.reportType,
+      reportDate: e.reportDate,
+      reportNumber: e.reportNumber,
+      examUnit: e.examUnit,
+      filePath: e.filePath
+    }
+  })
+}
+/**
+ * 到期第三方报告任务完成
+ * @param oid
+ * @param comment 备注
+ * @param routing 路由
+ */
+export function completeReportTask (oid, comment, routing) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/thirdReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'completeReportTask',
+      oid: oid,
+      comment: comment,
+      routing: routing
+    }
+  })
+}
+/**
+ * 环保文件下载
+ * @param oid
+ */
+export function downloadAttach (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'downloadAttach',
+      oid: oid
+    }
+  })
+}
+/**
+ * 环保模板文件下载
+ * @param type 下载模板类型，四种类型分别对应FMD模板，导入模板，IP Form模板，申报物质报告模板 FMD/ROHS/IPFORM/REACHREPORT
+ *
+ */
+export function downloadEnvpTemplate (type) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'downloadEnvpTemplate',
+      type: type
     }
   })
 }

@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -81,7 +81,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -129,15 +129,18 @@ export default {
       fileLenovoName: '',
       fileSONYName: '',
       fileLenovoPath: '',
-      fileSONYPath: ''
+      fileSONYPath: '',
+      envprotectionDocumentOid: ''
     }
   },
   methods: {
-    setspecialNeedsDialogDialogisible (type, oid) {
+    setspecialNeedsDialogDialogisible (type, oid, envprotectionDocumentOid) {
       this.removeLenovoOid = ''
       this.removeSONYOid = ''
       this.addLenovoOid = ''
       this.addSONYOid = ''
+      this.envprotectionDocumentOid = ''
+      this.envprotectionDocumentOid = envprotectionDocumentOid
       this.totalReportBefore = []
       this.totalReport2Before = []
       this.specialNeedsDialog = true
@@ -212,7 +215,7 @@ export default {
       }
     },
     completeGeneralStatement () {
-      editOther2(this.oid, this.fileLenovoPath, '06', this.removeLenovoOid).then(r => {
+      editOther2(this.envprotectionDocumentOid, this.fileLenovoPath, '06', this.removeLenovoOid).then(r => {
         if (r.data.result === 'success') {
           this.$props.updateOther2Data()
           this.$message.success({
@@ -224,7 +227,7 @@ export default {
           })
         }
       })
-      editOther2(this.oid, this.fileSONYPath, '07', this.removeSONYOid).then(r => {
+      editOther2(this.envprotectionDocumentOid, this.fileSONYPath, '07', this.removeSONYOid).then(r => {
         if (r.data.result === 'success') {
           this.$props.updateOther2Data()
           this.$message.success({
@@ -262,6 +265,9 @@ export default {
           modifyTime: ''
         })
       }
+    },
+    download (row) {
+      console.log('xoxo', row)
     }
   }
 }

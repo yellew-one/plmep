@@ -60,7 +60,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
                 <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
@@ -242,14 +242,14 @@
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materialName"  label="物质名称" >
               <template
                 slot-scope="scope">
-                <el-input :disabled="false" v-model="scope.row.materialName">
+                <el-input size="mini" :disabled="false" v-model="scope.row.materialName">
                 </el-input>
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materialContent"  label="物质重量" >
               <template
                 slot-scope="scope">
-                <el-input :disabled="false" v-model="scope.row.materialContent">
+                <el-input size="mini" :disabled="false" v-model="scope.row.materialContent">
                 </el-input>
               </template>
             </el-table-column>
@@ -268,7 +268,7 @@
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
-import { itemReport, itemMaterialInfo, executeEditOtherItem } from '@/api/huanbaoAPI'
+import { itemReport, itemMaterialInfo, executeEditOtherItem, downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {
     ProcessingGeneralReport},
@@ -309,7 +309,7 @@ export default {
       this.oid = oid
       this.otherOid = row.otherOid
       this.temp = {}
-      this.temp = row
+      this.temp = Object.assign(row)
       this.value = ''
       if (e === 'itemedit' || e === 'itemview') {
         this.getDataList(this.otherOid)
@@ -329,6 +329,7 @@ export default {
       })
     },
     getBABAData (oid, item, data, e) {
+      this.getDataList(oid)
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
         this.removeOid = data.remove + ',' + this.removeOid
@@ -413,11 +414,25 @@ export default {
           materialContent: this.substancesTotal[i].materialContent
         })
       }
-      console.log('xoxo', s)
       this.temp.remark = this.value
       var str = JSON.stringify(s)
       executeEditOtherItem(this.otherOid, this.temp, this.removeOid, this.addOid, this.substancesRemoveOid, str).then(r => {
-        console.log('xoxo', r)
+        if (r.data.status === 'success') {
+          this.$message.success({
+            message: '修改成功'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+        this.otherDialog = false
+        this.$props.updateOtherData()
+      })
+    },
+    upload (row) {
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }

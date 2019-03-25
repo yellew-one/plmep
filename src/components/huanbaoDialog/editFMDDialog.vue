@@ -171,7 +171,7 @@ export default {
       this.oid = ''
       this.isSub = ''
       this.dialog = true
-      this.temp = row
+      this.temp = Object.assign(row)
       this.oid = oid
       this.isSub = sub
     },

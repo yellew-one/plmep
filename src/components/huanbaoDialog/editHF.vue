@@ -10,7 +10,7 @@
       width="50%"
       top="2%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">RoHS报告</span>
+        <span class="longcheer_hr_span">HF报告</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加HF报告</el-button>
@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
                 <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
@@ -174,7 +174,7 @@
 <script>
 import EscapeClause from '../../components/huanbaoDialog/escapeClause'
 import ProcessingGeneralReport from './processGeneralReport'
-import { getHFTable, executeEditHFItem } from '@/api/huanbaoAPI'
+import { getHFTable, executeEditHFItem, downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {ProcessingGeneralReport, EscapeClause},
   name: 'HFDialog',
@@ -216,7 +216,7 @@ export default {
       this.oid = oid
       this.hfOid = row.hfOid
       this.temp = {}
-      this.temp = row
+      this.temp = Object.assign(row)
       if (e === 'itemedit' || e === 'itemview') {
         this.getDataList(row.hfOid)
         if (e === 'itemedit') {
@@ -300,6 +300,11 @@ export default {
           })
         }
         this.hfDialog = false
+      })
+    },
+    upload (row) {
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }

@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column align="center" fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small">下载</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -160,6 +160,9 @@ export default {
         fileName: this.fileName,
         modifyTime: ''
       })
+    },
+    upload (row) {
+      console.log('reach总声明', row)
     }
   }
 }

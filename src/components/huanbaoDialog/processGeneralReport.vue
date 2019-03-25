@@ -17,7 +17,7 @@
         <el-col :span="24">
           <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
                    style=' margin-left:0px;'>
-            <el-row v-if="itemCategory === 'OTHER'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
+            <el-row v-if="itemCategory === 'OTHER' && this.type !== 'TOTAL'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="materialGroup" label="报告类型">
                   <el-select v-model="value" multiple  placeholder="" style="width: 100%">
@@ -140,6 +140,7 @@ export default {
      * @param itemCategory 判断是哪个条目
      */
     setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
+      console.log('xoxo', e)
       this.fileName = ''
       this.filePath = ''
       this.options = []
@@ -148,12 +149,15 @@ export default {
       this.itemCategory = ''
       this.value = []
       this.ProcessingGeneralReportDialog = true
-      this.temp = e
+      if (e) {
+        this.temp = Object.assign(e)
+      }
       this.type = type
       this.oid = oid
       this.category = category
       this.itemCategory = itemCategory
       this.rohsReportDateValue = e.reportDate
+      this.fileName = this.temp.reportFileName
       examUnit().then(r => {
         for (let i in r.data) {
           this.options.push({
@@ -165,9 +169,7 @@ export default {
       if (this.type === 'ENTRY') {
         var v = []
         v = this.temp.reportType.split('\n')
-        console.log('this.temp', v)
         this.value = v.slice(0, -1)
-        console.log('this.temp', this.value)
         reportType(this.oid).then(r => {
           for (let i in r.data) {
             this.options2.push({
