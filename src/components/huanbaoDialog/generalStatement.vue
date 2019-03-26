@@ -60,7 +60,7 @@
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
-import { attachmentInfo, executeFinalDel } from '@/api/huanbaoAPI'
+import { attachmentInfo, executeFinalDel, downloadAttach } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {
@@ -162,7 +162,9 @@ export default {
       })
     },
     upload (row) {
-      console.log('reach总声明', row)
+      downloadAttach(row.oid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
     }
   }
 }

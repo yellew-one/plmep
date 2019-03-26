@@ -72,8 +72,8 @@
             <el-col span="4" style="text-align: right">&nbsp;</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col span="12" style="text-align: right">
-              <el-radio v-model="radio" label="Supply(供货)">{{$t('fengyangTable.detail.Supply')}}</el-radio>
-              <el-radio v-model="radio" label="No supply(不供货)">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
+              <el-radio v-model="radio" label="供货">{{$t('fengyangTable.detail.Supply')}}</el-radio>
+              <el-radio v-model="radio" label="不供货">{{$t('fengyangTable.detail.unSupply')}}</el-radio>
             </el-col>
           </el-row>
           <el-row  class="card_row">

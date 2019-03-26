@@ -1,11 +1,16 @@
 <template>
     <div class="app-container">
       <el-card class="box-card">
+        <el-row style="margin-top: -10px;">
+          <el-col :span="6">
+            <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+          </el-col>
+        </el-row>
         <el-table
-          :data="tableData"
+          :data="tableData | tablefilters(tFilters)"
           border
           size="mini"
-          style="width: 100%"
+          style="width: 100%; margin-top: 10px"
           @cell-click="cellClick">
           <el-table-column align="center" show-overflow-tooltip="true" prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template
@@ -114,12 +119,24 @@
 import { showEnvProtectionTasks } from '@/api/index'
 export default {
   name: 'HelloWorld',
+  filters: {
+    tablefilters: function (value, data) {
+      var sz = []
+      value.forEach(function (v, index) {
+        if (v.materialNumber.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
+    }
+  },
   mounted: function () {
     this.getDataList()
   },
   data () {
     return {
-      tableData: []
+      tableData: [],
+      tFilters: ''
     }
   },
   activated: function () {
@@ -130,7 +147,6 @@ export default {
     getDataList () {
       showEnvProtectionTasks().then(r => {
         this.tableData = r.data
-        this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
         console.log('Material Submitted', r)
       })
     },

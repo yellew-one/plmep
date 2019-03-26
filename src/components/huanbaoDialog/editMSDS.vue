@@ -342,7 +342,9 @@ export default {
     },
     downloadloadIP () {
       downloadEnvpTemplate('IPFORM').then(r => {
-        console.log('IPFORM', r)
+        if (r.data.flag) {
+          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        }
       })
     },
     download (row) {

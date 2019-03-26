@@ -140,7 +140,6 @@ export default {
      * @param itemCategory 判断是哪个条目
      */
     setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
-      console.log('xoxo', e)
       this.fileName = ''
       this.filePath = ''
       this.options = []

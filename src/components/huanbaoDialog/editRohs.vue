@@ -217,7 +217,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item prop="exemptions"  label="豁免条款">
-                <el-input disabled="true" v-model="temp.exemptions">
+                <el-input disabled="true" v-model="exemptions">
                   <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </el-form-item>
@@ -288,12 +288,14 @@ export default {
       addOid: '',
       totalReportBefore: [],
       str: '',
-      str2: ''
+      str2: '',
+      exemptions: ''
     }
   },
   methods: {
     setRohsDialogVisible (e, rohsOid, oid) {
       this.totalReportBefore = []
+      this.exemptions = ''
       this.removeOid = ''
       this.addOid = ''
       this.rohsDialog = true
@@ -345,7 +347,7 @@ export default {
     },
     // 接受子组件传值
     acceptSonValue (e) {
-      this.temp.exemptions = e
+      this.exemptions = e
     },
     handleSelectionChange (val) {
       this.totalReportBefore = val
@@ -372,6 +374,7 @@ export default {
       }
     },
     completeReport () {
+      this.temp.exemptions = this.exemptions
       execute(this.rohsOid, this.temp, this.removeOid, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.$message.success({

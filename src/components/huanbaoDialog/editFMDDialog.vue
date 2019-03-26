@@ -153,7 +153,7 @@ import { editMaterial, editSubstance } from '@/api/huanbaoAPI'
 export default {
   components: {EscapeClause},
   name: 'EditFMDDialog',
-  props: ['updateFMDData'],
+  props: ['getDataList'],
   mounted: function () {
   },
   data () {
@@ -171,7 +171,7 @@ export default {
       this.oid = ''
       this.isSub = ''
       this.dialog = true
-      this.temp = Object.assign(row)
+      this.temp = Object.assign({}, row)
       this.oid = oid
       this.isSub = sub
     },
@@ -180,7 +180,7 @@ export default {
       if (this.isSub === 'NOSUB') {
         editMaterial(this.temp).then(r => {
           if (r.data.status === 'success') {
-            this.$props.updateFMDData()
+            this.$props.getDataList(this.oid)
             this.$message.success({
               message: '修改数据成功'
             })
@@ -193,7 +193,7 @@ export default {
       } else {
         editSubstance(this.temp).then(r => {
           if (r.data.status === 'success') {
-            this.$props.updateFMDData()
+            this.$props.getDataList(this.oid)
             this.$message.success({
               message: '修改数据成功'
             })
@@ -201,6 +201,7 @@ export default {
             this.$message.error({
               message: r.data.info
             })
+            this.$props.getDataList(this.oid)
           }
         })
       }

@@ -724,8 +724,8 @@
               <el-col span="4" style="text-align: right">&nbsp;</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col span="12" style="text-align: right">
-                <el-radio v-model="radio" label="Supply(供货)">{{$t('huanbaoTable.detailTable.Supply')}}</el-radio>
-                <el-radio v-model="radio" label="No supply(不供货)">{{$t('huanbaoTable.detailTable.unSupply')}}</el-radio>
+                <el-radio v-model="radio" label="供货">{{$t('huanbaoTable.detailTable.Supply')}}</el-radio>
+                <el-radio v-model="radio" label="不供货">{{$t('huanbaoTable.detailTable.unSupply')}}</el-radio>
               </el-col>
             </el-row>
             <el-row class="card_row">
@@ -794,7 +794,7 @@
           <files-upload ref="fileUpload"
                         :returnFilePath="returnFilePath"></files-upload>
           <edit-f-m-d-dialog  ref="editFMDDialog"
-                              :updateFMDData = 'updateFMDData'></edit-f-m-d-dialog>
+                              :getDataList = 'getDataList'></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
           <edit-msds ref="editMsds"
@@ -1290,12 +1290,16 @@ export default {
     },
     fmdDownload () {
       downloadEnvpTemplate('FMD').then(r => {
-        console.log('FMD', r)
+        if (r.data.flag) {
+          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        }
       })
     },
     downloadRoHS () {
       downloadEnvpTemplate('ROHS').then(r => {
-        console.log('ROHS', r)
+        if (r.data.flag) {
+          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        }
       })
     }
   }

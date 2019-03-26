@@ -99,7 +99,7 @@
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
-import { attachmentInfo, editOther2 } from '@/api/huanbaoAPI'
+import { attachmentInfo, editOther2, downloadAttach } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {
@@ -267,7 +267,9 @@ export default {
       }
     },
     download (row) {
-      console.log('xoxo', row)
+      downloadAttach(row.oid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
     }
   }
 }

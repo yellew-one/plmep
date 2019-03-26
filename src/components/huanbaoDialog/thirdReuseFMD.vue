@@ -213,6 +213,15 @@
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
+            <el-table-column
+              width="120"
+              fixed="right"
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button @click="uploadMsds(scope.row)" type="text" size="small">下载</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -320,8 +329,12 @@ export default {
       this.$refs.relevantMaterials.setDialogFormVisible(row)
     },
     uploadMaterial (row) {
-      console.log('relevantMaterial', row)
-      downloadAttach(row.reportId).then(r => {
+      downloadAttach(row.reportOid).then(r => {
+        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      })
+    },
+    uploadMsds (row) {
+      downloadAttach(row.attachOid).then(r => {
         window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
