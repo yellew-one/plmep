@@ -491,9 +491,23 @@ export default {
       ChangeType: '变更类型',
       Name: '名称',
       project: '项目',
+      number: '编号',
       DetailedDescription: '详细描述',
       RequireCompletionTime: '要求完成时间',
       ResourceEngineer: '龙旗资源工程师'
+    },
+    search: {
+      name: '名称',
+      email: '邮件'
+    },
+    table: {
+      ChangeType: '变更类型',
+      number: '编号',
+      Name: '名称',
+      project: '项目',
+      RequireCompletionTime: '要求完成时间',
+      SelectionResourceEngineer: '选择龙旗资源工程师',
+      state: '状态'
     }
   }
 }

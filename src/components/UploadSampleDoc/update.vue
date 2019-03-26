@@ -73,18 +73,18 @@
                       type="selection"
                       width="55">
                     </el-table-column>
-                    <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="350">
+                    <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="650">
                       <template
                         slot-scope="scope">
                         {{$t(scope.row.name)}}
                       </template>
                     </el-table-column>
-                   <el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">
-                      <template
-                        slot-scope="scope">
-                        {{$t(scope.row.desc)}}
-                      </template>
-                    </el-table-column>
+                   <!--<el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">-->
+                      <!--<template-->
+                        <!--slot-scope="scope">-->
+                        <!--{{$t(scope.row.desc)}}-->
+                      <!--</template>-->
+                    <!--</el-table-column>-->
                   </el-table>
                 </el-button-group>
               </el-col>

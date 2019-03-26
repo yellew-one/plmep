@@ -852,6 +852,7 @@ export function removeAttachment (number, fileName) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
+    sync: false,
     transformRequest: [function (data) {
       data = Qs.stringify(data)
       return data

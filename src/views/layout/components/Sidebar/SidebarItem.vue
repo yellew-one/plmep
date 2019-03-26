@@ -7,10 +7,10 @@
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
           <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{$t(item.children[0].meta.title)}}
-            <!--<span class="sd">{{item.children[0].meta.title | titlefilters }}</span>-->
-            <span class="sd" v-if="item.children[0].meta.title === 'huanbaoRoute.Material_submitted'">{{$store.getters.huanbaoTaskNum}}</span>
-            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.ypdq_task'">{{$store.getters.fengyangdaoqiNum}}</span>
-            <span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.myTasks'">{{$store.getters.fengyangTaskNum}}</span>
+            <!--&lt;!&ndash;<span class="sd">{{item.children[0].meta.title | titlefilters }}</span>&ndash;&gt;-->
+            <!--<span class="sd" v-if="item.children[0].meta.title === 'huanbaoRoute.Material_submitted'">{{$store.getters.huanbaoTaskNum}}</span>-->
+            <!--<span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.ypdq_task'">{{$store.getters.fengyangdaoqiNum}}</span>-->
+            <!--<span class="sd" v-if="item.children[0].meta.title === 'fengyangRoute.myTasks'">{{$store.getters.fengyangTaskNum}}</span>-->
           </span>
         </el-menu-item>
       </router-link>
