@@ -171,7 +171,7 @@ export const asyncRouterMap = [
       path: 'mypcn',
       component: () => import('@/views/PCN/my_pcn'),
       name: 'mypcn',
-      meta: { title: 'pcn.title.mypcn', icon: 'dtj' }
+      meta: { title: 'pcn.title.mypcn', icon: 'mypcn' }
     }]
   },
   {
@@ -183,7 +183,7 @@ export const asyncRouterMap = [
       path: 'editPcn',
       component: () => import('@/views/PCN/edit_pcn'),
       name: 'editPcn',
-      meta: { title: 'pcn.title.rejectPcn', icon: 'dtj' }
+      meta: { title: 'pcn.title.rejectPcn', icon: 'rejectpcn' }
     }]
   },
   {
@@ -195,7 +195,7 @@ export const asyncRouterMap = [
       path: 'createPcn',
       component: () => import('@/views/PCN/create_pcn'),
       name: 'createPcn',
-      meta: { title: 'pcn.title.createPcn', icon: 'dtj' }
+      meta: { title: 'pcn.title.createPcn', icon: 'addpcn' }
     }]
   },
   { path: '*', redirect: '/404', hidden: true }

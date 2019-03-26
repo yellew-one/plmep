@@ -148,7 +148,7 @@ export default {
     submitRemove () {
       var that = this
       this.removeList.forEach(function (value, index) {
-        removeAttachment(that.model.number, value.name.split('.')[0]).then(r => {
+        removeAttachment(that.model.number, value.name.substring(0, value.name.lastIndexOf('.'))).then(r => {
           console.log(r)
           if (r.data.mes.indexOf('成功') !== -1) {
             /* that.$message({
