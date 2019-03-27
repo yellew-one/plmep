@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange">
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -214,6 +214,8 @@ export default {
       this.totalReportBefore = []
       this.removeOid = ''
       this.addOid = ''
+      this.str = ''
+      this.str2 = ''
       this.hfDialog = true
       this.type = e
       this.oid = oid
@@ -269,17 +271,13 @@ export default {
     handleSelectionChange (val) {
       this.totalReportBefore = val
       this.str = ''
-      if (val.length < 1) {
-        this.removeOid = ''
-      } else {
-        for (let i in val) {
-          this.str = val[i].reportOid + ',' + this.str
-        }
+      for (let i in val) {
+        this.str = val[i].reportOid + ',' + this.str
       }
     },
     deleteRoHSReport () {
       this.str2 = this.str + this.str2
-      this.removeOid = this.str2.substring(0, this.str2.length - 1)
+      this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
           if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {

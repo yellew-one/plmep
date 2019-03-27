@@ -15,7 +15,7 @@
       </div>
       <el-row :gutter="20" >
         <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
+          <el-form size="mini" ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px"
                    style=' margin-left:0px;'>
             <el-row v-if="itemCategory === 'OTHER' && this.type !== 'TOTAL'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
@@ -37,7 +37,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="materialName" label="报告日期">
+                <el-form-item prop="rohsReportDateValue" label="报告日期">
                   <el-date-picker
                     v-model="rohsReportDateValue"
                     style="width: 100%"
@@ -56,7 +56,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="materialWeight" label="报告编号">
+                <el-form-item prop="reportNumber" label="报告编号">
                   <el-input v-model="temp.reportNumber"></el-input>
                 </el-form-item>
               </el-col>
@@ -67,7 +67,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="materialGroup" label="检测单位">
+                <el-form-item prop="examUnit" label="检测单位">
                   <el-select v-model="temp.examUnit" placeholder="" style="width: 100%">
                     <el-option
                       v-for="item in options"
@@ -131,7 +131,15 @@ export default {
       category: '',
       itemCategory: '',
       value: [],
-      msg: ''
+      msg: '',
+      rules: {
+        reportNumber: [
+          { required: true, message: '填写报告编号', trigger: 'change' }
+        ],
+        examUnit: [
+          { required: true, message: '请选择检测单位', trigger: 'change' }
+        ]
+      }
     }
   },
   methods: {
@@ -158,7 +166,9 @@ export default {
       this.category = category
       this.itemCategory = itemCategory
       this.rohsReportDateValue = e.reportDate
-      this.fileName = this.temp.reportFileName
+      if (this.temp.reportFileName) {
+        this.fileName = this.temp.reportFileName
+      }
       examUnit().then(r => {
         for (let i in r.data) {
           this.options.push({
@@ -192,91 +202,98 @@ export default {
       this.msg = ''
     },
     complete () {
-      this.temp.reportFileName = this.fileName
-      // 判断是否是总报告
-      if (this.type === 'TOTAL') {
-        // 判断是否选择文件
-        if (this.fileName === '') {
-          this.$alert('请选择文件', '提示', {
-            confirmButtonText: '确定',
-            callback: action => {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.temp.reportFileName = this.fileName
+          // 判断是否是总报告
+          if (this.type === 'TOTAL') {
+            // 判断是否选择文件
+            if (this.fileName === '') {
+              this.$alert('请选择文件', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+              })
+            } else {
+              // 判断是编辑 还是添加 分别调用不同接口
+              this.temp.reportDate = this.rohsReportDateValue
+              // 判断哪个条目的总报告
+              if (this.itemCategory === 'RoHS') {
+                if (this.category === 'EDIT') {
+                  this.editReport('1', 'RoHS')
+                } else {
+                  this.addReport('1', 'RoHS')
+                }
+              }
+              if (this.itemCategory === 'HF') {
+                if (this.category === 'EDIT') {
+                  this.editReport('1', 'HF')
+                } else {
+                  this.addReport('1', 'HF')
+                }
+              }
+              if (this.itemCategory === 'REACH') {
+                if (this.category === 'EDIT') {
+                  this.editReport('1', 'REACH')
+                } else {
+                  this.addReport('1', 'REACH')
+                }
+              }
+              if (this.itemCategory === 'OTHER') {
+                if (this.category === 'EDIT') {
+                  this.editReport('1', 'OTHER')
+                } else {
+                  this.addReport('1', 'OTHER')
+                }
+              }
             }
-          })
+          } else {
+            if (this.fileName === '') {
+              this.$alert('请选择文件', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                }
+              })
+            } else {
+              // 判断是编辑 还是添加 分别调用不同接口
+              this.temp.reportDate = this.rohsReportDateValue
+              // 判断哪个条目的总报告
+              if (this.itemCategory === 'RoHS') {
+                if (this.category === 'EDIT') {
+                  this.editReport('0', 'RoHS')
+                } else {
+                  this.addReport('0', 'RoHS')
+                }
+              }
+              if (this.itemCategory === 'HF') {
+                if (this.category === 'EDIT') {
+                  this.editReport('0', 'HF')
+                } else {
+                  this.addReport('0', 'HF')
+                }
+              }
+              if (this.itemCategory === 'REACH') {
+                if (this.category === 'EDIT') {
+                  this.editReport('0', 'REACH')
+                } else {
+                  this.addReport('0', 'REACH')
+                }
+              }
+              if (this.itemCategory === 'OTHER') {
+                this.temp.reportType = this.value.join('\n')
+                if (this.category === 'EDIT') {
+                  this.editReport('0', 'OTHER')
+                } else {
+                  this.addReport('0', 'OTHER')
+                }
+              }
+            }
+          }
         } else {
-          // 判断是编辑 还是添加 分别调用不同接口
-          this.temp.reportDate = this.rohsReportDateValue
-          // 判断哪个条目的总报告
-          if (this.itemCategory === 'RoHS') {
-            if (this.category === 'EDIT') {
-              this.editReport('1', 'RoHS')
-            } else {
-              this.addReport('1', 'RoHS')
-            }
-          }
-          if (this.itemCategory === 'HF') {
-            if (this.category === 'EDIT') {
-              this.editReport('1', 'HF')
-            } else {
-              this.addReport('1', 'HF')
-            }
-          }
-          if (this.itemCategory === 'REACH') {
-            if (this.category === 'EDIT') {
-              this.editReport('1', 'REACH')
-            } else {
-              this.addReport('1', 'REACH')
-            }
-          }
-          if (this.itemCategory === 'OTHER') {
-            if (this.category === 'EDIT') {
-              this.editReport('1', 'OTHER')
-            } else {
-              this.addReport('1', 'OTHER')
-            }
-          }
+          console.log('error submit!!')
+          return false
         }
-      } else {
-        if (this.fileName === '') {
-          this.$alert('请选择文件', '提示', {
-            confirmButtonText: '确定',
-            callback: action => {
-            }
-          })
-        } else {
-          // 判断是编辑 还是添加 分别调用不同接口
-          this.temp.reportDate = this.rohsReportDateValue
-          // 判断哪个条目的总报告
-          if (this.itemCategory === 'RoHS') {
-            if (this.category === 'EDIT') {
-              this.editReport('0', 'RoHS')
-            } else {
-              this.addReport('0', 'RoHS')
-            }
-          }
-          if (this.itemCategory === 'HF') {
-            if (this.category === 'EDIT') {
-              this.editReport('0', 'HF')
-            } else {
-              this.addReport('0', 'HF')
-            }
-          }
-          if (this.itemCategory === 'REACH') {
-            if (this.category === 'EDIT') {
-              this.editReport('0', 'REACH')
-            } else {
-              this.addReport('0', 'REACH')
-            }
-          }
-          if (this.itemCategory === 'OTHER') {
-            this.temp.reportType = this.value.join('\n')
-            if (this.category === 'EDIT') {
-              this.editReport('0', 'OTHER')
-            } else {
-              this.addReport('0', 'OTHER')
-            }
-          }
-        }
-      }
+      })
     },
     // 编辑报告
     editReport (num, type) {

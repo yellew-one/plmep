@@ -884,6 +884,7 @@ export function viewRohs (rohsItemOid) {
 
 // RoHS条目编辑确认
 export function execute (oid, temp, removeOid, addOid) {
+  alert(temp.exemptions)
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/rohsItem.jsp',
     method: 'post',
@@ -907,7 +908,7 @@ export function execute (oid, temp, removeOid, addOid) {
       bbp: temp.bbp,
       dbp: temp.dbp,
       dibp: temp.dibp,
-      exemption: temp.exemption,
+      exemption: temp.exemptions,
       remark: temp.remark,
       removeOid: removeOid,
       addOid: addOid
@@ -1293,7 +1294,6 @@ export function editOther2 (oid, filePath, attachmentType, attachmentOid) {
       filePath: filePath,
       attachmentType: attachmentType,
       attachmentOid: attachmentOid
-
     }
   })
 }

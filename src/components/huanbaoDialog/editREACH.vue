@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange">
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -76,7 +76,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange2">
+            @selection-change="handleSelectionChange2">
             <el-table-column
               type="selection"
               width="35">
@@ -199,16 +199,21 @@ export default {
       str2: '',
       str3: '',
       str4: '',
-      filePath: ''
+      filePath: '',
+      filePathArray: []
     }
   },
   methods: {
     setReachDialogVisible (e, row, oid) {
-      console.log('xoxo', row)
       this.totalReportBefore = []
       this.removeOid = ''
       this.removeOid2 = ''
       this.addOid = ''
+      this.str = ''
+      this.str2 = ''
+      this.str3 = ''
+      this.str4 = ''
+      this.filePathArray = []
       this.reachDialog = true
       this.type = e
       this.oid = oid
@@ -248,14 +253,14 @@ export default {
     },
     addFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加总声明', 'fileList', {
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加申报物质', 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, 'REACH')
     },
     deleteFile () {
-      this.str4 = this.str + this.str4
-      this.removeOid2 = this.str4.substring(0, this.str4.length - 1)
+      this.str4 = this.str3 + this.str4
+      this.removeOid2 = this.str4.substring(0, this.str4.length - 1) + ',' + this.removeOid2
       for (let i in this.totalReport2) {
         for (let j in this.totalReport2Before) {
           if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
@@ -263,32 +268,32 @@ export default {
           }
         }
       }
+      for (let i in this.filePathArray) {
+        for (let j in this.totalReport2Before) {
+          if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
+            this.filePathArray.splice(i, 1)
+          }
+        }
+      }
     },
     handleSelectionChange (val) {
       this.totalReportBefore = val
       this.str = ''
-      if (val.length < 1) {
-        this.removeOid2 = ''
-      } else {
-        for (let i in val) {
-          this.str = val[i].reportOid + ',' + this.str
-        }
+      for (let i in val) {
+        this.str = val[i].reportOid + ',' + this.str
       }
     },
     handleSelectionChange2 (val) {
-      this.totalReport2Before = val
       this.str3 = ''
-      if (val.length < 1) {
-        this.removeOid = ''
-      } else {
-        for (let i in val) {
+      for (let i in val) {
+        if (val[i].hasOwnProperty('oid')) {
           this.str3 = val[i].oid + ',' + this.str3
         }
       }
     },
     deleteRoHSReport () {
       this.str2 = this.str + this.str2
-      this.removeOid = this.str2.substring(0, this.str2.length - 1)
+      this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
           if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {
@@ -298,6 +303,10 @@ export default {
       }
     },
     completeReport () {
+      var that = this
+      this.filePathArray.forEach(function (value, index) {
+        that.filePath = value.filePath + that.filePath
+      })
       this.temp.fileRetardant = this.value
       executeEditReachItem(this.reachOid, this.filePath, this.removeOid2, this.addOid, this.removeOid).then(r => {
         if (r.data.status === 'success') {
@@ -321,8 +330,12 @@ export default {
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
       this.fileName = e[0].name
-      this.filePath = e[0].response.data[0] + ',' + this.filePath
-      this.filePath = this.filePath.substring(0, this.filePath.length - 1)
+      this.filePathArray.push({
+        filePath: e[0].response.data[0],
+        fileName: e[0].name
+      })
+      // this.filePath = e[0].response.data[0] + ',' + this.filePath
+      // this.filePath = this.filePath.substring(0, this.filePath.length - 1)
       this.totalReport2.push({
         fileName: this.fileName,
         modifyTime: ''

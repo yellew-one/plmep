@@ -141,20 +141,15 @@ export default {
       this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('TOTAL', row, this.oid, 'EDIT', this.item)
     },
     handleSelectionChange (val) {
-      console.log('xoxo', val)
       this.totalReportBefore = val
       this.str = ''
-      if (val.length < 1) {
-        this.removeOid = ''
-      } else {
-        for (let i in val) {
-          this.str = val[i].reportOid + ',' + this.str
-        }
+      for (let i in val) {
+        this.str = val[i].reportOid + ',' + this.str
       }
     },
     deleteRoHSReport () {
       this.str2 = this.str + this.str2
-      this.removeOid = this.str2.substring(0, this.str2.length - 1)
+      this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
           if (this.totalReport[i].reportOid === this.totalReportBefore[j].reportOid) {
@@ -164,7 +159,6 @@ export default {
       }
     },
     completeGeneralReport () {
-      console.log('xoxo', this.removeOid)
       saveFinalReport(this.item, '1', this.oid, this.removeOid, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.generalReportDialog = false

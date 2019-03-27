@@ -794,7 +794,8 @@
           <files-upload ref="fileUpload"
                         :returnFilePath="returnFilePath"></files-upload>
           <edit-f-m-d-dialog  ref="editFMDDialog"
-                              :getDataList = 'getDataList'></edit-f-m-d-dialog>
+                              :getDataList = 'getDataList'
+                              :updateFMDData="updateFMDData"></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
                        :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
           <edit-msds ref="editMsds"
@@ -1094,6 +1095,7 @@ export default {
           })
         } else {
           this.$message.error({
+            dangerouslyUseHTMLString: true,
             message: r.data.info
           })
         }
