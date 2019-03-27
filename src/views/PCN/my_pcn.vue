@@ -45,7 +45,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="20" type="flex" class="row-bg" >
+              <el-row :gutter="100" type="flex" class="row-bg" >
                 <el-col :span="8">
                   <el-form-item prop="state" :label="$t('pcn.table.state')">
                     <el-input   v-model="model.serchItems.state"></el-input>

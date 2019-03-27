@@ -6,10 +6,10 @@
       </div>
       <el-row style="margin-top: 20px;margin-left: 20px">
         <el-col :span="24">
-          <el-form ref="form" label-position="left" size="mini" :model="tmp" label-width="140px">
+          <el-form ref="form" :rules="rules" label-position="left" size="mini" :model="tmp" label-width="140px">
             <el-row style="margin-top: 20px;margin-left: 20px">
               <el-col :span="10">
-                <el-form-item :label="$t('pcn.form.ChangeType')">
+                <el-form-item prop="ChangeType" :label="$t('pcn.form.ChangeType')">
                   <el-select style="width: 100%" v-model="tmp.changeType" placeholder="请选择">
                     <el-option
                       v-for="item in options"
@@ -19,18 +19,18 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('pcn.form.Name')">
+                <el-form-item prop="Name" :label="$t('pcn.form.Name')">
                   <el-input v-model="tmp.name"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('pcn.form.project')">
+                <el-form-item prop="project" :label="$t('pcn.form.project')">
                   <el-input v-model="tmp.project"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('pcn.form.ResourceEngineer')">
+                <el-form-item prop="ResourceEngineer" :label="$t('pcn.form.ResourceEngineer')">
                   <el-input v-model="tmp.ResourceEngineer" disabled="true">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>
-                <el-form-item :label="$t('pcn.form.RequireCompletionTime')">
+                <el-form-item prop="RequireCompletionTime" :label="$t('pcn.form.RequireCompletionTime')">
                   <el-date-picker
                     style="width: 100%"
                     v-model="tmp.requireCompletionTime"
@@ -38,7 +38,7 @@
                     placeholder="">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item :label="$t('pcn.form.DetailedDescription')">
+                <el-form-item prop="DetailedDescription" :label="$t('pcn.form.DetailedDescription')">
                   <el-input type="textarea" v-model="tmp.DetailedDescription"></el-input>
                 </el-form-item>
               </el-col>
@@ -139,6 +139,22 @@ export default {
       tmp: {changeType: ''},
       submitPath: '',
       filesList: [],
+      rules: {
+        ChangeType: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        Name: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        project: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        ResourceEngineer: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        RequireCompletionTime: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ]},
       options: [{
         value: '',
         label: ''

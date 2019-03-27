@@ -163,6 +163,18 @@ export const asyncRouterMap = [
     }]
   },
   {
+    path: '/createPcn',
+    component: Layout,
+    redirect: '/createPcn',
+    meta: { title: 'pcn.title.createPcn', icon: 'issue' },
+    children: [{
+      path: 'createPcn',
+      component: () => import('@/views/PCN/create_pcn'),
+      name: 'createPcn',
+      meta: { title: 'pcn.title.createPcn', icon: 'addpcn' }
+    }]
+  },
+  {
     path: '/mypcn',
     component: Layout,
     redirect: '/mypcn',
@@ -184,18 +196,6 @@ export const asyncRouterMap = [
       component: () => import('@/views/PCN/edit_pcn'),
       name: 'editPcn',
       meta: { title: 'pcn.title.rejectPcn', icon: 'rejectpcn' }
-    }]
-  },
-  {
-    path: '/createPcn',
-    component: Layout,
-    redirect: '/createPcn',
-    meta: { title: 'pcn.title.createPcn', icon: 'issue' },
-    children: [{
-      path: 'createPcn',
-      component: () => import('@/views/PCN/create_pcn'),
-      name: 'createPcn',
-      meta: { title: 'pcn.title.createPcn', icon: 'addpcn' }
     }]
   },
   { path: '*', redirect: '/404', hidden: true }
