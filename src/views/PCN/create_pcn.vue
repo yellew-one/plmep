@@ -84,13 +84,15 @@
         </el-col>
       </el-row>
       </el-card>
-      <ResourceEngineer ref="dialogRef" :restData="restData"></ResourceEngineer>
+      <ResourceEngineer ref="dialogRef" :restData="selectResourceEngineer"></ResourceEngineer>
       <filesUpload :returnFilePath="returnFilePath" ref="fup"></filesUpload>
     </div>
 </template>
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import filesUpload from '../../components/filesUpload/index'
+import { resourceEngineer } from '@/api/pcn'
+
 export default {
   name: 'createPcn',
   components: {
@@ -98,8 +100,12 @@ export default {
     filesUpload
   },
   mounted: function () {
+    this.resourceEngineer()
   },
   methods: {
+    selectResourceEngineer (value) {
+      this.tmp.ResourceEngineer = value.fullName
+    },
     handleSelectionChange (data) {
       if (data) {
         var path = ''
@@ -132,11 +138,16 @@ export default {
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
+    },
+    resourceEngineer () {
+      resourceEngineer().then(r => {
+        console.log(r)
+      })
     }
   },
   data () {
     return {
-      tmp: {changeType: ''},
+      tmp: {changeType: '', ResourceEngineer: ''},
       submitPath: '',
       filesList: [],
       rules: {

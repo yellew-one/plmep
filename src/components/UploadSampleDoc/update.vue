@@ -128,6 +128,7 @@ export default {
         var path = value.response.data[0]
         that.submitPath = that.submitPath + path + ';'
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
+        that.updatefielsList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
     },
@@ -180,6 +181,7 @@ export default {
               duration: 5 * 1000
             })
           }
+          that.updatefielsList.splice(that.updatefielsList.indexOf(value), 1)
           sz.splice(sz.indexOf(value), 1)
         })
         this.filesList = sz
@@ -239,6 +241,11 @@ export default {
         })
         return
       }
+      var str = ''
+      this.updatefielsList.forEach(function (value, index) {
+        str += value.filepath + ','
+      })
+      this.submitPath = str
       this.$store.commit('SET_LOADING', true)
       this.submitRemove()
       if (this.model.ftype && this.model.ftype === 'create') {
@@ -319,6 +326,7 @@ export default {
       options2: [],
       filesList: [],
       materialNumber: '',
+      updatefielsList: [],
       filePath: '',
       selectionData: [],
       submitPath: '',

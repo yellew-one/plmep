@@ -487,13 +487,15 @@ export default {
       Name: '名称',
       project: '项目',
       number: '编号',
+      userName: '拼音',
       DetailedDescription: '详细描述',
       RequireCompletionTime: '要求完成时间',
       ResourceEngineer: '龙旗资源工程师'
     },
     search: {
       name: '名称',
-      email: '邮件'
+      email: '邮件',
+      userName: '拼音'
     }
   }
 }
