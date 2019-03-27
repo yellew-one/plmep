@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange">
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -104,6 +104,7 @@ export default {
   },
   methods: {
     setgeneralReportDialogisible (type, title, oid, item) {
+      this.str2 = ''
       this.removeOid = ''
       this.addOid = ''
       this.totalReportBefore = []
@@ -140,6 +141,7 @@ export default {
       this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('TOTAL', row, this.oid, 'EDIT', this.item)
     },
     handleSelectionChange (val) {
+      console.log('xoxo', val)
       this.totalReportBefore = val
       this.str = ''
       if (val.length < 1) {
@@ -162,6 +164,7 @@ export default {
       }
     },
     completeGeneralReport () {
+      console.log('xoxo', this.removeOid)
       saveFinalReport(this.item, '1', this.oid, this.removeOid, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.generalReportDialog = false

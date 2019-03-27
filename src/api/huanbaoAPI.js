@@ -542,7 +542,7 @@ export function searchReuseReport (e) {
   })
 }
 // envpDataCheck：物料环保资料完整性校验
-export function envpDataCheck (e) {
+export function checkData (e) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
     method: 'post',

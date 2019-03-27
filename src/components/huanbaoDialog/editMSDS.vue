@@ -290,16 +290,14 @@ export default {
     completeMSDS () {
       this.dialogVisible = false
       var oid = this.msdsAttachmentOid + ',' + this.patentAttachmentOid + ',' + this.ipAttachmentOid
-      if (this.fileType !== '') {
-        editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
-          if (r.data.result === 'success') {
-            this.$props.updateMSDSData()
-            this.$message.success({
-              message: '操作文件成功'
-            })
-          }
-        })
-      }
+      editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
+        if (r.data.result === 'success') {
+          this.$props.updateMSDSData()
+          this.$message.success({
+            message: '操作文件成功'
+          })
+        }
+      })
     },
     uploadMsds () {
       this.$refs.upload.openDialog()

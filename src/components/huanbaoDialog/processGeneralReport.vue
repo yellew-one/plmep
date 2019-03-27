@@ -43,8 +43,10 @@
                     style="width: 100%"
                     type="date"
                     value-format="yyyy-MM-dd"
-                    placeholder="">
+                    placeholder=""
+                    @change="clearMsg">
                   </el-date-picker>
+                  <span style="color: red">{{msg}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -128,7 +130,8 @@ export default {
       fileType: '',
       category: '',
       itemCategory: '',
-      value: []
+      value: [],
+      msg: ''
     }
   },
   methods: {
@@ -140,6 +143,7 @@ export default {
      * @param itemCategory 判断是哪个条目
      */
     setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
+      this.msg = ''
       this.fileName = ''
       this.filePath = ''
       this.options = []
@@ -148,9 +152,7 @@ export default {
       this.itemCategory = ''
       this.value = []
       this.ProcessingGeneralReportDialog = true
-      if (e) {
-        this.temp = Object.assign(e)
-      }
+      this.temp = Object.assign({}, e)
       this.type = type
       this.oid = oid
       this.category = category
@@ -181,16 +183,20 @@ export default {
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加总报告', 'fileList', {
+      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加报告', 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, this.itemCategory)
     },
+    clearMsg () {
+      this.msg = ''
+    },
     complete () {
+      this.temp.reportFileName = this.fileName
       // 判断是否是总报告
       if (this.type === 'TOTAL') {
         // 判断是否选择文件
-        if (this.fileType === '') {
+        if (this.fileName === '') {
           this.$alert('请选择文件', '提示', {
             confirmButtonText: '确定',
             callback: action => {
@@ -198,31 +204,30 @@ export default {
           })
         } else {
           // 判断是编辑 还是添加 分别调用不同接口
-          this.ProcessingGeneralReportDialog = false
           this.temp.reportDate = this.rohsReportDateValue
           // 判断哪个条目的总报告
-          if (this.fileType === 'RoHS') {
+          if (this.itemCategory === 'RoHS') {
             if (this.category === 'EDIT') {
               this.editReport('1', 'RoHS')
             } else {
               this.addReport('1', 'RoHS')
             }
           }
-          if (this.fileType === 'HF') {
+          if (this.itemCategory === 'HF') {
             if (this.category === 'EDIT') {
               this.editReport('1', 'HF')
             } else {
               this.addReport('1', 'HF')
             }
           }
-          if (this.fileType === 'REACH') {
+          if (this.itemCategory === 'REACH') {
             if (this.category === 'EDIT') {
               this.editReport('1', 'REACH')
             } else {
               this.addReport('1', 'REACH')
             }
           }
-          if (this.fileType === 'OTHER') {
+          if (this.itemCategory === 'OTHER') {
             if (this.category === 'EDIT') {
               this.editReport('1', 'OTHER')
             } else {
@@ -231,7 +236,7 @@ export default {
           }
         }
       } else {
-        if (this.fileType === '') {
+        if (this.fileName === '') {
           this.$alert('请选择文件', '提示', {
             confirmButtonText: '确定',
             callback: action => {
@@ -239,31 +244,30 @@ export default {
           })
         } else {
           // 判断是编辑 还是添加 分别调用不同接口
-          this.ProcessingGeneralReportDialog = false
           this.temp.reportDate = this.rohsReportDateValue
           // 判断哪个条目的总报告
-          if (this.fileType === 'RoHS') {
+          if (this.itemCategory === 'RoHS') {
             if (this.category === 'EDIT') {
               this.editReport('0', 'RoHS')
             } else {
               this.addReport('0', 'RoHS')
             }
           }
-          if (this.fileType === 'HF') {
+          if (this.itemCategory === 'HF') {
             if (this.category === 'EDIT') {
               this.editReport('0', 'HF')
             } else {
               this.addReport('0', 'HF')
             }
           }
-          if (this.fileType === 'REACH') {
+          if (this.itemCategory === 'REACH') {
             if (this.category === 'EDIT') {
               this.editReport('0', 'REACH')
             } else {
               this.addReport('0', 'REACH')
             }
           }
-          if (this.fileType === 'OTHER') {
+          if (this.itemCategory === 'OTHER') {
             this.temp.reportType = this.value.join('\n')
             if (this.category === 'EDIT') {
               this.editReport('0', 'OTHER')
@@ -278,14 +282,23 @@ export default {
     editReport (num, type) {
       editReport(this.temp, num, this.filePath).then(r => {
         if (r.data.status === 'success') {
+          this.ProcessingGeneralReportDialog = false
+          this.temp.reportOid = r.data.add
           this.$props.getBABAData(this.oid, type, r.data, this.temp)
-          this.$message.success({
-            message: '编辑成功'
-          })
+          if (r.data.hasOwnProperty('warn')) {
+            this.$message.success({
+              dangerouslyUseHTMLString: true,
+              message: '<title>编辑成功</title><strong><i>' + r.data.warn + '</i></strong>'
+            })
+          } else {
+            this.$message.success({
+              dangerouslyUseHTMLString: true,
+              message: '编辑成功'
+            })
+          }
         } else {
-          this.$message.error({
-            message: r.data.info
-          })
+          this.ProcessingGeneralReportDialog = true
+          this.msg = r.data.info
         }
       })
     },
@@ -293,14 +306,23 @@ export default {
     addReport (num, type) {
       addReport(this.oid, this.temp, num, type, this.filePath).then(r => {
         if (r.data.status === 'success') {
+          this.ProcessingGeneralReportDialog = false
+          this.temp.reportOid = r.data.add
           this.$props.getBABAData(this.oid, type, r.data, this.temp)
-          this.$message.success({
-            message: '添加成功'
-          })
+          if (r.data.hasOwnProperty('warn')) {
+            this.$message.success({
+              dangerouslyUseHTMLString: true,
+              message: '<title>编辑成功</title><strong><i>' + r.data.warn + '</i></strong>'
+            })
+          } else {
+            this.$message.success({
+              dangerouslyUseHTMLString: true,
+              message: '编辑成功'
+            })
+          }
         } else {
-          this.$message.error({
-            message: r.data.info
-          })
+          this.ProcessingGeneralReportDialog = true
+          this.msg = r.data.info
         }
       })
     },

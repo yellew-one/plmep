@@ -250,7 +250,7 @@ export default {
     REACH: {
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
-      reportMaterialContained: '是否有申报物资',
+      reportMaterialContained: '是否有申报物质',
       reportMaterialReport: '申报物资报告',
       reportCount: 'REACH报告',
       reportDate: '报告日期',

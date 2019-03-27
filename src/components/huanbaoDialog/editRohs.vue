@@ -230,8 +230,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item prop="rohsState"  label="状态">
-                <el-input disabled="true" v-model="temp.rohsState">
-                </el-input>
+                <span>{{temp.rohsState}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="6">

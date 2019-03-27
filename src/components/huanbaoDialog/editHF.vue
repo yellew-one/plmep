@@ -120,7 +120,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item prop="hg"  label="是否阻燃剂">
-                <el-select :disabled="ifEdit" v-model="value" placeholder="">
+                <el-select style="width: 100%" :disabled="ifEdit" v-model="value" placeholder="">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -196,6 +196,9 @@ export default {
       str: '',
       str2: '',
       options: [{
+        value: '',
+        label: ''
+      }, {
         value: '1',
         label: '是'
       }, {

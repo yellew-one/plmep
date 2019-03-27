@@ -135,8 +135,8 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="fileRetardant"  label="是否阻燃剂">
-                <el-input disabled="true" v-model="temp.fileRetardant">
+              <el-form-item prop="fileRetardant"  label="是否有申报物质">
+                <el-input disabled="true" v-model="temp.reportMaterialContained">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -204,6 +204,7 @@ export default {
   },
   methods: {
     setReachDialogVisible (e, row, oid) {
+      console.log('xoxo', row)
       this.totalReportBefore = []
       this.removeOid = ''
       this.removeOid2 = ''
@@ -328,7 +329,6 @@ export default {
       })
     },
     download (row) {
-      console.log('申报物质', row)
       downloadAttach(row.reportOid).then(r => {
         window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })

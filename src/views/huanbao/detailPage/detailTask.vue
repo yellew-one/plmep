@@ -259,12 +259,12 @@
                     <span>{{scope.row.materialName}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="materialGroup" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.ROHS.materialGroup')" >
+              <!--  <el-table-column prop="materialGroup" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.ROHS.materialGroup')" >
                   <template
                     slot-scope="scope">
                     <span>{{scope.row.materialGroup}}</span>
                   </template>
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column prop="manufacturer" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.ROHS.manufacturer')" >
                   <template
                     slot-scope="scope">
@@ -528,7 +528,7 @@
                     <span>{{scope.row.reportNumber}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.REACH.state')" width="180">
+                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.REACH.state')">
                   <template
                     slot-scope="scope">
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
@@ -817,8 +817,8 @@
   </div>
 </template>
 <script>
-import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, envpDataCheck, processHistory, envpComments, completeEnvp } from '@/api/index'
-import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate } from '@/api/huanbaoAPI'
+import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, processHistory, envpComments } from '@/api/index'
+import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate, completeEnvp, checkData } from '@/api/huanbaoAPI'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
@@ -849,7 +849,7 @@ export default {
       isShow: false,
       isSub: '',
       state: '',
-      radio: 'Supply(供货)',
+      radio: '供货',
       comment: '',
       oid: '',
       activeName2: 'first',
@@ -922,30 +922,30 @@ export default {
         state: ''
       }],
       tableDataREACH: [{
-        materialName: '原材料名称',
-        manufacturer: '原材料制造商',
-        reportMaterialContained: '是否有申报物资',
-        reportMaterialReport: '申报物资报告',
-        reportCount: 'REACH报告',
-        reportDate: '报告日期',
-        reportNumber: '报告编号',
-        state: '状态'
+        materialName: '',
+        manufacturer: '',
+        reportMaterialContained: '',
+        reportMaterialReport: '',
+        reportCount: '',
+        reportDate: '',
+        reportNumber: '',
+        state: ''
       }],
       tableDataOTHER: [{
-        materialName: '原材料名称',
-        manufacturer: '原材料制造商',
-        reportMaterialContained: '是否有申报物资',
-        reportMaterialReport: '申报物资报告',
-        reportCount: 'REACH报告',
-        reportDate: '报告日期',
-        reportNumber: '报告编号',
-        state: '状态'
+        materialName: '',
+        manufacturer: '',
+        reportMaterialContained: '',
+        reportMaterialReport: '',
+        reportCount: '',
+        reportDate: '',
+        reportNumber: '',
+        state: ''
       }],
       tableDataOTHER2: [{
-        fileName: '文件名',
-        fileType: '资料类型',
-        modifyTimestamp: '上次修改时间',
-        state: '状态'
+        fileName: '',
+        fileType: '',
+        modifyTimestamp: '',
+        state: ''
       }],
       approvalTable: [],
       fmdOpinion: '',
@@ -957,7 +957,8 @@ export default {
       other2Opinion: '',
       approvalType: '',
       envprotectionDocumentOid: '',
-      otherSubstances: []
+      otherSubstances: [],
+      nowTags: {}
     }
   },
   filters: {
@@ -966,6 +967,8 @@ export default {
     }
   },
   mounted: function () {
+    var tagsView = this.$store.state.tagsView.visitedViews
+    this.nowTags = tagsView[tagsView.length - 1]
   },
   activated: function () {
     console.log('oid:  ', this.$route.params.oid)
@@ -1074,25 +1077,42 @@ export default {
           message: '已取消删除'
         })
       })
-      this.updateFMDData()
     },
     // 提交
     submit () {
       this.$store.commit('SET_LOADING', true)
-      // 物料环保资料完整性校验
-      envpDataCheck(this.model.number).then(r => {
-        console.log('envpDataCheck', r)
-        this.$notify.info({
-          message: r.data.info,
-          title: r.data.status,
-          duration: 3 * 1000
-        })
+      checkData('HSF' + this.model.materialNumber).then(r => {
+        if (r.data.status === 'success') {
+          completeEnvp(this.oid, this.comment, this.radio).then(r => {
+            console.log('completeSealedTask', r)
+            if (r.data.status === 'success') {
+              this.$message.success({
+                message: '任务已提交'
+              })
+              this.closePage()
+            }
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
       })
-      completeEnvp(this.oid, this.comment, this.radio).then(r => {
-        console.log('completeSealedTask', r)
-        this.$message.success({
-          message: '这是一条成功的消息'
-        })
+    },
+    closePage () {
+      this.$router.replace({name: 'submitted'})
+      this.closeSelectedTag(this.nowTags)
+    },
+    closeSelectedTag (view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/home')
+          }
+        }
       })
     },
     // FMD 第三方复用
@@ -1257,7 +1277,7 @@ export default {
       if (type === 'FMD') {
         executeUploadFMDData(this.oid, e[0].response.data[0]).then(r => {
           if (r.data.status === 'success') {
-            this.updateFMDData()
+            this.getDataList(this.oid)
             this.$message.success({
               message: '上传FMD数据成功'
             })
@@ -1271,7 +1291,7 @@ export default {
       if (type === 'RoHS') {
         executeUploadItemData(this.oid, e[0].response.data[0]).then(r => {
           if (r.data.status === 'success') {
-            this.updateRoHSData()
+            this.getDataList(this.oid)
             this.$message.success({
               message: '上传RoHS数据成功'
             })

@@ -176,11 +176,14 @@ export default {
       },
       dataList: [],
       approvalTable: [],
-      radio: 'Supply(供货)',
-      comment: ''
+      radio: '供货',
+      comment: '',
+      nowTags: ''
     }
   },
   mounted: function () {
+    var tagsView = this.$store.state.tagsView.visitedViews
+    this.nowTags = tagsView[tagsView.length - 1]
   },
   activated: function () {
     this.oid = this.$route.params.oid
@@ -214,7 +217,28 @@ export default {
     },
     submitAprive () {
       completeReportTask(this.oid, this.comment, this.radio).then(r => {
-        console.log('xoxo', r)
+        if (r.data.status === 'success') {
+          this.$message.success({
+            message: '任务已提交'
+          })
+          this.closePage()
+        }
+      })
+    },
+    closePage () {
+      this.$router.replace({name: 'third'})
+      this.closeSelectedTag(this.nowTags)
+    },
+    closeSelectedTag (view) {
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view)) {
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/home')
+          }
+        }
       })
     }
   }
