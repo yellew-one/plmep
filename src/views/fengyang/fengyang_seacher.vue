@@ -142,6 +142,12 @@
             <span>{{scope.row.createStamp}}</span>
           </template>
         </el-table-column>
+        <el-table-column align="center" show-overflow-tooltip="true" prop="create_time"  :label="$t('fengyangTable.seacher.Seal_recognition_time')" width="180">
+          <template
+            slot-scope="scope">
+            <span>{{scope.row.approvedDate}}</span>
+          </template>
+        </el-table-column>
        </el-table>
       <div style="width: 100%;text-align: right">
       <el-pagination
