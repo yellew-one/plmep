@@ -386,8 +386,8 @@
         </el-col>
       </el-row>
       <sealeInfoEdit :restData="getDetailInfo"  ref="infoEdit"></sealeInfoEdit>
-      <uploadSampleDoc :restData="showRelatedWLFYDocs" ref="uploadSamDoc"></uploadSampleDoc>
-      <updateSampleDoc :restData="showRelatedWLFYDocs" ref="docUpdate"></updateSampleDoc>
+      <uploadSampleDoc :restData="updatedoc" ref="uploadSamDoc"></uploadSampleDoc>
+      <updateSampleDoc :restData="updatedoc" ref="docUpdate"></updateSampleDoc>
     </div>
 </template>
 <script>
@@ -488,6 +488,10 @@ export default {
       // http://172.16.9.170:8081/files/upLoad
       // http://172.17.1.125:8081/files/upLoad
       this.$refs.fileUpload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '', 'fileList', {number: this.model.materialNumber})
+    },
+    updatedoc () {
+      this.getDetailInfo(this.oid)
+      this.showRelatedWLFYDocs()
     },
     showRelatedWLFYDocs () {
       showRelatedWLFYDocs('MS' + this.model.materialNumber).then(r => {

@@ -333,7 +333,8 @@ export default {
     submitSample: 'submitSample',
     submitEnvironmentalInformation: 'Submit Information',
     changeExpirationReport: 'Update Report',
-    submitExpiredSample: 'Mailing sample'
+    submitExpiredSample: 'Mailing sample',
+    changeSample: 'changeSample'
   },
   state: {
     REWORK: 'REWORK',

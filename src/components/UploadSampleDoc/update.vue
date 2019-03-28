@@ -210,6 +210,7 @@ export default {
       this.removeList = []
       this.submitPath = ''
       this.materialNumber = materialNumber
+      this.updatefielsList = []
     },
     toggleSelection (rows) {
       if (rows) {
@@ -243,7 +244,7 @@ export default {
       }
       var str = ''
       this.updatefielsList.forEach(function (value, index) {
-        str += value.filepath + ','
+        str += value.filepath + '@@@'
       })
       this.submitPath = str
       this.$store.commit('SET_LOADING', true)

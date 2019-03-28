@@ -337,7 +337,8 @@ export default {
     submitSample: '待提交物料封样',
     submitEnvironmentalInformation: '提交环保资料',
     changeExpirationReport: '更新到期报告',
-    submitExpiredSample: '邮寄样品'
+    submitExpiredSample: '邮寄样品',
+    changeSample: '更新封样资料'
   },
   state: {
     REWORK: '驳回',
@@ -510,6 +511,8 @@ export default {
       RequireCompletionTime: '要求完成时间',
       SelectionResourceEngineer: '选择龙旗资源工程师',
       state: '状态'
+    },
+    select: {
     }
   }
 }

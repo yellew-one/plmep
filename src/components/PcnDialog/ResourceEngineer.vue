@@ -47,7 +47,7 @@
         </el-card>
       </el-scrollbar>
 
-      <div style="text-align:right">
+      <div style="text-align:right;padding-top: 20px">
         <!--<el-button type="primary" size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>-->
       </div>
     </div>

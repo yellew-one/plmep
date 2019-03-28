@@ -6,11 +6,11 @@
       </div>
       <el-row style="margin-top: 20px;margin-left: 20px">
         <el-col :span="24">
-          <el-form ref="form" :rules="rules" label-position="left" size="mini" :model="tmp" label-width="140px">
+          <el-form ref="form1" :rules="rules" label-position="left" size="mini" :model="tmp" label-width="140px">
             <el-row style="margin-top: 20px;margin-left: 20px">
               <el-col :span="10">
-                <el-form-item prop="ChangeType" :label="$t('pcn.form.ChangeType')">
-                  <el-select style="width: 100%" v-model="tmp.changeType" placeholder="请选择">
+                <el-form-item prop="ecrType" :label="$t('pcn.form.ChangeType')">
+                  <el-select style="width: 100%" v-model="tmp.ecrType" placeholder="请选择">
                     <el-option
                       v-for="item in options"
                       :key="item.value"
@@ -19,27 +19,28 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item prop="Name" :label="$t('pcn.form.Name')">
+                <el-form-item prop="name" :label="$t('pcn.form.Name')">
                   <el-input v-model="tmp.name"></el-input>
                 </el-form-item>
-                <el-form-item prop="project" :label="$t('pcn.form.project')">
-                  <el-input v-model="tmp.project"></el-input>
+                <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
+                  <el-input v-model="tmp.LQ_PROJECT"></el-input>
                 </el-form-item>
-                <el-form-item prop="ResourceEngineer" :label="$t('pcn.form.ResourceEngineer')">
-                  <el-input v-model="tmp.ResourceEngineer" disabled="true">
+                <el-form-item prop="sourceEngineer" :label="$t('pcn.form.ResourceEngineer')">
+                  <el-input v-model="tmp.sourceEngineer" disabled="true">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="RequireCompletionTime" :label="$t('pcn.form.RequireCompletionTime')">
+                <el-form-item prop="needDate" :label="$t('pcn.form.RequireCompletionTime')">
                   <el-date-picker
                     style="width: 100%"
-                    v-model="tmp.requireCompletionTime"
+                    value-format="yyyy/MM/dd"
+                    v-model="tmp.needDate"
                     type="date"
                     placeholder="">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="DetailedDescription" :label="$t('pcn.form.DetailedDescription')">
-                  <el-input type="textarea" v-model="tmp.DetailedDescription"></el-input>
+                <el-form-item prop="reasonDescription" :label="$t('pcn.form.DetailedDescription')">
+                  <el-input type="textarea" v-model="tmp.reasonDescription"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -48,7 +49,7 @@
             </div>
             <el-button-group style="margin-top: 10px">
               <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">上传文件</el-button>
-              <!--<el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>-->
+              <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
               <el-table
                 size="mini"
                 :data="filesList"
@@ -91,7 +92,7 @@
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import filesUpload from '../../components/filesUpload/index'
-import { resourceEngineer } from '@/api/pcn'
+import { resourceEngineer, ecrType, createEcr } from '@/api/pcn'
 
 export default {
   name: 'createPcn',
@@ -100,22 +101,23 @@ export default {
     filesUpload
   },
   mounted: function () {
-    this.resourceEngineer()
+    this.getEcrType()
   },
   methods: {
+    removeRelatedWLFYDocs () {
+      var that = this
+      this.selectionList.forEach(function (v, i) {
+        console.log(that.filesList)
+        that.filesList.splice(that.filesList.indexOf(v), 1)
+      })
+    },
     selectResourceEngineer (value) {
-      this.tmp.ResourceEngineer = value.fullName
+      this.tmp.sourceEngineer = value.fullName
     },
     handleSelectionChange (data) {
       if (data) {
-        var path = ''
-        this.selectionData = data
-        this.selectionData.forEach(function (value, index) {
-          if (value.filepath && value.filepath !== 'undefined') {
-            path = path + value.filepath + ';'
-          }
-        })
-        this.filePath = path
+        this.selectionList = data
+        console.log('当前选择文件数组:', this.selectionList)
       }
     },
     filesUploadClick () {
@@ -132,9 +134,7 @@ export default {
       console.log('xxoo', data)
       var that = this
       data.forEach(function (value, index) {
-        // that.filePath += value.response.data[0] + ';'
         var path = value.response.data[0]
-        that.submitPath = that.submitPath + path + ';'
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
@@ -143,39 +143,82 @@ export default {
       resourceEngineer().then(r => {
         console.log(r)
       })
+    },
+    getEcrType () {
+      ecrType().then(r => {
+        console.log(r)
+        var sz = [{label: '', value: ''}]
+        r.data.forEach(function (v, i) {
+          sz.push({value: v.value, label: v.display})
+        })
+        this.options = sz
+      })
+    },
+    onSubmit () {
+      this.$refs['form1'].validate((valid) => {
+        if (valid) {
+          var jsonData = {}
+          jsonData = Object.assign({}, this.tmp)
+          jsonData.filePath = this.getFilePath()
+          jsonData.supplierNumber = this.$store.getters.userInfo.username
+          this.$store.commit('SET_LOADING', true)
+          createEcr(JSON.stringify(jsonData)).then(r => {
+            console.log('r->', r)
+            if (r.data.msg === '修改成功') {
+              this.dialogFormVisible = false
+              this.$message({
+                message: this.$t('success.update_success'),
+                type: 'success',
+                duration: 5 * 1000
+              })
+            } else {
+              this.$message({
+                message: 'Submit Error',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    getFilePath () {
+      var str = ''
+      this.filesList.forEach(function (v, i) {
+        str = str + v.filepath + '@@@'
+      })
+      return str
     }
   },
   data () {
     return {
-      tmp: {changeType: '', ResourceEngineer: ''},
+      tmp: {ecrType: '', sourceEngineer: ''},
       submitPath: '',
       filesList: [],
       rules: {
-        ChangeType: [
+        ecrType: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        Name: [
+        name: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        project: [
+        LQ_PROJECT: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        ResourceEngineer: [
+        sourceEngineer: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        RequireCompletionTime: [
+        needDate: [
+          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        ],
+        reasonDescription: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ]},
-      options: [{
-        value: '',
-        label: ''
-      }, {
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }]
+      options: [],
+      selectionList: []
     }
   }
 }
