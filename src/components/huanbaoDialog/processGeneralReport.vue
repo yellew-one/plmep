@@ -202,6 +202,7 @@ export default {
       this.msg = ''
     },
     complete () {
+      this.$store.commit('SET_LOADING', true)
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.temp.reportFileName = this.fileName

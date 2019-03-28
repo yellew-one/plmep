@@ -200,14 +200,17 @@ export default {
       str3: '',
       str4: '',
       filePath: '',
-      filePathArray: []
+      filePathArray: [],
+      editRemoveOid: ''
     }
   },
   methods: {
     setReachDialogVisible (e, row, oid) {
+      this.filePathArray = []
       this.totalReportBefore = []
       this.removeOid = ''
       this.removeOid2 = ''
+      this.editRemoveOid = ''
       this.addOid = ''
       this.str = ''
       this.str2 = ''
@@ -235,7 +238,7 @@ export default {
     getBABAData (oid, item, data, e) {
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
-        this.removeOid = data.remove + ',' + this.removeOid
+        this.editRemoveOid = data.remove + ',' + this.editRemoveOid
         for (let i in this.totalReport) {
           if (this.totalReport[i].reportOid === data.remove) {
             this.totalReport.splice(i, 1)
@@ -258,41 +261,31 @@ export default {
         userName: this.$store.getters.userInfo.username
       }, 'REACH')
     },
-    deleteFile () {
-      this.str4 = this.str3 + this.str4
-      this.removeOid2 = this.str4.substring(0, this.str4.length - 1) + ',' + this.removeOid2
-      for (let i in this.totalReport2) {
-        for (let j in this.totalReport2Before) {
-          if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
-            this.totalReport2.splice(i, 1)
-          }
-        }
-      }
-      for (let i in this.filePathArray) {
-        for (let j in this.totalReport2Before) {
-          if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
-            this.filePathArray.splice(i, 1)
-          }
-        }
-      }
-    },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       for (let i in val) {
         this.str = val[i].reportOid + ',' + this.str
-      }
-    },
-    handleSelectionChange2 (val) {
-      this.str3 = ''
-      for (let i in val) {
-        if (val[i].hasOwnProperty('oid')) {
-          this.str3 = val[i].oid + ',' + this.str3
-        }
-      }
+      } */
     },
     deleteRoHSReport () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].reportOid === that.totalReportBefore[j].reportOid) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('reportOid')) {
+          that.removeOid += value.reportOid + ','
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -300,15 +293,70 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
+      } */
+    },
+    handleSelectionChange2 (val) {
+      if (val.length > 0) {
+        this.totalReport2Before = val
       }
+      /* this.totalReport2Before = val
+      this.str3 = ''
+      for (let i in val) {
+        if (val[i].hasOwnProperty('oid')) {
+          this.str3 = val[i].oid + ',' + this.str3
+        }
+      } */
+    },
+    deleteFile () {
+      var that = this
+      for (let i in that.totalReport2) {
+        for (let j in that.totalReport2Before) {
+          if (that.totalReport2[i].fileName === that.totalReport2Before[j].fileName) {
+            that.totalReport2.splice(i, 1)
+          }
+        }
+      }
+      that.totalReport2Before.forEach(function (value, index) {
+        if (value.hasOwnProperty('oid')) {
+          that.removeOid2 += value.oid + ','
+        }
+      })
+      /* this.str4 = this.str3 + this.str4
+       this.removeOid2 = this.str4.substring(0, this.str4.length - 1) + ',' + this.removeOid2
+       for (let i in this.totalReport2) {
+       for (let j in this.totalReport2Before) {
+       if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
+       this.totalReport2.splice(i, 1)
+       }
+       }
+       }
+       for (let i in this.filePathArray) {
+       for (let j in this.totalReport2Before) {
+       if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
+       this.filePathArray.splice(i, 1)
+       }
+       }
+       } */
     },
     completeReport () {
+      this.$store.commit('SET_LOADING', true)
+      var str = ''
+      str = this.editRemoveOid + ',' + this.removeOid
       var that = this
-      this.filePathArray.forEach(function (value, index) {
-        that.filePath = value.filePath + that.filePath
+      if (this.totalReport2Before.length > 0) {
+        for (let i in this.filePathArray) {
+          for (let j in this.totalReport2Before) {
+            if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
+              this.filePathArray.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.filePathArray.forEach(function (value, index) {
+        that.filePath += value.filePath + '@@@'
       })
       this.temp.fileRetardant = this.value
-      executeEditReachItem(this.reachOid, this.filePath, this.removeOid2, this.addOid, this.removeOid).then(r => {
+      executeEditReachItem(this.reachOid, this.filePath, this.removeOid2, this.addOid, str).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateREACHData()
           this.$message.success({
@@ -321,7 +369,6 @@ export default {
         }
         this.reachDialog = false
       })
-      this.filePath = ''
     },
     /**
      * @param e 文件列表
@@ -338,6 +385,7 @@ export default {
       // this.filePath = this.filePath.substring(0, this.filePath.length - 1)
       this.totalReport2.push({
         fileName: this.fileName,
+        filePath: e[0].response.data[0],
         modifyTime: ''
       })
     },

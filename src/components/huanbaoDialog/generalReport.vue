@@ -99,13 +99,15 @@ export default {
       removeOid: '',
       addOid: '',
       str: '',
-      str2: ''
+      str2: '',
+      editRemoveOid: ''
     }
   },
   methods: {
     setgeneralReportDialogisible (type, title, oid, item) {
       this.str2 = ''
       this.removeOid = ''
+      this.editRemoveOid = ''
       this.addOid = ''
       this.totalReportBefore = []
       this.generalReportDialog = true
@@ -118,7 +120,7 @@ export default {
     getBABAData (oid, item, data, e) {
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
-        this.removeOid = data.remove + ',' + this.removeOid
+        this.editRemoveOid = data.remove + ',' + this.editRemoveOid
         for (let i in this.totalReport) {
           if (this.totalReport[i].reportOid === data.remove) {
             this.totalReport.splice(i, 1)
@@ -141,14 +143,30 @@ export default {
       this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('TOTAL', row, this.oid, 'EDIT', this.item)
     },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       for (let i in val) {
         this.str = val[i].reportOid + ',' + this.str
-      }
+      } */
     },
     deleteRoHSReport () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].reportOid === that.totalReportBefore[j].reportOid) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('reportOid')) {
+          that.removeOid += value.reportOid + ','
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -156,10 +174,13 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     completeGeneralReport () {
-      saveFinalReport(this.item, '1', this.oid, this.removeOid, this.addOid).then(r => {
+      this.$store.commit('SET_LOADING', true)
+      var str = ''
+      str = this.removeOid + ',' + this.editRemoveOid
+      saveFinalReport(this.item, '1', this.oid, str, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.generalReportDialog = false
           this.$message.success({
