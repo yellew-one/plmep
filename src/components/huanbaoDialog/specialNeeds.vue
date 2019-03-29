@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange">
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -62,7 +62,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange2">
+            @selection-change="handleSelectionChange2">
             <el-table-column
               type="selection"
               width="35">
@@ -99,7 +99,7 @@
 </template>
 <script>
 import ProcessingGeneralReport from './processGeneralReport'
-import { attachmentInfo, editOther2, downloadAttach } from '@/api/huanbaoAPI'
+import { attachmentInfo, downloadAttach, executeEditOther2Item } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {
@@ -130,6 +130,8 @@ export default {
       fileSONYName: '',
       fileLenovoPath: '',
       fileSONYPath: '',
+      fileLenovoPathArray: [],
+      fileSONYPathArray: [],
       envprotectionDocumentOid: ''
     }
   },
@@ -139,7 +141,11 @@ export default {
       this.removeSONYOid = ''
       this.addLenovoOid = ''
       this.addSONYOid = ''
+      this.fileLenovoPath = ''
+      this.fileSONYPath = ''
       this.envprotectionDocumentOid = ''
+      this.fileLenovoPathArray = []
+      this.fileSONYPathArray = []
       this.envprotectionDocumentOid = envprotectionDocumentOid
       this.totalReportBefore = []
       this.totalReport2Before = []
@@ -163,8 +169,35 @@ export default {
         userName: this.$store.getters.userInfo.username
       }, 'Lenovo')
     },
+    handleSelectionChange (val) {
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
+       this.str = ''
+       if (val.length < 1) {
+       this.removeLenovoOid = ''
+       } else {
+       for (let i in val) {
+       this.str = val[i].oid + ',' + this.str
+       }
+       } */
+    },
     deleteLenovoFile () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].fileName === that.totalReportBefore[j].fileName) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('oid')) {
+          that.removeLenovoOid += value.oid + '@@@'
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeLenovoOid = this.str2.substring(0, this.str2.length - 1)
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -172,7 +205,7 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     addSONYFile () {
       this.$refs.fileUpload.openDialog()
@@ -181,30 +214,11 @@ export default {
         userName: this.$store.getters.userInfo.username
       }, 'SONY')
     },
-    deleteSONYFile () {
-      this.str4 = this.str3 + this.str4
-      this.removeOid = this.str4.substring(0, this.str4.length - 1)
-      for (let i in this.totalReport2) {
-        for (let j in this.totalReport2Before) {
-          if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
-            this.totalReport2.splice(i, 1)
-          }
-        }
-      }
-    },
-    handleSelectionChange (val) {
-      this.totalReportBefore = val
-      this.str = ''
-      if (val.length < 1) {
-        this.removeLenovoOid = ''
-      } else {
-        for (let i in val) {
-          this.str = val[i].oid + ',' + this.str
-        }
-      }
-    },
     handleSelectionChange2 (val) {
-      this.totalReport2Before = val
+      if (val.length > 0) {
+        this.totalReport2Before = val
+      }
+      /* this.totalReport2Before = val
       this.str3 = ''
       if (val.length < 1) {
         this.removeSONYOid = ''
@@ -212,34 +226,72 @@ export default {
         for (let i in val) {
           this.str3 = val[i].oid + ',' + this.str3
         }
+      } */
+    },
+    deleteSONYFile () {
+      var that = this
+      for (let i in that.totalReport2) {
+        for (let j in that.totalReport2Before) {
+          if (that.totalReport2[i].fileName === that.totalReport2Before[j].fileName) {
+            that.totalReport2.splice(i, 1)
+          }
+        }
       }
+      that.totalReport2Before.forEach(function (value, index) {
+        if (value.hasOwnProperty('oid')) {
+          that.removeSONYOid += value.oid + '@@@'
+        }
+      })
+      /* this.str4 = this.str3 + this.str4
+      this.removeOid = this.str4.substring(0, this.str4.length - 1)
+      for (let i in this.totalReport2) {
+        for (let j in this.totalReport2Before) {
+          if (this.totalReport2[i].fileName === this.totalReport2Before[j].fileName) {
+            this.totalReport2.splice(i, 1)
+          }
+        }
+      } */
     },
     completeGeneralStatement () {
-      editOther2(this.envprotectionDocumentOid, this.fileLenovoPath, '06', this.removeLenovoOid).then(r => {
-        if (r.data.result === 'success') {
-          this.$props.updateOther2Data()
-          this.$message.success({
-            message: '编辑成功'
-          })
-        } else {
-          this.$message.error({
-            message: r.data.info
-          })
-        }
-      })
-      editOther2(this.envprotectionDocumentOid, this.fileSONYPath, '07', this.removeSONYOid).then(r => {
-        if (r.data.result === 'success') {
-          this.$props.updateOther2Data()
-          this.$message.success({
-            message: '编辑成功'
-          })
-        } else {
-          this.$message.error({
-            message: r.data.info
-          })
-        }
-      })
+      this.$store.commit('SET_LOADING', true)
       this.specialNeedsDialog = false
+      var that = this
+      if (that.totalReportBefore.length > 0) {
+        for (let i in that.fileLenovoPathArray) {
+          for (let j in that.totalReportBefore) {
+            if (that.fileLenovoPathArray[i].fileName === that.totalReportBefore[j].fileName) {
+              that.fileLenovoPathArray.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.fileLenovoPathArray.forEach(function (value, index) {
+        that.fileLenovoPath += value.filePath + '@@@'
+      })
+      if (that.totalReport2Before.length > 0) {
+        for (let i in that.fileSONYPathArray) {
+          for (let j in that.totalReport2Before) {
+            if (that.fileSONYPathArray[i].fileName === that.totalReport2Before[j].fileName) {
+              that.fileSONYPathArray.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.fileSONYPathArray.forEach(function (value, index) {
+        that.fileSONYPath += value.filePath + '@@@'
+      })
+      executeEditOther2Item(this.fileSONYPath, this.removeSONYOid, this.fileLenovoPath, this.removeLenovoOid, this.oid).then(r => {
+        if (r.data.status === 'success') {
+          this.$props.updateOther2Data()
+          this.$message.success({
+            message: '编辑成功'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+      })
     },
     /**
      * @param e 文件列表
@@ -248,22 +300,42 @@ export default {
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
       if (type === 'Lenovo') {
-        this.fileLenovoName = e[0].name
+        this.fileName = e[0].name
+        this.fileLenovoPathArray.push({
+          filePath: e[0].response.data[0],
+          fileName: e[0].name
+        })
+        this.totalReport.push({
+          filePath: e[0].response.data[0],
+          fileName: this.fileName,
+          modifyTime: ''
+        })
+        /* this.fileLenovoName = e[0].name
         this.fileLenovoPath = e[0].response.data[0] + ',' + this.fileLenovoPath
         this.fileLenovoPath = this.fileLenovoPath.substring(0, this.fileLenovoPath.length - 1)
         this.totalReport.push({
           fileName: this.fileLenovoName,
           modifyTime: ''
-        })
+        }) */
       }
       if (type === 'SONY') {
-        this.fileSONYName = e[0].name
+        this.fileName = e[0].name
+        this.fileSONYPathArray.push({
+          filePath: e[0].response.data[0],
+          fileName: e[0].name
+        })
+        this.totalReport2.push({
+          filePath: e[0].response.data[0],
+          fileName: this.fileName,
+          modifyTime: ''
+        })
+        /* this.fileSONYName = e[0].name
         this.fileSONYPath = e[0].response.data[0] + ',' + this.fileSONYPath
         this.fileSONYPath = this.fileSONYPath.substring(0, this.fileSONYPath.length - 1)
         this.totalReport2.push({
           fileName: this.fileSONYName,
           modifyTime: ''
-        })
+        }) */
       }
     },
     download (row) {

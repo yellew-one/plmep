@@ -251,7 +251,7 @@ export default {
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
       reportMaterialContained: '是否有申报物质',
-      reportMaterialReport: '申报物资报告',
+      reportMaterialReport: '申报物质报告',
       reportCount: 'REACH报告',
       reportDate: '报告日期',
       reportNumber: '报告编号',

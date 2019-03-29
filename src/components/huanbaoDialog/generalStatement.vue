@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
-            @select="handleSelectionChange">
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="35">
@@ -84,13 +84,17 @@ export default {
       str: '',
       str2: '',
       fileName: '',
-      filePath: ''
+      filePath: '',
+      filePathArray: []
     }
   },
   methods: {
     setgeneralStatementDialogisible (type, oid) {
+      this.filePathArray = []
+      this.totalReport = []
       this.removeOid = ''
       this.addOid = ''
+      this.filePath = ''
       this.totalReportBefore = []
       this.generalStatementDialog = true
       this.type = type
@@ -111,7 +115,10 @@ export default {
       }, 'REACH')
     },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       if (val.length < 1) {
         this.removeOid = ''
@@ -119,10 +126,23 @@ export default {
         for (let i in val) {
           this.str = val[i].oid + ',' + this.str
         }
-      }
+      } */
     },
     deleteFile () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].fileName === that.totalReportBefore[j].fileName) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('oid')) {
+          that.removeOid += value.oid + '@@@'
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1)
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -130,9 +150,23 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     completeGeneralStatement () {
+      this.$store.commit('SET_LOADING', true)
+      var that = this
+      if (this.totalReportBefore.length > 0) {
+        for (let i in this.filePathArray) {
+          for (let j in this.totalReportBefore) {
+            if (this.filePathArray[i].fileName === this.totalReportBefore[j].fileName) {
+              this.filePathArray.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.filePathArray.forEach(function (value, index) {
+        that.filePath += value.filePath + '@@@'
+      })
       executeFinalDel(this.oid, this.filePath, this.removeOid).then(r => {
         if (r.data.status === 'success') {
           this.generalStatementDialog = false
@@ -145,7 +179,6 @@ export default {
           })
         }
       })
-      this.filePath = ''
     },
     /**
      * @param e 文件列表
@@ -154,9 +187,12 @@ export default {
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
       this.fileName = e[0].name
-      this.filePath = e[0].response.data[0] + ',' + this.filePath
-      this.filePath = this.filePath.substring(0, this.filePath.length - 1)
+      this.filePathArray.push({
+        filePath: e[0].response.data[0],
+        fileName: e[0].name
+      })
       this.totalReport.push({
+        filePath: e[0].response.data[0],
         fileName: this.fileName,
         modifyTime: ''
       })

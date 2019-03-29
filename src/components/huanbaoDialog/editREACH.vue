@@ -206,8 +206,11 @@ export default {
   },
   methods: {
     setReachDialogVisible (e, row, oid) {
-      this.filePathArray = []
+      this.totalReport = []
+      this.totalReport2 = []
+      this.filePath = ''
       this.totalReportBefore = []
+      this.totalReport2Before = []
       this.removeOid = ''
       this.removeOid2 = ''
       this.editRemoveOid = ''
@@ -219,6 +222,7 @@ export default {
       this.filePathArray = []
       this.reachDialog = true
       this.type = e
+      this.oid = ''
       this.oid = oid
       this.reachOid = row.reachOid
       this.temp = {}
@@ -318,7 +322,7 @@ export default {
       }
       that.totalReport2Before.forEach(function (value, index) {
         if (value.hasOwnProperty('oid')) {
-          that.removeOid2 += value.oid + ','
+          that.removeOid2 += value.oid + '@@@'
         }
       })
       /* this.str4 = this.str3 + this.str4
@@ -340,8 +344,6 @@ export default {
     },
     completeReport () {
       this.$store.commit('SET_LOADING', true)
-      var str = ''
-      str = this.editRemoveOid + ',' + this.removeOid
       var that = this
       if (this.totalReport2Before.length > 0) {
         for (let i in this.filePathArray) {
@@ -355,7 +357,10 @@ export default {
       that.filePathArray.forEach(function (value, index) {
         that.filePath += value.filePath + '@@@'
       })
+      var str = ''
+      str = this.editRemoveOid + ',' + this.removeOid
       this.temp.fileRetardant = this.value
+      this.reachDialog = false
       executeEditReachItem(this.reachOid, this.filePath, this.removeOid2, this.addOid, str).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateREACHData()
@@ -367,7 +372,6 @@ export default {
             message: r.data.info
           })
         }
-        this.reachDialog = false
       })
     },
     /**

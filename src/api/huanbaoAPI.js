@@ -884,7 +884,6 @@ export function viewRohs (rohsItemOid) {
 
 // RoHS条目编辑确认
 export function execute (oid, temp, removeOid, addOid) {
-  alert(temp.exemptions)
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/rohsItem.jsp',
     method: 'post',
@@ -1512,6 +1511,68 @@ export function downloadEnvpTemplate (type) {
     data: {
       operation: 'downloadEnvpTemplate',
       type: type
+    }
+  })
+}
+/**
+ * MSDS条目编辑完成
+ * @param addMsds 添加的MSDS文件路径
+ * @param removeMsds 移除的MSDS，临时文件用路径，正式文件用oid
+ * @param addPatent 添加的专利证明路径
+ * @param removePatent 移除的转移证明，临时文件用路径，正式文件用oid
+ * @param addIpform 添加的Ipform文件路径
+ * @param removeIpform 移除的Ipform,临时文件用路径，正式文件用oid
+ * @param oid MSDS条目oid
+ */
+export function executeEditMSDSItem (addMsds, removeMsds, addPatent, removePatent, addIpform, removeIpform, oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeEditMSDSItem',
+      addMsds: addMsds,
+      removeMsds: removeMsds,
+      addPatent: addPatent,
+      removePatent: removePatent,
+      addIpform: addIpform,
+      removeIpform: removeIpform,
+      oid: oid
+    }
+  })
+}
+/**
+ * 客户特殊需求条目编辑完成
+ * @param addSony 添加的sony文件路径
+ * @param removeSony 移除的sony文件，临时文件用路径，正式文件用oid
+ * @param addLenove 添加的联想临时文件路径
+ * @param removeLenove 移除的联想临时文件，临时文件用路径，正式文件用oid
+ * @param oid 环保对象oid
+ */
+export function executeEditOther2Item (addSony, removeSony, addLenove, removeLenove, oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'executeEditOther2Item',
+      addSony: addSony,
+      removeSony: removeSony,
+      addLenove: addLenove,
+      removeLenove: removeLenove,
+      oid: oid
     }
   })
 }

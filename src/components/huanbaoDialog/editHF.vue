@@ -206,11 +206,13 @@ export default {
         label: '否'
       }],
       value: '',
-      remark: ''
+      remark: '',
+      editRemoveOid: ''
     }
   },
   methods: {
     setHFDialogVisible (e, row, oid) {
+      this.editRemoveOid = ''
       this.totalReportBefore = []
       this.removeOid = ''
       this.addOid = ''
@@ -221,7 +223,7 @@ export default {
       this.oid = oid
       this.hfOid = row.hfOid
       this.temp = {}
-      this.temp = Object.assign(row)
+      this.temp = Object.assign({}, row)
       if (e === 'itemedit' || e === 'itemview') {
         this.getDataList(row.hfOid)
         if (e === 'itemedit') {
@@ -245,7 +247,7 @@ export default {
     getBABAData (oid, item, data, e) {
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
-        this.removeOid = data.remove + ',' + this.removeOid
+        this.editRemoveOid = data.remove + ',' + this.editRemoveOid
         for (let i in this.totalReport) {
           if (this.totalReport[i].reportOid === data.remove) {
             this.totalReport.splice(i, 1)
@@ -269,14 +271,30 @@ export default {
       this.temp.exemptions = e
     },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       for (let i in val) {
         this.str = val[i].reportOid + ',' + this.str
-      }
+      } */
     },
     deleteRoHSReport () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].reportOid === that.totalReportBefore[j].reportOid) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('reportOid')) {
+          that.removeOid += value.reportOid + ','
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -284,12 +302,15 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     completeReport () {
+      this.hfDialog = false
+      var str = ''
+      str = this.editRemoveOid + ',' + this.removeOid
       this.temp.fileRetardant = this.value
       this.temp.remake = this.remark
-      executeEditHFItem(this.hfOid, this.temp, this.removeOid, this.addOid).then(r => {
+      executeEditHFItem(this.hfOid, this.temp, str, this.addOid).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateHFData()
           this.$message.success({
@@ -300,7 +321,6 @@ export default {
             message: r.data.info
           })
         }
-        this.hfDialog = false
       })
     },
     upload (row) {

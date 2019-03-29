@@ -249,7 +249,7 @@
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materialContent"  label="物质重量" >
               <template
                 slot-scope="scope">
-                <el-input size="mini" :disabled="false" v-model="scope.row.materialContent">
+                <el-input type="number" size="mini" :disabled="false" v-model="scope.row.materialContent">
                 </el-input>
               </template>
             </el-table-column>
@@ -296,11 +296,14 @@ export default {
       substancesRemoveOid: '',
       substancesTotalBefore: [],
       newSubstances: [],
-      value: ''
+      value: '',
+      editRemoveOid: ''
     }
   },
   methods: {
     setOtherDialogVisible (e, row, oid) {
+      this.substancesRemoveOid = ''
+      this.editRemoveOid = ''
       this.totalReportBefore = []
       this.removeOid = ''
       this.addOid = ''
@@ -322,6 +325,7 @@ export default {
     },
     getDataList (otherOid) {
       itemReport(otherOid).then(r => {
+        console.log('getDataList', r)
         this.totalReport = r.data
       })
       itemMaterialInfo(otherOid).then(r => {
@@ -329,10 +333,9 @@ export default {
       })
     },
     getBABAData (oid, item, data, e) {
-      this.getDataList(oid)
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
-        this.removeOid = data.remove + ',' + this.removeOid
+        this.editRemoveOid = data.remove + ',' + this.editRemoveOid
         for (let i in this.totalReport) {
           if (this.totalReport[i].reportOid === data.remove) {
             this.totalReport.splice(i, 1)
@@ -349,7 +352,10 @@ export default {
       this.$refs.processingGeneralReport.setprocessingGeneralReportFormVisible('ENTRY', row, this.otherOid, 'EDIT', 'OTHER')
     },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       if (val.length < 1) {
         this.removeOid = ''
@@ -359,10 +365,23 @@ export default {
             this.str = val[i].oid + ',' + this.str
           }
         }
-      }
+      } */
     },
     deleteOtherReport () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].reportOid === that.totalReportBefore[j].reportOid) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('reportOid')) {
+          that.removeOid += value.reportOid + ','
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1)
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -370,7 +389,7 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     // 添加新物质
     addSubstances () {
@@ -382,7 +401,10 @@ export default {
       this.substancesTotal.push(this.newSubstances)
     },
     handleSelectionChange2 (val) {
-      this.substancesTotalBefore = val
+      if (val.length > 0) {
+        this.substancesTotalBefore = val
+      }
+      /* this.substancesTotalBefore = val
       this.substancesStr = ''
       if (val.length < 1) {
         this.substancesRemoveOid = ''
@@ -392,12 +414,11 @@ export default {
             this.substancesStr = val[i].oid + ',' + this.substancesStr
           }
         }
-      }
+      } */
     },
     // 移除新物质
     deleteSubstances () {
-      this.substancesStr2 = this.substancesStr + this.substancesStr2
-      this.substancesRemoveOid = this.substancesStr2.substring(0, this.substancesStr2.length - 1)
+      var that = this
       for (let i in this.substancesTotal) {
         for (let j in this.substancesTotalBefore) {
           if (this.substancesTotal[i].materialName === this.substancesTotalBefore[j].materialName) {
@@ -405,8 +426,23 @@ export default {
           }
         }
       }
+      that.substancesTotalBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('oid')) {
+          that.substancesRemoveOid += value.oid + ','
+        }
+      })
+      /* this.substancesStr2 = this.substancesStr + this.substancesStr2
+      this.substancesRemoveOid = this.substancesStr2.substring(0, this.substancesStr2.length - 1)
+      for (let i in this.substancesTotal) {
+        for (let j in this.substancesTotalBefore) {
+          if (this.substancesTotal[i].materialName === this.substancesTotalBefore[j].materialName) {
+            this.substancesTotal.splice(i, 1)
+          }
+        }
+      } */
     },
     completeReport () {
+      this.otherDialog = false
       var s = []
       for (let i in this.substancesTotal) {
         s.push({
@@ -416,8 +452,11 @@ export default {
       }
       this.temp.remark = this.value
       var str = JSON.stringify(s)
-      executeEditOtherItem(this.otherOid, this.temp, this.removeOid, this.addOid, this.substancesRemoveOid, str).then(r => {
+      var removeOid = ''
+      removeOid = this.removeOid + ',' + this.editRemoveOid
+      executeEditOtherItem(this.otherOid, this.temp, removeOid, this.addOid, this.substancesRemoveOid, str).then(r => {
         if (r.data.status === 'success') {
+          this.$props.updateOtherData()
           this.$message.success({
             message: '修改成功'
           })
@@ -426,8 +465,6 @@ export default {
             message: r.data.info
           })
         }
-        this.otherDialog = false
-        this.$props.updateOtherData()
       })
     },
     upload (row) {

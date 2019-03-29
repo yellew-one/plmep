@@ -23,7 +23,7 @@
             border
             size="mini"
             style="width: 100%"
-            @select="handleSelectionChange1">
+            @selection-change="handleSelectionChange1">
             <el-table-column
               type="selection"
               width="35">
@@ -66,7 +66,7 @@
             border
             size="mini"
             style="width: 100%"
-            @select="handleSelectionChange2">
+            @selection-change="handleSelectionChange2">
             <el-table-column
               type="selection"
               width="35">
@@ -110,7 +110,7 @@
             border
             size="mini"
             style="width: 100%"
-            @select="handleSelectionChange3">
+            @selection-change="handleSelectionChange3">
             <el-table-column
               type="selection"
               width="35">
@@ -180,8 +180,8 @@
   </div>
 </template>
 <script>
-import { getMSDSInfo, editMSDSTable } from '@/api/index'
-import { downloadAttach, downloadEnvpTemplate } from '@/api/huanbaoAPI'
+import { getMSDSInfo } from '@/api/index'
+import { downloadAttach, downloadEnvpTemplate, executeEditMSDSItem } from '@/api/huanbaoAPI'
 import FilesUpload from '../filesUpload/index'
 export default {
   components: {FilesUpload},
@@ -210,15 +210,40 @@ export default {
       msdsBeforeDelete: [],
       patentBeforeDelete: [],
       ipBeforeDelete: [],
-      fileType: ''
+      fileType: '',
+      filePathArray1: '',
+      filePathArray2: '',
+      filePathArray3: '',
+      addMsds: '',
+      removeMsds: '',
+      addPatent: '',
+      removePatent: '',
+      addIpform: '',
+      removeIpform: ''
+
     }
   },
   methods: {
     setMSDSDialogFormVisible (envpNumber, e, action) {
+      this.filePathArray1 = []
+      this.filePathArray2 = []
+      this.filePathArray3 = []
       this.approvalTable1 = []
       this.approvalTable2 = []
       this.approvalTable3 = []
+      this.attachmentOid1 = ''
+      this.attachmentOid2 = ''
+      this.attachmentOid3 = ''
       this.tableData = []
+      this.msdsBeforeDelete = []
+      this.patentBeforeDelete = []
+      this.ipBeforeDelete = []
+      this.addMsds = ''
+      this.removeMsds = ''
+      this.addPatent = ''
+      this.removePatent = ''
+      this.addIpform = ''
+      this.removeIpform = ''
       this.dialogVisible = true
       this.tableData.push(e)
       this.msdsAttachmentOid = ''
@@ -246,7 +271,10 @@ export default {
       })
     },
     handleSelectionChange1 (val) {
-      var str = ''
+      if (val.length > 0) {
+        this.msdsBeforeDelete = val
+      }
+      /* var str = ''
       this.msdsBeforeDelete = []
       this.msdsBeforeDelete = val
       if (val.length < 1) {
@@ -257,10 +285,13 @@ export default {
         }
         str = str.substring(0, str.length - 1)
         this.msdsAttachmentOid = str
-      }
+      } */
     },
     handleSelectionChange2 (val) {
-      var str = ''
+      if (val.length > 0) {
+        this.patentBeforeDelete = val
+      }
+      /* var str = ''
       this.patentBeforeDelete = []
       this.patentBeforeDelete = val
       if (val.length < 1) {
@@ -271,10 +302,13 @@ export default {
         }
         str = str.substring(0, str.length - 1)
         this.patentAttachmentOid = str
-      }
+      } */
     },
     handleSelectionChange3 (val) {
-      var str = ''
+      if (val.length > 0) {
+        this.ipBeforeDelete = val
+      }
+      /* var str = ''
       this.ipBeforeDelete = []
       this.ipBeforeDelete = val
       if (val.length < 1) {
@@ -285,58 +319,78 @@ export default {
         }
         str = str.substring(0, str.length - 1)
         this.ipAttachmentOid = str
-      }
-    },
-    completeMSDS () {
-      this.dialogVisible = false
-      var oid = this.msdsAttachmentOid + ',' + this.patentAttachmentOid + ',' + this.ipAttachmentOid
-      editMSDSTable(this.fileType, this.tableData[0].envprotectionDocumentOid, this.path, this.tableData[0].msdsOid, oid).then(r => {
-        if (r.data.result === 'success') {
-          this.$props.updateMSDSData()
-          this.$message.success({
-            message: '操作文件成功'
-          })
-        }
-      })
-    },
-    uploadMsds () {
-      this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
+      } */
     },
     deleteMsds () {
-      for (let i in this.approvalTable1) {
-        for (let j in this.msdsBeforeDelete) {
-          if (this.approvalTable1[i].attachmentOid === this.msdsBeforeDelete[j].attachmentOid) {
-            this.approvalTable1.splice(i, 1)
+      var that = this
+      for (let i in that.approvalTable1) {
+        for (let j in that.msdsBeforeDelete) {
+          if (that.approvalTable1[i].fileName === that.msdsBeforeDelete[j].fileName) {
+            that.approvalTable1.splice(i, 1)
           }
         }
       }
-    },
-    uploadPatent () {
-      this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+      that.msdsBeforeDelete.forEach(function (value, index) {
+        if (value.hasOwnProperty('attachmentOid')) {
+          that.removeMsds += value.attachmentOid + '@@@'
+        }
+      })
     },
     deletePatent () {
-      for (let i in this.approvalTable2) {
+      var that = this
+      for (let i in that.approvalTable2) {
+        for (let j in that.patentBeforeDelete) {
+          if (that.approvalTable2[i].fileName === that.patentBeforeDelete[j].fileName) {
+            that.approvalTable2.splice(i, 1)
+          }
+        }
+      }
+      that.patentBeforeDelete.forEach(function (value, index) {
+        if (value.hasOwnProperty('attachmentOid')) {
+          that.removePatent += value.attachmentOid + '@@@'
+        }
+      })
+      /* for (let i in this.approvalTable2) {
         for (let j in this.patentBeforeDelete) {
           if (this.approvalTable2[i].attachmentOid === this.patentBeforeDelete[j].attachmentOid) {
             this.approvalTable2.splice(i, 1)
           }
         }
-      }
-    },
-    uploadIPFORM () {
-      this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+      } */
     },
     deleteIPFORM () {
-      for (let i in this.approvalTable3) {
+      var that = this
+      for (let i in that.approvalTable3) {
+        for (let j in that.ipBeforeDelete) {
+          if (that.approvalTable3[i].fileName === that.ipBeforeDelete[j].fileName) {
+            that.approvalTable3.splice(i, 1)
+          }
+        }
+      }
+      that.ipBeforeDelete.forEach(function (value, index) {
+        if (value.hasOwnProperty('attachmentOid')) {
+          that.removeIpform += value.attachmentOid + '@@@'
+        }
+      })
+      /* for (let i in this.approvalTable3) {
         for (let j in this.ipBeforeDelete) {
           if (this.approvalTable3[i].attachmentOid === this.ipBeforeDelete[j].attachmentOid) {
             this.approvalTable3.splice(i, 1)
           }
         }
-      }
+      } */
+    },
+    uploadPatent () {
+      this.$refs.upload.openDialog()
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+    },
+    uploadIPFORM () {
+      this.$refs.upload.openDialog()
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+    },
+    uploadMsds () {
+      this.$refs.upload.openDialog()
+      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
     },
     downloadloadIP () {
       downloadEnvpTemplate('IPFORM').then(r => {
@@ -350,13 +404,71 @@ export default {
         window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
+    completeMSDS () {
+      this.dialogVisible = false
+      var that = this
+      if (this.msdsBeforeDelete.length > 0) {
+        for (let i in this.filePathArray1) {
+          for (let j in this.msdsBeforeDelete) {
+            if (this.filePathArray1[i].fileName === this.msdsBeforeDelete[j].fileName) {
+              this.filePathArray1.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.filePathArray1.forEach(function (value, index) {
+        that.addMsds += value.filePath + '@@@'
+      })
+      if (this.patentBeforeDelete.length > 0) {
+        for (let i in this.filePathArray2) {
+          for (let j in this.patentBeforeDelete) {
+            if (this.filePathArray2[i].fileName === this.patentBeforeDelete[j].fileName) {
+              this.filePathArray2.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.filePathArray2.forEach(function (value, index) {
+        that.addPatent += value.filePath + '@@@'
+      })
+      if (this.ipBeforeDelete.length > 0) {
+        for (let i in this.filePathArray3) {
+          for (let j in this.ipBeforeDelete) {
+            if (this.filePathArray3[i].fileName === this.ipBeforeDelete[j].fileName) {
+              this.filePathArray3.splice(i, 1)
+            }
+          }
+        }
+      }
+      that.filePathArray3.forEach(function (value, index) {
+        that.addIpform += value.filePath + '@@@'
+      })
+      executeEditMSDSItem(this.addMsds, this.removeMsds, this.addPatent, this.removePatent, this.addIpform, this.removeIpform, this.tableData[0].msdsOid).then(r => {
+        if (r.data.status === 'success') {
+          this.$props.updateMSDSData()
+          this.$message.success({
+            message: '修改成功'
+          })
+        } else {
+          this.$message.error({
+            message: r.data.info
+          })
+        }
+      })
+    },
     returnFilePath (e, type) {
+      this.$refs.upload.closeDialog()
       for (let i in e) {
         if (type === '02') {
           this.approvalTable1.push({
             attachmentOid: '',
             endTime: '',
             fileName: e[i].name
+          })
+          this.filePathArray1.push({
+            filePath: e[0].response.data[0],
+            fileName: e[0].name,
+            fileType: '02'
           })
         }
         if (type === '03') {
@@ -365,6 +477,11 @@ export default {
             endTime: '',
             fileName: e[i].name
           })
+          this.filePathArray2.push({
+            filePath: e[0].response.data[0],
+            fileName: e[0].name,
+            fileType: '03'
+          })
         }
         if (type === '01') {
           this.approvalTable3.push({
@@ -372,11 +489,15 @@ export default {
             endTime: '',
             fileName: e[i].name
           })
+          this.filePathArray3.push({
+            filePath: e[0].response.data[0],
+            fileName: e[0].name,
+            fileType: '01'
+          })
         }
       }
-      this.path = e[0].response.data[0] + ',' + this.path
-      this.fileType = type + ',' + this.fileType
-      this.$refs.upload.closeDialog()
+      // this.path = e[0].response.data[0] + '@@@' + this.path
+      // this.fileType = type + ',' + this.fileType
     }
   }
 }

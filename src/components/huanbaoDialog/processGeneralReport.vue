@@ -16,7 +16,7 @@
       <el-row :gutter="20" >
         <el-col :span="24">
           <el-form size="mini" ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px"
-                   style=' margin-left:0px;'>
+                   style=' margin-left:0px;' >
             <el-row v-if="itemCategory === 'OTHER' && this.type !== 'TOTAL'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="materialGroup" label="报告类型">
@@ -151,6 +151,7 @@ export default {
      * @param itemCategory 判断是哪个条目
      */
     setprocessingGeneralReportFormVisible (type, e, oid, category, itemCategory) {
+      this.rohsReportDateValue = ''
       this.msg = ''
       this.fileName = ''
       this.filePath = ''
@@ -165,7 +166,9 @@ export default {
       this.oid = oid
       this.category = category
       this.itemCategory = itemCategory
-      this.rohsReportDateValue = e.reportDate
+      if (e.hasOwnProperty('reportDate')) {
+        this.rohsReportDateValue = e.reportDate
+      }
       if (this.temp.reportFileName) {
         this.fileName = this.temp.reportFileName
       }
@@ -177,18 +180,22 @@ export default {
           })
         }
       })
-      if (this.type === 'ENTRY') {
-        var v = []
-        v = this.temp.reportType.split('\n')
-        this.value = v.slice(0, -1)
-        reportType(this.oid).then(r => {
-          for (let i in r.data) {
-            this.options2.push({
-              label: r.data[i].name,
-              value: r.data[i].id
-            })
+      if (this.itemCategory === 'OTHER') {
+        if (this.type === 'ENTRY') {
+          if (this.category === 'EDIT') {
+            var v = []
+            v = this.temp.reportType.split('\n')
+            this.value = v.slice(0, -1)
           }
-        })
+          reportType(this.oid).then(r => {
+            for (let i in r.data) {
+              this.options2.push({
+                label: r.data[i].name,
+                value: r.data[i].id
+              })
+            }
+          })
+        }
       }
     },
     choseFile () {
@@ -213,9 +220,11 @@ export default {
               this.$alert('请选择文件', '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
+                  this.$store.commit('SET_LOADING', false)
                 }
               })
             } else {
+              this.$store.commit('SET_LOADING', false)
               // 判断是编辑 还是添加 分别调用不同接口
               this.temp.reportDate = this.rohsReportDateValue
               // 判断哪个条目的总报告
@@ -253,9 +262,11 @@ export default {
               this.$alert('请选择文件', '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
+                  this.$store.commit('SET_LOADING', false)
                 }
               })
             } else {
+              this.$store.commit('SET_LOADING', false)
               // 判断是编辑 还是添加 分别调用不同接口
               this.temp.reportDate = this.rohsReportDateValue
               // 判断哪个条目的总报告
@@ -291,7 +302,7 @@ export default {
             }
           }
         } else {
-          console.log('error submit!!')
+          this.$store.commit('SET_LOADING', false)
           return false
         }
       })

@@ -118,6 +118,7 @@ export default {
       this.getDataList(this.oid, this.item)
     },
     getBABAData (oid, item, data, e) {
+      this.$store.commit('SET_LOADING', false)
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
         this.editRemoveOid = data.remove + ',' + this.editRemoveOid

@@ -288,11 +288,13 @@ export default {
       totalReportBefore: [],
       str: '',
       str2: '',
-      exemptions: ''
+      exemptions: '',
+      editRemoveOid: ''
     }
   },
   methods: {
     setRohsDialogVisible (e, rohsOid, oid) {
+      this.editRemoveOid = ''
       this.totalReportBefore = []
       this.exemptions = ''
       this.removeOid = ''
@@ -322,7 +324,7 @@ export default {
     getBABAData (oid, item, data, e) {
       this.addOid = data.add + ',' + this.addOid
       if (data.hasOwnProperty('remove')) {
-        this.removeOid = data.remove + ',' + this.removeOid
+        this.editRemoveOid = data.remove + ',' + this.editRemoveOid
         for (let i in this.totalReport) {
           if (this.totalReport[i].reportOid === data.remove) {
             this.totalReport.splice(i, 1)
@@ -351,16 +353,32 @@ export default {
       this.exemptions = e
     },
     handleSelectionChange (val) {
-      this.totalReportBefore = val
+      if (val.length > 0) {
+        this.totalReportBefore = val
+      }
+      /* this.totalReportBefore = val
       this.str = ''
       for (let i in val) {
         if (val[i].hasOwnProperty('reportOid')) {
           this.str = val[i].reportOid + ',' + this.str
         }
-      }
+      } */
     },
     deleteRoHSReport () {
-      this.str2 = this.str + this.str2
+      var that = this
+      for (let i in that.totalReport) {
+        for (let j in that.totalReportBefore) {
+          if (that.totalReport[i].reportOid === that.totalReportBefore[j].reportOid) {
+            that.totalReport.splice(i, 1)
+          }
+        }
+      }
+      that.totalReportBefore.forEach(function (value, index) {
+        if (value.hasOwnProperty('reportOid')) {
+          that.removeOid += value.reportOid + ','
+        }
+      })
+      /* this.str2 = this.str + this.str2
       this.removeOid = this.str2.substring(0, this.str2.length - 1) + ',' + this.removeOid
       for (let i in this.totalReport) {
         for (let j in this.totalReportBefore) {
@@ -368,12 +386,16 @@ export default {
             this.totalReport.splice(i, 1)
           }
         }
-      }
+      } */
     },
     completeReport () {
+      this.rohsDialog = false
+      var str = ''
+      str = this.removeOid + ',' + this.editRemoveOid
       this.temp.exemptions = this.exemptions
-      execute(this.rohsOid, this.temp, this.removeOid, this.addOid).then(r => {
+      execute(this.rohsOid, this.temp, str, this.addOid).then(r => {
         if (r.data.status === 'success') {
+          this.$props.updateRoHSData()
           this.$message.success({
             message: '修改成功'
           })
@@ -382,8 +404,6 @@ export default {
             message: r.data.info
           })
         }
-        this.rohsDialog = false
-        this.$props.updateRoHSData()
       })
     }
   }

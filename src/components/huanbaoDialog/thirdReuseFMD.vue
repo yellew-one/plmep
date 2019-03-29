@@ -276,7 +276,10 @@ export default {
       this.temp.envpNumber = e
       getMaterialName(e).then(r => {
         console.log('getMaterialName', r)
-        var names = []
+        var names = [{
+          value: '',
+          label: ''
+        }]
         for (let i in r.data) {
           names.push({
             value: r.data[i].materialId,
