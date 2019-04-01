@@ -25,8 +25,8 @@
                 <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
                   <el-input v-model="tmp.LQ_PROJECT"></el-input>
                 </el-form-item>
-                <el-form-item prop="sourceEngineer" :label="$t('pcn.form.ResourceEngineer')">
-                  <el-input v-model="tmp.sourceEngineer" disabled="true">
+                <el-form-item prop="sourceEngineerName" :label="$t('pcn.form.ResourceEngineer')">
+                  <el-input v-model="tmp.sourceEngineerName" disabled="true">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>
@@ -112,7 +112,8 @@ export default {
       })
     },
     selectResourceEngineer (value) {
-      this.tmp.sourceEngineer = value.fullName
+      this.tmp.sourceEngineer = value.userName
+      this.tmp.sourceEngineerName = value.fullName
     },
     handleSelectionChange (data) {
       if (data) {
@@ -160,20 +161,21 @@ export default {
           var jsonData = {}
           jsonData = Object.assign({}, this.tmp)
           jsonData.filePath = this.getFilePath()
+          jsonData.sourceEngineerName = ''
           jsonData.supplierNumber = this.$store.getters.userInfo.username
           this.$store.commit('SET_LOADING', true)
           createEcr(JSON.stringify(jsonData)).then(r => {
             console.log('r->', r)
-            if (r.data.msg === '修改成功') {
+            if (r.data.result === 'success') {
               this.dialogFormVisible = false
               this.$message({
-                message: this.$t('success.update_success'),
+                message: r.data.mes,
                 type: 'success',
                 duration: 5 * 1000
               })
             } else {
               this.$message({
-                message: 'Submit Error',
+                message: r.data.mes,
                 type: 'error',
                 duration: 5 * 1000
               })
@@ -195,7 +197,7 @@ export default {
   },
   data () {
     return {
-      tmp: {ecrType: '', sourceEngineer: ''},
+      tmp: {ecrType: '', sourceEngineerName: ''},
       submitPath: '',
       filesList: [],
       rules: {
@@ -208,7 +210,7 @@ export default {
         LQ_PROJECT: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        sourceEngineer: [
+        sourceEngineerName: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
         needDate: [
