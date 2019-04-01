@@ -173,6 +173,8 @@ export default {
                 type: 'success',
                 duration: 5 * 1000
               })
+              this.tmp = {ecrType: '', sourceEngineerName: ''}
+              this.$refs['form1'].clearValidate()
             } else {
               this.$message({
                 message: r.data.mes,
@@ -207,16 +209,10 @@ export default {
         name: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        LQ_PROJECT: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
         sourceEngineerName: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
         needDate: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
-        reasonDescription: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ]},
       options: [],

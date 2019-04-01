@@ -264,7 +264,7 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
-          this.$props.restData()
+          this.$props.restData(r.data.oid)
           this.updatedialogFlag = false
         } else {
           this.$message({
@@ -284,7 +284,7 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
-          this.$props.restData()
+          this.$props.restData(r.data.oid)
           this.updatedialogFlag = false
         } else {
           this.$message({

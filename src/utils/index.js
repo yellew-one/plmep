@@ -11,6 +11,7 @@ export function initPage (obj, service) {
   }
   // 查询公共方法 查询第N页
   obj.searchN = function search () {
+    console.log(obj)
     service(obj).then(r => {
       obj.dataList = r.data.result
       obj.counts.totalCount = r.data.totalCount

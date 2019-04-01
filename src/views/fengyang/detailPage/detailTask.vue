@@ -489,7 +489,9 @@ export default {
       // http://172.17.1.125:8081/files/upLoad
       this.$refs.fileUpload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '', 'fileList', {number: this.model.materialNumber})
     },
-    updatedoc () {
+    updatedoc (newValue) {
+      this.oid = newValue
+      this.$route.params.oid = newValue
       this.getDetailInfo(this.oid)
       this.showRelatedWLFYDocs()
     },

@@ -9,7 +9,7 @@
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
               <el-col :span="8">
                 <el-form-item prop="materialCode" :label="$t('pcn.form.ChangeType')">
-                  <el-select  style="width: 100%" v-model="model.changeType" placeholder="请选择">
+                  <el-select  style="width: 100%" v-model="model.serchItems.ecrType" placeholder="请选择">
                     <el-option
                       v-for="item in options"
                       :key="item.value"
@@ -21,7 +21,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item prop="materialName" :label="$t('fengyangTable.seacher.name')">
-                  <el-input   v-model="model.serchItems.partName"></el-input>
+                  <el-input   v-model="model.serchItems.name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -32,12 +32,12 @@
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
                   <el-form-item prop="materialCode" :label="$t('pcn.table.project')">
-                    <el-input   v-model="model.serchItems.project"></el-input>
+                    <el-input   v-model="model.serchItems.LQ_PROJECT"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('pcn.form.ResourceEngineer')">
-                    <el-input   v-model="model.serchItems.ResourceEngineer"></el-input>
+                    <el-input   v-model="model.serchItems.sourceEngineer"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -81,22 +81,22 @@
         size="mini"
         border
         style="width: 100%;margin-top: 10px">
-        <el-table-column align="center" show-overflow-tooltip="true" prop="number"  :label="$t('pcn.table.number')" width="180">
+        <el-table-column align="center" show-overflow-tooltip="true" prop="Number"  :label="$t('pcn.table.number')" width="180">
           <template
             slot-scope="scope">
-            <a style="color: blue" @click="goDetail(scope.row)">{{scope.row.partNumber}}</a>
+            <a style="color: blue" @click="goDetail(scope.row)">{{scope.row.ecrNumber}}</a>
           </template>
         </el-table-column>
         <el-table-column prop="ChangeType" :label="$t('pcn.table.ChangeType')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.ChangeType}}</span>
+            <span>{{scope.row.ecrType}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="Name" :label="$t('pcn.table.Name')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.Name}}</span>
+            <span>{{scope.row.ecrName}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="project" :label="$t('pcn.table.project')" align="center" show-overflow-tooltip="true"  width="180">
@@ -108,13 +108,13 @@
         <el-table-column prop="RequireCompletionTime" :label="$t('pcn.table.RequireCompletionTime')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.RequireCompletionTime}}</span>
+            <span>{{scope.row.neededTime}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="SelectionResourceEngineer" :label="$t('pcn.table.SelectionResourceEngineer')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.SelectionResourceEngineer}}</span>
+            <span>{{scope.row.resourceEngineer}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="state" :label="$t('pcn.table.state')" align="center" show-overflow-tooltip="true"  width="180">
@@ -138,19 +138,18 @@
   </div>
 </template>
 <script>
-import { searchSealedSample, lqClassCategory, getSealedSampleStatus } from '@/api/index'
+import { searchEcr, ecrType } from '@/api/pcn'
 import { initPage } from '@/utils/index'
 export default {
   components: {},
   name: 'myPcn',
   created: function () {
-    initPage(this.model, searchSealedSample)
+    initPage(this.model, searchEcr)
     this.model.searchCurrent(1)
     console.log('this.model', this.model)
   },
   mounted: function () {
-    this.getlqClassCategory()
-    this.getEnvpStates()
+    this.getEcrType()
   },
   data () {
     return {
@@ -162,6 +161,16 @@ export default {
     }
   },
   methods: {
+    getEcrType () {
+      ecrType().then(r => {
+        console.log(r)
+        var sz = [{label: '', value: ''}]
+        r.data.forEach(function (v, i) {
+          sz.push({value: v.value, label: v.display})
+        })
+        this.options = sz
+      })
+    },
     goDetail (data) {
       console.log('data', data)
       this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false', stateName: 'huanbaoTable.searchStatus.' + data.status}})
@@ -183,36 +192,6 @@ export default {
     },
     handleCurrentChange (val) {
       this.getDataList(val)
-    },
-    getlqClassCategory () {
-      var that = this
-      lqClassCategory().then(r => {
-        console.log(r)
-        var sz = [{value: '', label: ''}]
-        r.data.forEach(function (value, index) {
-          console.log('foreach:', value)
-          for (var key in value) {
-            sz.push({
-              value: key,
-              label: that.$t('app_enum.lqClassCategory.' + key)
-            })
-          }
-        })
-        this.options2 = sz
-      })
-    },
-    getEnvpStates () {
-      getSealedSampleStatus().then(r => {
-        console.log(r)
-        var states = [{value: '', label: ''}]
-        for (var i in r.data[0].state) {
-          states.push({
-            value: r.data[0].state[i],
-            label: this.$t('huanbaoTable.searchStatus.' + r.data[0].state[i])
-          })
-        }
-        this.options = states
-      })
     }
   }
 }

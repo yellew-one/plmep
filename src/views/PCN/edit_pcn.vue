@@ -1,181 +1,88 @@
 <template>
-  <div class="app-container">
-    <el-card shadow="hover" class="card">
-      <div class="longcheer_hr" style="margin-left: 20px">
-        <span class="longcheer_hr_span">{{$t('pcn.title.information')}}</span>
-      </div>
-      <el-row style="margin-top: 20px;margin-left: 20px">
-        <el-col :span="24">
-          <el-form ref="form" label-position="left" size="mini" :model="tmp" label-width="140px">
-            <el-row style="margin-top: 20px;margin-left: 20px">
-              <el-col :span="10">
-                <el-form-item :label="$t('pcn.form.ChangeType')">
-                  <el-select disabled="true" style="width: 100%" v-model="tmp.changeType" placeholder="请选择">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.number')">
-                  <el-input disabled="true" v-model="tmp.number"></el-input>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.Name')">
-                  <el-input v-model="tmp.name"></el-input>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.project')">
-                  <el-input v-model="tmp.project"></el-input>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.ResourceEngineer')">
-                  <el-input v-model="tmp.ResourceEngineer" disabled="true">
-                    <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
-                  </el-input>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.RequireCompletionTime')">
-                  <el-date-picker
-                    style="width: 100%"
-                    v-model="tmp.requireCompletionTime"
-                    type="date"
-                    placeholder="">
-                  </el-date-picker>
-                </el-form-item>
-                <el-form-item :label="$t('pcn.form.DetailedDescription')">
-                  <el-input type="textarea" v-model="tmp.DetailedDescription"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <div class="longcheer_hr">
-              <span class="longcheer_hr_span">文件</span>
-            </div>
-            <el-button-group style="margin-top: 10px">
-              <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">上传文件</el-button>
-              <!--<el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>-->
-              <el-table
-                size="mini"
-                :data="filesList"
-                border
-                ref="multipleTable"
-                height="200px"
-                @selection-change="handleSelectionChange"
-                style="width: 100%">
-                <el-table-column
-                  :selectable="changeFlagHandle"
-                  type="selection"
-                  width="55">
-                </el-table-column>
-                <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="650">
-                  <template
-                    slot-scope="scope">
-                    {{$t(scope.row.name)}}
-                  </template>
-                </el-table-column>
-                <!--<el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">-->
-                <!--<template-->
-                <!--slot-scope="scope">-->
-                <!--{{$t(scope.row.desc)}}-->
-                <!--</template>-->
-                <!--</el-table-column>-->
-              </el-table>
-            </el-button-group>
-            <div style="text-align: right">
-              <el-button size="mini" :loading="$store.getters.loading" type="primary" @click="onSubmit">立即创建</el-button>
-              <el-button size="mini">取消</el-button>
-            </div>
-          </el-form>
+  <div class="app-container" style="height: 100%" >
+    <el-card class="box-card">
+      <el-row>
+        <el-col :span="6">
+          <el-input placeholder="筛选" size="mini" v-model="tfilters"></el-input>
         </el-col>
       </el-row>
+      <el-table
+        size="mini"
+        :data="tableData | tablefilters(tfilters, $t)"
+        border
+        style="width: 100%">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
+          <template
+            slot-scope="scope">
+            <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.ecrNum)}}</a>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="materialNumber"  :label="$t('table.material_number')" width="180">
+          <template
+            slot-scope="scope">
+            <span>{{scope.row.ecrName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="state"  :label="$t('table.material_name')" width="180">
+          <template
+            slot-scope="scope">
+            <span>{{scope.row.startTime}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
-    <ResourceEngineer ref="dialogRef" :restData="restData"></ResourceEngineer>
-    <filesUpload :returnFilePath="returnFilePath" ref="fup"></filesUpload>
   </div>
 </template>
-<script>
-import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
-import filesUpload from '../../components/filesUpload/index'
+<script>import { reworkEcrList } from '@/api/pcn'
 export default {
-  name: 'eidtPcn',
-  components: {
-    ResourceEngineer,
-    filesUpload
-  },
+  name: 'myTasks',
   mounted: function () {
+    this.getDataList()
+  },
+  filters: {
+    tablefilters: function (value, data, $t) {
+      console.log(data, value)
+      var sz = []
+      value.forEach(function (v, index) {
+        /*
+          endTime: "2019/01/09"
+          materialName: "电池组件可拆解,A(碱性一次电池),b,c,1 mAh,11 V,2_1"
+          materialNumber: "5326AA000034"
+          oid: "OR:wt.doc.WTDocument:352618817"
+          project: "IMI_HMI202_A01"
+          specification: "test-specification-BBBB"
+          state: "state.INWORK"
+          taskName: "taskName.submitSample"
+          * */
+        // if (v.materialName.indexOf(data) !== -1 || v.materialNumber.indexOf(data) !== -1 || v.project.indexOf(data) !== -1 || v.specification.indexOf(data) !== -1) {
+        if (v.materialNumber.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
+    }
+  },
+  activated: function () {
+    this.getDataList()
   },
   methods: {
-    handleSelectionChange (data) {
-      if (data) {
-        var path = ''
-        this.selectionData = data
-        this.selectionData.forEach(function (value, index) {
-          if (value.filepath && value.filepath !== 'undefined') {
-            path = path + value.filepath + ';'
-          }
-        })
-        this.filePath = path
-      }
-    },
-    filesUploadClick () {
-      this.$refs.fup.openDialog()
-      this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
-    },
-    escapeClick: function () {
-      this.$refs.dialogRef.openDialog()
-    },
-    restData: function (value) {
-      console.log(value)
-    },
-    returnFilePath (data) {
-      console.log('xxoo', data)
-      var that = this
-      data.forEach(function (value, index) {
-        // that.filePath += value.response.data[0] + ';'
-        var path = value.response.data[0]
-        that.submitPath = that.submitPath + path + ';'
-        that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
+    getDataList () {
+      reworkEcrList().then(r => {
+        // console.log(r)
+        this.tableData = r.data
       })
-      this.$refs.fup.closeDialog()
+    },
+    goDetail (data) {
+      // console.log('data', data)
+      // this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true'}})
+      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true', stateName: data.state}})
     }
   },
   data () {
     return {
-      tmp: {changeType: ''},
-      submitPath: '',
-      filesList: [],
-      options: [{
-        value: '',
-        label: ''
-      }, {
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }]
+      tableData: [],
+      tfilters: ''
     }
   }
 }
 </script>
-<style scoped>
-  .longcheer_hr{
-    padding: 0;
-    background-color: transparent;
-    border: 0;
-    border-bottom: 2px solid #D13139;
-    margin-bottom: 0px;
-  }
-  .longcheer_hr_span{
-    display: inline-block;
-    background-image: url(../../assets/image/tab2.png);
-    background-repeat: no-repeat;
-    background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
-    height: 27px;
-    color: #ffffff;
-  }
-  .card{
-    font-family: 微软雅黑;
-    font-size: 13px;
-  }
-</style>
