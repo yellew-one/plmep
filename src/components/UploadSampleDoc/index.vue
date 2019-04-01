@@ -223,18 +223,18 @@ export default {
       })
       addDoc('MS' + this.number, str).then(r => {
         console.log(r)
-        if (r.data[0].mes && r.data[0].mes === '添加成功！') {
+        if (r.data.oid) {
           this.$message({
-            message: r.data[0].mes,
+            message: r.data.attr[0].mes,
             type: 'success',
             duration: 5 * 1000
           })
           this.dialogVisible = false
-          this.$props.restData()
-        } else if (r.data[0].mes) {
+          this.$props.restData(r.data.oid)
+        } else if (r.data.mes) {
           this.$message({
-            message: r.data[0].mes,
-            type: 'warn',
+            message: r.data.mes,
+            type: 'warning',
             duration: 8 * 1000
           })
         }

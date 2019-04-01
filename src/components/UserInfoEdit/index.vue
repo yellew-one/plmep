@@ -82,6 +82,9 @@ export default {
                 type: 'success',
                 duration: 5 * 1000
               })
+              var user = Object.assign({}, this.$store.getters.userInfo)
+              user.activation = '已激活'
+              this.$store.commit('SET_USERINFO', user)
             } else {
               this.$message({
                 message: 'Submit Error',

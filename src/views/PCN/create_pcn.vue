@@ -26,7 +26,7 @@
                   <el-input v-model="tmp.LQ_PROJECT"></el-input>
                 </el-form-item>
                 <el-form-item prop="sourceEngineerName" :label="$t('pcn.form.ResourceEngineer')">
-                  <el-input v-model="tmp.sourceEngineerName" disabled="true">
+                  <el-input v-model="tmp.sourceEngineerName" readonly="true">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>

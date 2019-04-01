@@ -490,8 +490,10 @@ export default {
       this.$refs.fileUpload.setAttribute('http://172.17.1.125:8081/files/upLoad', [], '', 'fileList', {number: this.model.materialNumber})
     },
     updatedoc (newValue) {
-      this.oid = newValue
-      this.$route.params.oid = newValue
+      if (newValue) {
+        this.oid = newValue
+        this.$route.params.oid = newValue
+      }
       this.getDetailInfo(this.oid)
       this.showRelatedWLFYDocs()
     },
@@ -561,7 +563,8 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
-          this.showRelatedWLFYDocs()
+          // this.showRelatedWLFYDocs()
+          this.updatedoc(r.data.oid)
         } else {
           this.$message({
             message: '' + r.data.mes,

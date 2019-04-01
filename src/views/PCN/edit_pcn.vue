@@ -11,19 +11,19 @@
         :data="tableData | tablefilters(tfilters, $t)"
         border
         style="width: 100%">
-        <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('table.task_name')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="ecrNum"  :label="$t('table.task_name')" width="280">
           <template
             slot-scope="scope">
             <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.ecrNum)}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="materialNumber"  :label="$t('table.material_number')" width="180">
+        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="ecrName"  :label="$t('table.material_number')" width="280">
           <template
             slot-scope="scope">
             <span>{{scope.row.ecrName}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" :show-overflow-tooltip="true"   prop="state"  :label="$t('table.material_name')" width="180">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="startTime"  :label="$t('table.material_name')" width="280">
           <template
             slot-scope="scope">
             <span>{{scope.row.startTime}}</span>
@@ -44,18 +44,7 @@ export default {
       console.log(data, value)
       var sz = []
       value.forEach(function (v, index) {
-        /*
-          endTime: "2019/01/09"
-          materialName: "电池组件可拆解,A(碱性一次电池),b,c,1 mAh,11 V,2_1"
-          materialNumber: "5326AA000034"
-          oid: "OR:wt.doc.WTDocument:352618817"
-          project: "IMI_HMI202_A01"
-          specification: "test-specification-BBBB"
-          state: "state.INWORK"
-          taskName: "taskName.submitSample"
-          * */
-        // if (v.materialName.indexOf(data) !== -1 || v.materialNumber.indexOf(data) !== -1 || v.project.indexOf(data) !== -1 || v.specification.indexOf(data) !== -1) {
-        if (v.materialNumber.indexOf(data) !== -1) {
+        if (v.ecrNum.indexOf(data) !== -1) {
           sz.push(v)
         }
       })
@@ -68,7 +57,6 @@ export default {
   methods: {
     getDataList () {
       reworkEcrList().then(r => {
-        // console.log(r)
         this.tableData = r.data
       })
     },
