@@ -25,7 +25,7 @@
                 <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="8">
                     <el-form-item prop="exemptionForm"  :label="$t('huanbaoTable.search.escape_clause')">
-                      <el-input disabled="true" v-model="temp.exemptionForm">
+                      <el-input readonly="true" v-model="temp.exemptionForm">
                         <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                       </el-input>
                     </el-form-item>

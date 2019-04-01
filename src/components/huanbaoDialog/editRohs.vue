@@ -217,7 +217,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item prop="exemptions"  label="豁免条款">
-                <el-input disabled="true" v-model="exemptions">
+                <el-input readonly="true" v-model="exemptions">
                   <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </el-form-item>

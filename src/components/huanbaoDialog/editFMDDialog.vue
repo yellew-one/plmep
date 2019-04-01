@@ -125,7 +125,7 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="exemptions" :label="$t('huanbaoTable.FMD.exemptions')">
-                  <el-input disabled="true" v-model="temp.exemptions">
+                  <el-input readonly="true" v-model="temp.exemptions">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>
