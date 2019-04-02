@@ -145,18 +145,21 @@
         </el-pagination>
       </div>
     </el-card>
+    <pcnUpdate ref="pcnUpdate"></pcnUpdate>
     <ResourceEngineer ref="dialogRef" :restData="selectResourceEngineer"></ResourceEngineer>
   </div>
 </template>
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
+import pcnUpdate from '@/components/PcnDialog/index'
 import { searchEcr, ecrType } from '@/api/pcn'
 import { getSealedSampleStatus } from '@/api/index'
 import { initPage } from '@/utils/index'
 export default {
   name: 'myPcn',
   components: {
-    ResourceEngineer
+    ResourceEngineer,
+    pcnUpdate
   },
   created: function () {
     initPage(this.model, searchEcr)
@@ -178,6 +181,9 @@ export default {
     }
   },
   methods: {
+    goDetail (data) {
+      this.$refs.pcnUpdate.openDialog(data.oid)
+    },
     getEcrType () {
       ecrType().then(r => {
         console.log(r)
@@ -194,10 +200,6 @@ export default {
     },
     escapeClick: function () {
       this.$refs.dialogRef.openDialog()
-    },
-    goDetail (data) {
-      console.log('data', data)
-      // this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false', stateName: 'huanbaoTable.searchStatus.' + data.status}})
     },
     searchResult () {
       console.log('xoxo', this.dateValue)

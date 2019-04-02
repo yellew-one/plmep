@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top="30px"  title="查询" :visible.sync="dialogFormVisible" width="800px">
+  <el-dialog top="30px"  title="查询" :visible.sync="dialogFormVisible" width="800px" append-to-body>
     <div style="font-family: 微软雅黑;font-size: 13px;">
       <el-scrollbar style="height: 400px">
         <el-card>

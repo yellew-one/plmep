@@ -17,25 +17,31 @@
             <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.ecrNum)}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="ecrName"  :label="$t('table.material_number')" width="280">
+        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="ecrNum"  :label="$t('table.material_number')" width="280">
+          <template
+            slot-scope="scope">
+            <span>{{scope.row.ecrNum}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="ecrName"  :label="$t('table.material_name')" width="280">
           <template
             slot-scope="scope">
             <span>{{scope.row.ecrName}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" :show-overflow-tooltip="true"   prop="startTime"  :label="$t('table.material_name')" width="280">
-          <template
-            slot-scope="scope">
-            <span>{{scope.row.startTime}}</span>
-          </template>
-        </el-table-column>
       </el-table>
     </el-card>
+    <pcnUpdate ref="pcnUpdate"></pcnUpdate>
   </div>
 </template>
-<script>import { reworkEcrList } from '@/api/pcn'
+<script>
+import { reworkEcrList } from '@/api/pcn'
+import pcnUpdate from '@/components/PcnDialog/index'
 export default {
   name: 'myTasks',
+  components: {
+    pcnUpdate
+  },
   mounted: function () {
     this.getDataList()
   },
@@ -61,9 +67,7 @@ export default {
       })
     },
     goDetail (data) {
-      // console.log('data', data)
-      // this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true'}})
-      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'true', stateName: data.state}})
+      this.$refs.pcnUpdate.openDialog(data.ecrOid, data.taskOid)
     }
   },
   data () {

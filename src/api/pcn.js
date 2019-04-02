@@ -111,3 +111,37 @@ export function searchEcr (data) {
     }
   })
 }
+export function reworkEcrInfo (ecrOid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/supplierECR.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'reworkEcrInfo',
+      ecrOid: ecrOid
+    }
+  })
+}
+export function editEcr (jsonData) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/supplierECR.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'editEcr',
+      jsonData: jsonData
+    }
+  })
+}

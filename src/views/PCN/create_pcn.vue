@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
       <el-card shadow="hover" class="card">
-      <div class="longcheer_hr" style="margin-left: 20px">
+      <div class="longcheer_hr" >
         <span class="longcheer_hr_span">{{$t('pcn.title.information')}}</span>
       </div>
       <el-row style="margin-top: 20px;margin-left: 20px">
@@ -44,7 +44,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <div class="longcheer_hr">
+            <div class="longcheer_hr" style="margin-left: -20px">
               <span class="longcheer_hr_span">文件</span>
             </div>
             <el-button-group style="margin-top: 10px">
