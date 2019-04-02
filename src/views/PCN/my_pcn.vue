@@ -37,7 +37,10 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('pcn.form.ResourceEngineer')">
-                    <el-input   v-model="model.serchItems.sourceEngineer"></el-input>
+                    <!--<el-input v-model="model.serchItems.sourceEngineer"></el-input>-->
+                    <el-input v-model="sourceEngineerName" readonly="true">
+                      <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -48,7 +51,14 @@
               <el-row :gutter="100" type="flex" class="row-bg" >
                 <el-col :span="8">
                   <el-form-item prop="state" :label="$t('pcn.table.state')">
-                    <el-input   v-model="model.serchItems.state"></el-input>
+                    <el-select style="width: 100%"  v-model="model.serchItems.state" placeholder="请选择">
+                      <el-option
+                        v-for="item in options2"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -135,14 +145,19 @@
         </el-pagination>
       </div>
     </el-card>
+    <ResourceEngineer ref="dialogRef" :restData="selectResourceEngineer"></ResourceEngineer>
   </div>
 </template>
 <script>
+import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import { searchEcr, ecrType } from '@/api/pcn'
+import { getSealedSampleStatus } from '@/api/index'
 import { initPage } from '@/utils/index'
 export default {
-  components: {},
   name: 'myPcn',
+  components: {
+    ResourceEngineer
+  },
   created: function () {
     initPage(this.model, searchEcr)
     this.model.searchCurrent(1)
@@ -150,6 +165,7 @@ export default {
   },
   mounted: function () {
     this.getEcrType()
+    this.getEnvpStates()
   },
   data () {
     return {
@@ -157,7 +173,8 @@ export default {
       dateValue: '',
       model: {serchItems: {}, dataList: []},
       options: [],
-      options2: []
+      options2: [],
+      sourceEngineerName: ''
     }
   },
   methods: {
@@ -171,9 +188,16 @@ export default {
         this.options = sz
       })
     },
+    selectResourceEngineer (value) {
+      this.model.serchItems.sourceEngineer = value.userName
+      this.sourceEngineerName = value.fullName
+    },
+    escapeClick: function () {
+      this.$refs.dialogRef.openDialog()
+    },
     goDetail (data) {
       console.log('data', data)
-      this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false', stateName: 'huanbaoTable.searchStatus.' + data.status}})
+      // this.$router.push({name: 'fdetailTask', params: {oid: data.oid, state: 'false', stateName: 'huanbaoTable.searchStatus.' + data.status}})
     },
     searchResult () {
       console.log('xoxo', this.dateValue)
@@ -192,6 +216,19 @@ export default {
     },
     handleCurrentChange (val) {
       this.getDataList(val)
+    },
+    getEnvpStates () {
+      getSealedSampleStatus().then(r => {
+        console.log(r)
+        var states = [{value: '', label: ''}]
+        for (var i in r.data[0].state) {
+          states.push({
+            value: r.data[0].state[i],
+            label: this.$t('huanbaoTable.searchStatus.' + r.data[0].state[i])
+          })
+        }
+        this.options2 = states
+      })
     }
   }
 }
