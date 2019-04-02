@@ -1576,3 +1576,24 @@ export function executeEditOther2Item (addSony, removeSony, addLenove, removeLen
     }
   })
 }
+/**
+ * 环保条目编辑过滤
+ * @param oid 物料环保oid
+ */
+export function itemEditAble (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'itemEditAble',
+      oid: oid
+    }
+  })
+}

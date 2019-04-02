@@ -293,7 +293,7 @@ export default {
     }
   },
   methods: {
-    setRohsDialogVisible (e, rohsOid, oid) {
+    setRohsDialogVisible (e, row, oid) {
       this.editRemoveOid = ''
       this.totalReportBefore = []
       this.exemptions = ''
@@ -304,10 +304,11 @@ export default {
       this.rohsDialog = true
       this.type = e
       this.oid = oid
-      this.rohsOid = rohsOid
-      this.temp = {}
+      this.rohsOid = row.rohsOid
+      this.temp = Object.assign({}, row)
+      this.exemptions = row.exemptions
       if (e === 'itemedit' || e === 'itemview') {
-        this.getDataList(rohsOid)
+        this.getDataList(this.rohsOid)
         if (e === 'itemedit') {
           this.ifEdit = false
         } else {

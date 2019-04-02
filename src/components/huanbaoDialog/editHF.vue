@@ -234,8 +234,10 @@ export default {
       }
       if (row.fileRetardant === '是') {
         this.value = '1'
-      } else {
+      } else if (row.fileRetardant === '否') {
         this.value = '0'
+      } else {
+        this.value = ''
       }
     },
     getDataList (hfOid) {

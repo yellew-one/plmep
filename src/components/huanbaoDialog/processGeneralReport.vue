@@ -197,6 +197,7 @@ export default {
           })
         }
       }
+      this.$refs['dataForm'].resetFields()
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()

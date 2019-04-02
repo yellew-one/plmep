@@ -249,7 +249,7 @@
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materialContent"  label="物质重量" >
               <template
                 slot-scope="scope">
-                <el-input type="number" size="mini" :disabled="false" v-model="scope.row.materialContent">
+                <el-input size="mini" :disabled="false" v-model="scope.row.materialContent">
                 </el-input>
               </template>
             </el-table-column>

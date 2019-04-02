@@ -80,8 +80,8 @@
               <el-row>
                 <el-button size="mini" type="primary" plain @click="fmdDownload">{{$t('huanbaoTable.FMD.download')}}</el-button>
                 <el-button size="mini" type="success" plain
-                           @click="fmdUpload">{{$t('huanbaoTable.FMD.upload')}}</el-button>
-                <el-button size="mini" v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           @click="fmdUpload" v-if="fmdEditAble">{{$t('huanbaoTable.FMD.upload')}}</el-button>
+                <el-button size="mini" v-if="fmdEditAble"
                            :loading="$store.getters.loading"
                            @click="thirdreuseFMD"
                            type="info"
@@ -161,7 +161,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100"
-                  v-if="state === 'INWORK' || state === 'REWORK' ">
+                  v-if="fmdEditAble">
                   <template slot-scope="scope">
                     <el-button @click="editFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
                     <el-button @click="deleteFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.delete')}}</el-button>
@@ -223,7 +223,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editMSDS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button v-if="msdsEditAble" @click="editMSDS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkMSDS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
@@ -233,10 +233,10 @@
               <el-row>
                 <el-button size="mini" type="primary" plain @click="downloadRoHS">下载导入模板</el-button>
                 <el-button size="mini" type="success" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="rohsEditAble"
                            @click="ROHSUpload">上传环保数据</el-button>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="rohsEditAble"
                            @click="editRoHSReport">编辑RoHS总报告</el-button>
                 <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看RoHS总报告</el-button>
                 <el-popover
@@ -369,7 +369,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button v-if="rohsEditAble" @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
@@ -378,7 +378,7 @@
             <el-tab-pane :label="$t('huanbaoTable.submitted.HF')">
               <el-row>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="hfEditAble"
                            @click="editHFReport">编辑HF总报告</el-button>
                 <el-button @click="checkHFReport" size="mini" type="info" plain>查看HF总报告</el-button>
                 <el-popover
@@ -449,7 +449,7 @@
                     <span>{{scope.row.reportNumber}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.HF.state')" width="180">
+                <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.HF.state')">
                   <template
                     slot-scope="scope">
                     <span>{{$t('huanbaoTable.HF.'+scope.row.state)}}</span>
@@ -457,7 +457,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editHF(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button v-if="hfEditAble" @click="editHF(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkHF(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
@@ -466,12 +466,11 @@
             <el-tab-pane :label="$t('huanbaoTable.submitted.REACH')">
               <el-row>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="reachEditAble"
                            @click="editREACHTotalReport">编辑REACH总报告</el-button>
-                <el-button @click="checkREACHTotalReport" size="mini" type="info" plain>查看REACH总报告</el-button>
-                <el-button size="mini" type="primary" plain @click="editGeneralStatement">编辑REACH总声明</el-button>
-                <el-button size="mini" type="success" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' " @click="checkGeneralStatement">查看REACH总声明</el-button>
+                <el-button size="mini" type="info" plain @click="checkREACHTotalReport">查看REACH总报告</el-button>
+                <el-button size="mini" type="primary" plain v-if="reachEditAble" @click="editGeneralStatement">编辑REACH总声明</el-button>
+                <el-button size="mini" type="info" plain @click="checkGeneralStatement">查看REACH总声明</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -536,7 +535,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editREACH(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button v-if="reachEditAble" @click="editREACH(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkREACH(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
@@ -545,7 +544,7 @@
             <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER')">
               <el-row>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="other1EditAble"
                            @click="editOtherReport">编辑其他总报告</el-button>
                 <el-button @click="checkOtherReport" size="mini" type="info" plain>查看其他总报告</el-button>
                 <el-popover
@@ -654,7 +653,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.state === 'INWORK' || scope.row.state === 'REWORK' " @click="editOther(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
+                    <el-button v-if="other1EditAble" @click="editOther(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkOther(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
                   </template>
                 </el-table-column>
@@ -663,7 +662,7 @@
             <el-tab-pane :label="$t('huanbaoTable.submitted.OTHER2')">
               <el-row>
                 <el-button size="mini" type="warning" plain
-                           v-if="this.state === 'INWORK' ||this.state === 'REWORK' "
+                           v-if="other2EditAble"
                            @click="editSpecialNeeds">编辑客户特殊需求申报</el-button>
                 <el-popover
                   v-if="isShow"
@@ -819,7 +818,7 @@
 </template>
 <script>
 import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, processHistory, envpComments } from '@/api/index'
-import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate, completeEnvp, checkData } from '@/api/huanbaoAPI'
+import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate, completeEnvp, checkData, itemEditAble } from '@/api/huanbaoAPI'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
@@ -959,7 +958,14 @@ export default {
       approvalType: '',
       envprotectionDocumentOid: '',
       otherSubstances: [],
-      nowTags: {}
+      nowTags: {},
+      fmdEditAble: false,
+      hfEditAble: false,
+      msdsEditAble: false,
+      other1EditAble: false,
+      other2EditAble: false,
+      reachEditAble: false,
+      rohsEditAble: false
     }
   },
   filters: {
@@ -980,6 +986,28 @@ export default {
     this.approvalType = this.$route.params.approvalType
     if (this.oid) {
       this.getDataList(this.oid)
+      if (this.approvalType === 'YEAH') {
+        itemEditAble(this.oid).then(r => {
+          console.log('itemEditAble', r)
+          if (r.data.status === 'success') {
+            this.fmdEditAble = r.data.FMD
+            this.hfEditAble = r.data.HF
+            this.msdsEditAble = r.data.MSDS
+            this.other1EditAble = r.data.OTHER1
+            this.other2EditAble = r.data.OTHER2
+            this.reachEditAble = r.data.REACH
+            this.rohsEditAble = r.data.ROHS
+          }
+        })
+      } else {
+        this.fmdEditAble = false
+        this.hfEditAble = false
+        this.msdsEditAble = false
+        this.other1EditAble = false
+        this.other2EditAble = false
+        this.reachEditAble = false
+        this.rohsEditAble = false
+      }
     }
   },
   methods: {
@@ -1139,11 +1167,11 @@ export default {
     },
     // rohs 编辑
     editRoHS (row) {
-      this.$refs.editRohs.setRohsDialogVisible('itemedit', row.rohsOid, this.oid)
+      this.$refs.editRohs.setRohsDialogVisible('itemedit', row, this.oid)
     },
     // rohs 查看
     checkRoHS (row) {
-      this.$refs.editRohs.setRohsDialogVisible('itemview', row.rohsOid, this.oid)
+      this.$refs.editRohs.setRohsDialogVisible('itemview', row, this.oid)
     },
     // 编辑 HF 总报告
     editHFReport () {
