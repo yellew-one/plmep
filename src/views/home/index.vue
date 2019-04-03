@@ -1,18 +1,11 @@
 <template>
     <div class="app-container">
-      <el-button @click="download" type="primary" >下载</el-button>
-      <el-button @click="upload" type="primary" >上传</el-button>
-      <input v-model="value"/>
-      <files-upload ref="fileUpload"
-                    :returnFilePath="returnFilePath"></files-upload>
     </div>
 </template>
 <script>
 import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
-import { download, upload } from '@/api/huanbaoAPI'
-import FilesUpload from '../../components/filesUpload/index'
 export default {
-  components: {FilesUpload},
+  components: {},
   name: 'HelloWorld',
   mounted: function () {
     //      { path: '*', redirect: '/404', hidden: true }])
@@ -67,34 +60,6 @@ export default {
           }
         }
       })
-    },
-    download () {
-      download().then(r => {
-        if (r.data.flag) {
-          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
-        }
-      })
-    },
-    upload () {
-      this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '测试上传', 'fileList', {
-        number: this.$store.getters.huanbaoNum,
-        userName: this.$store.getters.userInfo.username
-      }, 'FMD')
-    },
-    returnFilePath (e, type) {
-      this.$refs.fileUpload.closeDialog()
-      this.value = e[0].name
-      this.filePath = e[0].response.data[0]
-      if (this.filePath !== '') {
-        upload(this.filePath).then(r => {
-          if (r.data.status === 'success') {
-            this.$message.success({
-              message: '上传成功'
-            })
-          }
-        })
-      }
     }
   },
   data () {

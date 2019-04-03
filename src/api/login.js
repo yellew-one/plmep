@@ -7,6 +7,7 @@ import Qs from 'qs'
 export function login (username, password) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/common.jsp',
+    // url: '/netmarkets/jsp/ext/longcheer/common/common.jsp',
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

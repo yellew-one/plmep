@@ -303,7 +303,7 @@ export default {
       this.$refs.myChild.setDialogFormVisible()
     },
     cellClick (row, column, cell, event) {
-      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: '1', approvalType: ''}})
+      this.$router.push({name: 'detailTask', params: {oid: row.oid, state: row.status, approvalType: ''}})
     },
     handleCurrentChange (val) {
       this.counts.nowPage = val

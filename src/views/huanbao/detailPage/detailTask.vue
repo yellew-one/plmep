@@ -80,7 +80,7 @@
               <el-row>
                 <el-button size="mini" type="primary" plain @click="fmdDownload">{{$t('huanbaoTable.FMD.download')}}</el-button>
                 <el-button size="mini" type="success" plain
-                           @click="fmdUpload" v-if="fmdEditAble">{{$t('huanbaoTable.FMD.upload')}}</el-button>
+                           @click="fmdUpload" v-if="FMDUPLOAD">{{$t('huanbaoTable.FMD.upload')}}</el-button>
                 <el-button size="mini" v-if="fmdEditAble"
                            :loading="$store.getters.loading"
                            @click="thirdreuseFMD"
@@ -233,7 +233,7 @@
               <el-row>
                 <el-button size="mini" type="primary" plain @click="downloadRoHS">下载导入模板</el-button>
                 <el-button size="mini" type="success" plain
-                           v-if="rohsEditAble"
+                           v-if="ROHSUPLOAD"
                            @click="ROHSUpload">上传环保数据</el-button>
                 <el-button size="mini" type="warning" plain
                            v-if="rohsEditAble"
@@ -965,7 +965,9 @@ export default {
       other1EditAble: false,
       other2EditAble: false,
       reachEditAble: false,
-      rohsEditAble: false
+      rohsEditAble: false,
+      FMDUPLOAD: false,
+      ROHSUPLOAD: false
     }
   },
   filters: {
@@ -997,6 +999,8 @@ export default {
             this.other2EditAble = r.data.OTHER2
             this.reachEditAble = r.data.REACH
             this.rohsEditAble = r.data.ROHS
+            this.FMDUPLOAD = r.data.FMDUPLOAD
+            this.ROHSUPLOAD = r.data.ROHSUPLOAD
           }
         })
       } else {
@@ -1007,6 +1011,8 @@ export default {
         this.other2EditAble = false
         this.reachEditAble = false
         this.rohsEditAble = false
+        this.FMDUPLOAD = false
+        this.ROHSUPLOAD = false
       }
     }
   },
