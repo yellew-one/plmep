@@ -27,8 +27,8 @@
               <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
                 <el-input :disabled="!iflag" v-model="tmp.requestProject"></el-input>
               </el-form-item>
-              <el-form-item prop="resourceEngineer" :label="$t('pcn.form.ResourceEngineer')">
-                <el-input :disabled="!iflag" v-model="tmp.resourceEngineer" readonly="true">
+              <el-form-item prop="resourceEngineerZH" :label="$t('pcn.form.ResourceEngineer')">
+                <el-input :disabled="!iflag" v-model="tmp.resourceEngineerZH" readonly="true">
                   <el-button :disabled="!iflag" @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </el-form-item>
@@ -113,6 +113,8 @@ export default {
         this.iflag = false
       }
       this.dialogFormVisible = true
+      this.filesList = []
+      this.removeFilesList = []
       this.ecrOid = ecrOid
       this.taskOid = taskOid
       this.getReworkEcrInfo(ecrOid)
@@ -125,12 +127,18 @@ export default {
       var that = this
       this.selectionList.forEach(function (v, i) {
         console.log(that.filesList)
-        that.filesList.splice(that.filesList.indexOf(v), 1)
+        // 判断文件删除
+        if (that.submitFilesList.indexOf(v) !== -1) {
+          that.submitFilesList.splice(that.submitFilesList.indexOf(v), 1)
+        } else {
+          that.filesList.splice(that.filesList.indexOf(v), 1)
+          that.removeFilesList.push(v)
+        }
       })
     },
     selectResourceEngineer (value) {
       this.tmp.sourceEngineer = value.userName
-      this.tmp.sourceEngineerName = value.fullName
+      this.tmp.resourceEngineerZH = value.fullName
     },
     handleSelectionChange (data) {
       if (data) {
@@ -151,6 +159,7 @@ export default {
       data.forEach(function (value, index) {
         var path = value.response.data[0]
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
+        that.submitFilesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
     },
@@ -178,10 +187,10 @@ export default {
           jsonData.name = this.tmp.ecrName
           jsonData.needDate = this.tmp.needDate
           jsonData.LQ_PROJECT = this.tmp.requestProject
-          jsonData.sourceEngineer = this.tmp.resourceEngineer
+          jsonData.sourceEngineer = this.tmp.sourceEngineer
           jsonData.reasonDescription = this.tmp.description
-          jsonData.removeOid = ''
-          jsonData.addPath = ''
+          jsonData.removeOid = this.getFilePath(this.removeFilesList)
+          jsonData.addPath = this.getFilePath(this.submitFilesList)
           this.$store.commit('SET_LOADING', true)
           editEcr(JSON.stringify(jsonData)).then(r => {
             console.log('r->', r)
@@ -208,16 +217,24 @@ export default {
         }
       })
     },
-    getFilePath () {
+    getFilePath (dataList) {
       var str = ''
-      this.filesList.forEach(function (v, i) {
+      dataList.forEach(function (v, i) {
         str = str + v.filepath + '@@@'
       })
       return str
     },
     getReworkEcrInfo (oid) {
+      this.tmp = {ecrType: '', resourceEngineerZH: ''}
       reworkEcrInfo(oid).then(r => {
+        var that = this
         this.tmp = r.data
+        this.tmp.sourceEngineer = r.data.resourceEngineer
+        r.data.attachs.forEach(function (value, index) {
+          // that.filePath += value.response.data[0] + ';'
+          that.filesList.push({name: value.fileName, filepath: '', url: '', desc: '', ftype: 'oid'})
+          that.submitFilesList.push({name: value.fileName, filepath: '', url: '', desc: '', ftype: 'oid'})
+        })
       })
     }
   },
@@ -227,7 +244,9 @@ export default {
       ecrOid: '',
       taskOid: '',
       iflag: true,
-      tmp: {ecrType: '', sourceEngineerName: ''},
+      tmp: {ecrType: '', resourceEngineerZH: ''},
+      removeFilesList: [],
+      submitFilesList: [],
       submitPath: '',
       filesList: [],
       rules: {
@@ -240,7 +259,7 @@ export default {
         ecrNumber: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        resourceEngineer: [
+        resourceEngineerZH: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
         needDate: [
