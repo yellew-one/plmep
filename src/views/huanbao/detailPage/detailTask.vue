@@ -818,7 +818,7 @@
 </template>
 <script>
 import { showEnvprotectionTask, selectFMD, selectMSDS, selectRoHS, selectHF, selectREACH, selectOTHER, selectOTHER2, processHistory, envpComments } from '@/api/index'
-import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate, completeEnvp, checkData, itemEditAble } from '@/api/huanbaoAPI'
+import { executeUploadFMDData, executeUploadItemData, deleteFmdItem, downloadAttach, downloadEnvpTemplate, completeEnvp, checkData, itemEditAble, checkMaterialAttr } from '@/api/huanbaoAPI'
 import EditFMDDialog from '../../../components/huanbaoDialog/editFMDDialog'
 import ThirdReuse from '../../../components/huanbaoDialog/thirdReuseFMD'
 import EditMsds from '../../../components/huanbaoDialog/editMSDS'
@@ -1118,19 +1118,36 @@ export default {
       this.$store.commit('SET_LOADING', true)
       checkData('HSF' + this.model.materialNumber).then(r => {
         if (r.data.status === 'success') {
-          completeEnvp(this.oid, this.comment, this.radio).then(r => {
-            console.log('completeSealedTask', r)
-            if (r.data.status === 'success') {
-              this.$message.success({
-                message: '任务已提交'
+          checkMaterialAttr(this.oid).then(r => {
+            if (r.data.satus === 'success') {
+              if (r.data.flag) {
+                completeEnvp(this.oid, this.comment, this.radio).then(r => {
+                  console.log('completeSealedTask', r)
+                  if (r.data.status === 'success') {
+                    this.$message.success({
+                      message: '任务已提交'
+                    })
+                    this.closePage()
+                  }
+                })
+              } else {
+                this.$message.warning({
+                  dangerouslyUseHTMLString: true,
+                  message: r.data.info
+                })
+              }
+            } else {
+              this.$message.warning({
+                dangerouslyUseHTMLString: true,
+                message: r.data.mes
               })
-              this.closePage()
             }
           })
         } else {
           this.$message.error({
             dangerouslyUseHTMLString: true,
-            message: r.data.info
+            message: r.data.info,
+            duration: 2000
           })
         }
       })

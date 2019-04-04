@@ -1597,3 +1597,24 @@ export function itemEditAble (oid) {
     }
   })
 }
+/**
+ * 待提交物料环保完成任务时物料属性更新校验(ps:此接口调用在完整性校验后）
+ * @param oid 物料环保oid
+ */
+export function checkMaterialAttr (oid) {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'checkMaterialAttr',
+      oid: oid
+    }
+  })
+}
