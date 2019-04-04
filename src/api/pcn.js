@@ -89,6 +89,7 @@ export function reworkEcrList () {
   })
 }
 export function searchEcr (data) {
+  console.log(data)
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/supplierECR.jsp',
     method: 'post',
@@ -107,7 +108,7 @@ export function searchEcr (data) {
       LQ_PROJECT: data.serchItems.LQ_PROJECT,
       sourceEngineer: data.serchItems.sourceEngineer,
       state: data.serchItems.state,
-      nowPage: data.serchItems.nowPage
+      nowPage: data.counts.nowPage
     }
   })
 }

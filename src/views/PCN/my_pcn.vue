@@ -38,7 +38,12 @@
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('pcn.form.ResourceEngineer')">
                     <!--<el-input v-model="model.serchItems.sourceEngineer"></el-input>-->
-                    <el-input v-model="sourceEngineerName">
+                    <el-input clearable="true" readonly="true" v-model="sourceEngineerName">
+                      <i
+                        class="el-icon-close el-input__icon"
+                        slot="suffix"
+                        @click="handleIconClick">
+                      </i>
                       <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                   </el-form-item>
@@ -182,6 +187,10 @@ export default {
   methods: {
     goDetail (data) {
       this.$refs.pcnUpdate.openDialog(data.oid)
+    },
+    handleIconClick () {
+      this.sourceEngineerName = ''
+      this.model.serchItems.sourceEngineer = ''
     },
     getEcrType () {
       ecrType().then(r => {
