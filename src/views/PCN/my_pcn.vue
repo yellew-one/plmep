@@ -38,7 +38,7 @@
                 <el-col :span="8">
                   <el-form-item prop="materialName" :label="$t('pcn.form.ResourceEngineer')">
                     <!--<el-input v-model="model.serchItems.sourceEngineer"></el-input>-->
-                    <el-input v-model="sourceEngineerName" readonly="true">
+                    <el-input v-model="sourceEngineerName">
                       <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                   </el-form-item>
@@ -130,7 +130,7 @@
         <el-table-column prop="state" :label="$t('pcn.table.state')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">
-            <span>{{scope.row.state}}</span>
+            <span>{{$t('pcn.select.state.' + scope.row.state)}}</span>
           </template>
         </el-table-column>
        </el-table>
@@ -152,8 +152,7 @@
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import pcnUpdate from '@/components/PcnDialog/index'
-import { searchEcr, ecrType } from '@/api/pcn'
-import { getSealedSampleStatus } from '@/api/index'
+import { searchEcr, ecrType, ecrState } from '@/api/pcn'
 import { initPage } from '@/utils/index'
 export default {
   name: 'myPcn',
@@ -220,13 +219,13 @@ export default {
       this.getDataList(val)
     },
     getEnvpStates () {
-      getSealedSampleStatus().then(r => {
+      ecrState().then(r => {
         console.log(r)
         var states = [{value: '', label: ''}]
-        for (var i in r.data[0].state) {
+        for (var i in r.data) {
           states.push({
-            value: r.data[0].state[i],
-            label: this.$t('huanbaoTable.searchStatus.' + r.data[0].state[i])
+            value: r.data[i].value,
+            label: this.$t('pcn.select.state.' + r.data[i].value)
           })
         }
         this.options2 = states

@@ -174,6 +174,7 @@ export default {
                 duration: 5 * 1000
               })
               this.tmp = {ecrType: '', sourceEngineerName: ''}
+              this.filesList = []
               this.$refs['form1'].clearValidate()
             } else {
               this.$message({

@@ -182,8 +182,8 @@ export default {
       this.$refs['form1'].validate((valid) => {
         if (valid) {
           var jsonData = {}
-          jsonData.taskOid = this.ecrOid
-          jsonData.ecrOid = this.taskOid
+          jsonData.taskOid = this.taskOid
+          jsonData.ecrOid = this.ecrOid
           jsonData.name = this.tmp.ecrName
           jsonData.needDate = this.tmp.needDate
           jsonData.LQ_PROJECT = this.tmp.requestProject

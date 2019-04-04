@@ -513,6 +513,13 @@ export default {
       state: '状态'
     },
     select: {
+      state: {
+        OPEN: '开启',
+        UNDERREVIEW: '正在审阅',
+        REWORK: '驳回',
+        RESOLVED: '已解决',
+        CANCELLED: '已取消'
+      }
     }
   }
 }
