@@ -382,26 +382,26 @@ export default {
     },
     uploadPatent () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
     },
     uploadIPFORM () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
     },
     uploadMsds () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
     },
     downloadloadIP () {
       downloadEnvpTemplate('IPFORM').then(r => {
         if (r.data.flag) {
-          window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     },
     download (row) {
       downloadAttach(row.attachmentOid).then(r => {
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     completeMSDS () {

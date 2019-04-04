@@ -333,12 +333,12 @@ export default {
     },
     uploadMaterial (row) {
       downloadAttach(row.reportOid).then(r => {
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     uploadMsds (row) {
       downloadAttach(row.attachOid).then(r => {
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }

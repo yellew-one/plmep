@@ -115,14 +115,16 @@
           </el-table-column>
         </el-table>
       </el-card>
-      <el-pagination
-        background
-        @current-change="handleCurrentChange"
-        :current-page="counts.nowPage"
-        layout="total, prev, pager, next"
-        :total="counts.total"
-        :page-size="counts.pageCount">
-      </el-pagination>
+      <div style="width: 100%;text-align: right">
+        <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          :current-page="counts.nowPage"
+          layout="total, prev, pager, next"
+          :total="counts.total"
+          :page-size="counts.pageCount">
+        </el-pagination>
+      </div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="cancelValue">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
           <el-button type="primary" @click="setBabaValue">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
@@ -203,6 +205,10 @@ export default {
         nextPage: 0,
         lastPage: 0
       }
+      this.temp.startDate = ''
+      this.temp.endDate = ''
+      this.tableData = []
+      this.getDataList(this.temp, this.counts)
     },
     // 处理多选数据
     handleSelectionChange (val) {

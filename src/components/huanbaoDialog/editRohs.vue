@@ -218,6 +218,11 @@
             <el-col :span="16">
               <el-form-item prop="exemptions"  label="豁免条款">
                 <el-input readonly="true" v-model="exemptions">
+                  <i
+                    class="el-icon-close el-input__icon"
+                    slot="suffix"
+                    @click="handleIconClick">
+                  </i>
                   <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </el-form-item>
@@ -316,6 +321,9 @@ export default {
         }
       }
     },
+    handleIconClick () {
+      this.exemptions = ''
+    },
     getDataList (oid) {
       viewRohs(oid).then(r => {
         this.temp = r.data
@@ -343,7 +351,7 @@ export default {
     },
     upload (row) {
       downloadAttach(row.reportOid).then(r => {
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     escapeClick () {

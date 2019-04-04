@@ -138,7 +138,7 @@ export default {
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '上传报告', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '上传报告', 'fileList', {
         number: 'HSF' + this.temp.partNo,
         userName: this.$store.getters.userInfo.username
       }, '')

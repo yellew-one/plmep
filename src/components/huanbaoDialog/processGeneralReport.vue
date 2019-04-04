@@ -201,7 +201,7 @@ export default {
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加报告', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '添加报告', 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, this.itemCategory)

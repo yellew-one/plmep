@@ -123,7 +123,7 @@ export default {
     },
     filesUploadClick () {
       this.$refs.fup.openDialog()
-      this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
+      this.$refs.fup.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
     },
     escapeClick: function () {
       this.$refs.dialogRef.openDialog()

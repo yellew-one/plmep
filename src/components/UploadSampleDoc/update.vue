@@ -118,7 +118,7 @@ export default {
       // http://172.17.122.121:8081/files/upLoad
       // http://172.17.1.125:8081/files/upLoad
       // http://172.16.9.169:8080/files/upLoad
-      this.$refs.fup.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
+      this.$refs.fup.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '', 'fileList', {number: this.materialNumber, userName: this.$store.getters.userInfo.username})
     },
     returnFilePath (data) {
       console.log('xxoo', data)
@@ -315,7 +315,7 @@ export default {
     downloadModel () {
       attachmentLink('', '封样模板').then(r => {
         console.log(r)
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   },

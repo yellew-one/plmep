@@ -109,7 +109,7 @@ export default {
     },
     addFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute('http://172.16.9.169:8080/files/upLoad', [], '添加总声明', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '添加总声明', 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, 'REACH')
@@ -199,7 +199,7 @@ export default {
     },
     upload (row) {
       downloadAttach(row.oid).then(r => {
-        window.open('http://172.16.9.169:8080/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }
