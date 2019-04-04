@@ -69,7 +69,7 @@
               <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="650">
                 <template
                   slot-scope="scope">
-                  {{$t(scope.row.name)}}
+                  <a @click="downFile(scope.row)" style="color: blue;">{{$t(scope.row.name)}}</a>
                 </template>
               </el-table-column>
               <!--<el-table-column align="center" :show-overflow-tooltip="true"   prop="version"  label="附件说明" width="180">-->
@@ -94,7 +94,7 @@
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import filesUpload from '../../components/filesUpload/index'
-import { resourceEngineer, ecrType, editEcr, reworkEcrInfo } from '@/api/pcn'
+import { resourceEngineer, ecrType, editEcr, reworkEcrInfo, downAttach } from '@/api/pcn'
 export default {
   name: 'pcnUpdate',
   props: ['restData'],
@@ -122,6 +122,13 @@ export default {
     submit (r) { // 提交
       console.log()
       this.$props.restData(r.data.oid)
+    },
+    downFile (d) {
+      downAttach(this.ecrOid, d.attachOid).then(r => {
+        if (r.data.filePath) {
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        }
+      })
     },
     removeRelatedWLFYDocs () {
       var that = this
@@ -158,8 +165,8 @@ export default {
       var that = this
       data.forEach(function (value, index) {
         var path = value.response.data[0]
-        that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
-        that.submitFilesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
+        that.filesList.push({name: value.name, attachOid: value.attachOid, filepath: path, url: '', desc: '', ftype: 'new'})
+        that.submitFilesList.push({name: value.name, attachOid: value.attachOid, filepath: path, url: '', desc: '', ftype: 'new'})
       })
       this.$refs.fup.closeDialog()
     },
@@ -232,8 +239,8 @@ export default {
         this.tmp.sourceEngineer = r.data.resourceEngineer
         r.data.attachs.forEach(function (value, index) {
           // that.filePath += value.response.data[0] + ';'
-          that.filesList.push({name: value.fileName, filepath: '', url: '', desc: '', ftype: 'oid'})
-          that.submitFilesList.push({name: value.fileName, filepath: '', url: '', desc: '', ftype: 'oid'})
+          that.filesList.push({name: value.fileName, attachOid: value.attachOid, filepath: '', url: '', desc: '', ftype: 'oid'})
+          that.submitFilesList.push({name: value.fileName, attachOid: value.attachOid, filepath: '', url: '', desc: '', ftype: 'oid'})
         })
       })
     }
