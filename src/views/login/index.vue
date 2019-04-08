@@ -98,13 +98,6 @@ export default {
         }, r => {
           this.$message('服务器连接出现未知错误')
           this.loading = false
-          this.$store.commit('SET_USERINFO', {username: 'headaa', password: '1234567', type: '环保'})
-          this.$store.commit('SET_ISLOGIN', true)
-          if (this.$route.query && this.$route.query.path) {
-            this.$router.push({ path: '/' + this.$route.query.path, query: this.$route.query })
-          } else {
-            this.$router.push({ path: '/home' })
-          }
         })
       }
     }

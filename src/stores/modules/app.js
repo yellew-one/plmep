@@ -13,9 +13,17 @@ const app = {
     huanbaoNum: '',
     device: 'desktop',
     guojihua: localStorage.getItem('guojihua') || 'zh',
-    loading: false
+    loading: false,
+    baseUrl: '',
+    filesPath: ''
   },
   mutations: {
+    SET_BASEURL: (state, baseUrl) => {
+      state.baseUrl = baseUrl
+    },
+    SET_FILESPATH: (state, filesPath) => {
+      state.filesPath = filesPath
+    },
     SET_FENGYANGDAOQINUM: (state, fengyangdaoqiNum) => {
       state.fengyangdaoqiNum = fengyangdaoqiNum
     },

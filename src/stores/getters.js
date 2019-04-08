@@ -15,6 +15,8 @@ const getters = {
   huanbaoTaskNum: state => state.app.huanbaoTaskNum,
   fengyangTaskNum: state => state.app.fengyangTaskNum,
   fengyangdaoqiNum: state => state.app.fengyangdaoqiNum,
-  huanbaoNum: state => state.app.huanbaoNum
+  huanbaoNum: state => state.app.huanbaoNum,
+  baseUrl: state => state.app.baseUrl,
+  filesPath: state => state.app.filesPath
 }
 export default getters

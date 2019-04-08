@@ -13,7 +13,6 @@ import 'element-ui/lib/theme-chalk/index.css'
 import i18n from './lang/index'
 
 // 设置语言
-
 Vue.use(ElementUI, store, {i18n: (key, value) => i18n.t(key, value)}, router)
 Vue.config.productionTip = false
 Vue.config.silent = true

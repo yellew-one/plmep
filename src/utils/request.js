@@ -2,10 +2,13 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '../stores'
 // 创建axios实例
+var arr = window.location.host.toString().split(':')
+var url = 'http://' + arr[0] + ':8082'
 const service = axios.create({
   // baseURL: process.env.API_BASEURL, // ap  i的base_url
   // baseURL: 'http://plmtest.longcheer.com',
-  baseURL: 'http://plm.hedada.com:8082',
+  baseURL: url,
+  // baseURL: 'http://plm.hedada.com:8082',
   // baseURL: 'http://plm.longcheer.com',
   // baseURL: 'http://172.16.9.170:8082',
   timeout: 15000 // 请求超时时间
