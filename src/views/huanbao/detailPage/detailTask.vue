@@ -796,7 +796,8 @@
                               :getDataList = 'getDataList'
                               :updateFMDData="updateFMDData"></edit-f-m-d-dialog>
           <third-reuse ref="thirdReuse"
-                       :acceptSonValueByThird = 'acceptSonValueByThird'></third-reuse>
+                       :acceptSonValueByThird = 'acceptSonValueByThird'
+                       :getDataList = 'getDataList'></third-reuse>
           <edit-msds ref="editMsds"
                      :updateMSDSData = 'updateMSDSData'></edit-msds>
           <rohs-dialog ref="editRohs"
@@ -1116,41 +1117,53 @@ export default {
     // 提交
     submit () {
       this.$store.commit('SET_LOADING', true)
-      checkData('HSF' + this.model.materialNumber).then(r => {
-        if (r.data.status === 'success') {
-          checkMaterialAttr(this.oid).then(r => {
-            if (r.data.satus === 'success') {
-              if (r.data.flag) {
-                completeEnvp(this.oid, this.comment, this.radio).then(r => {
-                  console.log('completeSealedTask', r)
-                  if (r.data.status === 'success') {
-                    this.$message.success({
-                      message: '任务已提交'
-                    })
-                    this.closePage()
-                  }
-                })
+      if (this.radio === '供货') {
+        checkData('HSF' + this.model.materialNumber).then(r => {
+          if (r.data.status === 'success') {
+            checkMaterialAttr(this.oid).then(r => {
+              if (r.data.status === 'success') {
+                if (r.data.flag) {
+                  completeEnvp(this.oid, this.comment, this.radio).then(r => {
+                    console.log('completeSealedTask', r)
+                    if (r.data.status === 'success') {
+                      this.$message.success({
+                        message: '任务已提交'
+                      })
+                      this.closePage()
+                    }
+                  })
+                } else {
+                  this.$message.warning({
+                    dangerouslyUseHTMLString: true,
+                    message: r.data.info
+                  })
+                }
               } else {
                 this.$message.warning({
                   dangerouslyUseHTMLString: true,
-                  message: r.data.info
+                  message: r.data.mes
                 })
               }
-            } else {
-              this.$message.warning({
-                dangerouslyUseHTMLString: true,
-                message: r.data.mes
-              })
-            }
-          })
-        } else {
-          this.$message.error({
-            dangerouslyUseHTMLString: true,
-            message: r.data.info,
-            duration: 2000
-          })
-        }
-      })
+            })
+          } else {
+            this.$message.error({
+              dangerouslyUseHTMLString: true,
+              message: r.data.info,
+              duration: 2000
+            })
+          }
+        })
+      } else {
+        completeEnvp(this.oid, this.comment, this.radio).then(r => {
+          console.log('completeSealedTask', r)
+          if (r.data.status === 'success') {
+            this.$message.success({
+              message: '任务已提交'
+            })
+            this.closePage()
+          }
+        })
+      }
     },
     closePage () {
       this.$router.replace({name: 'submitted'})
@@ -1170,7 +1183,7 @@ export default {
     },
     // FMD 第三方复用
     thirdreuseFMD () {
-      this.$refs.thirdReuse.setThirdReuseDialogFormVisible(this.model.number)
+      this.$refs.thirdReuse.setThirdReuseDialogFormVisible(this.model.number, this.oid)
     },
     // MSDS 编辑
     editMSDS (row) {

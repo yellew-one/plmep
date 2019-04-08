@@ -15,7 +15,7 @@
           <el-table-column align="center" show-overflow-tooltip="true" prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template
             slot-scope="scope">
-            <span  style="color: blue">{{$t(scope.row.taskName)}}</span>
+            <a  style="color: blue">{{$t(scope.row.taskName)}}</a>
           </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip="true" prop="materialNumber"  :label="$t('huanbaoTable.submitted.materialNumber')" width="180">

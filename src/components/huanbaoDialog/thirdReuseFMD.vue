@@ -241,7 +241,7 @@ import { downloadAttach } from '@/api/huanbaoAPI'
 export default {
   components: {RelevantMaterials},
   name: 'ThirdReuse',
-  props: [''],
+  props: ['getDataList'],
   mounted: function () {
   },
   data () {
@@ -263,7 +263,7 @@ export default {
     }
   },
   methods: {
-    setThirdReuseDialogFormVisible (e) {
+    setThirdReuseDialogFormVisible (e, oid) {
       this.temp = {
         selectedDocumentType: '',
         selectedMaterial: '',
@@ -274,6 +274,8 @@ export default {
       this.options = []
       this.dialogVisible = true
       this.temp.envpNumber = e
+      this.oid = ''
+      this.oid = oid
       getMaterialName(e).then(r => {
         console.log('getMaterialName', r)
         var names = [{
@@ -294,8 +296,9 @@ export default {
       reuseReportsExecute(this.reports, this.attachs, this.temp.envpNumber).then(r => {
         console.log('reuseReportsExecute', r.data.status)
         if (r.data.status === 'success') {
+          this.$props.getDataList(this.oid)
           this.$message.success({
-            message: '恭喜你，这是一条成功消息'
+            message: '编辑完成'
           })
         }
       })
@@ -306,16 +309,18 @@ export default {
     searchResult () {
       searchReuseReport(this.temp).then(r => {
         console.log('searchReuseReport', r)
-        for (let i in r.data) {
+        this.thirdTable = r.data.report
+        this.msdsTable = r.data.attach
+        /* for (let i in r.data) {
           this.thirdTable = r.data[i].report
           this.msdsTable = r.data[i].attach
-        }
+        } */
       })
     },
     handleSelectionChangeThird (val) {
       var reports = ''
       for (let i in val) {
-        reports = val[i].reportId + ',' + reports
+        reports = val[i].reportOid + ',' + reports
       }
       reports = reports.substring(0, reports.length - 1)
       this.reports = reports
@@ -323,7 +328,7 @@ export default {
     handleSelectionChangeMsds (val) {
       var attachs = ''
       for (let i in val) {
-        attachs = val[i].attachId + ',' + attachs
+        attachs = val[i].attachOid + ',' + attachs
       }
       attachs = attachs.substring(0, attachs.length - 1)
       this.attachs = attachs

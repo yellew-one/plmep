@@ -4,8 +4,8 @@ import store from '../stores'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.API_BASEURL, // ap  i的base_url
-  baseURL: 'http://plmtest.longcheer.com',
-  // baseURL: 'http://101.230.211.165:8082',
+  // baseURL: 'http://plmtest.longcheer.com',
+  baseURL: 'http://plm.hedada.com:8082',
   // baseURL: 'http://plm.longcheer.com',
   // baseURL: 'http://172.16.9.170:8082',
   timeout: 15000 // 请求超时时间

@@ -114,7 +114,7 @@
           <el-table-column align="center" show-overflow-tooltip="true" prop="number"  :label="$t('huanbaoTable.search.eNumber')" width="180">
             <template
               slot-scope="scope">
-              <span style="color: blue">{{scope.row.number}}</span>
+              <a style="color: blue">{{scope.row.number}}</a>
             </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip="true" prop="name"  :label="$t('huanbaoTable.search.eName')" width="180">
