@@ -7,6 +7,7 @@
             class="upload-demo"
             :action="action"
             :name="name"
+            :before-upload="beforeUpload"
             :data = "ref"
             :on-success="success"
             :on-preview="handlePreview"
@@ -66,6 +67,26 @@ export default {
     beforeRemove (file, fileList) {
       console.log('file', file)
       console.log('fileList', fileList)
+    },
+    beforeUpload (file) {
+      console.log('f---->', file)
+      if (file.name.indexOf(' ') !== -1) {
+        this.$message({
+          message: '文件名称不能包含空格',
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return false
+      }
+      if (file.name.indexOf('+') !== -1) {
+        this.$message({
+          message: '文件名称不能包含 + 号',
+          type: 'warning',
+          duration: 5 * 1000
+        })
+        return false
+      }
+      return true
     },
     success (response, file, fileList) {
       if (response.type === 'success') {
