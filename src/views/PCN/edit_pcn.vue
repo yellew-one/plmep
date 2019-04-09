@@ -31,7 +31,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <pcnUpdate ref="pcnUpdate"></pcnUpdate>
+    <pcnUpdate ref="pcnUpdate" :restData="getDataList"></pcnUpdate>
   </div>
 </template>
 <script>

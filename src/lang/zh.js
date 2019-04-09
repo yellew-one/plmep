@@ -7,7 +7,8 @@ export default {
     password_error: '密码错误',
     required: '必填',
     please_selector: '请选择',
-    no_state: '仅可编辑正在工作、驳回、已取消的封样文档'
+    no_state: '仅可编辑正在工作、驳回、已取消的封样文档',
+    email: '请正确输入邮箱'
   },
   success: {
     update_success: '修改成功',
@@ -496,7 +497,8 @@ export default {
       userName: '拼音',
       DetailedDescription: '详细描述',
       RequireCompletionTime: '要求完成时间',
-      ResourceEngineer: '龙旗资源工程师'
+      ResourceEngineer: '龙旗资源工程师',
+      comment: '驳回审批意见'
     },
     search: {
       name: '名称',

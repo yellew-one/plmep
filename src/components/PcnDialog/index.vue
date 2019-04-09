@@ -22,20 +22,20 @@
                 <el-input disabled="true" v-model="tmp.ecrNum"></el-input>
               </el-form-item>
               <el-form-item prop="ecrName" :label="$t('pcn.form.Name')">
-                <el-input :disabled="!iflag" v-model="tmp.ecrName"></el-input>
+                <el-input :readonly="!iflag" v-model="tmp.ecrName"></el-input>
               </el-form-item>
               <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
-                <el-input :disabled="!iflag" v-model="tmp.requestProject"></el-input>
+                <el-input :readonly="!iflag" v-model="tmp.requestProject"></el-input>
               </el-form-item>
               <el-form-item prop="resourceEngineerZH" :label="$t('pcn.form.ResourceEngineer')">
-                <el-input :disabled="!iflag" v-model="tmp.resourceEngineerZH" readonly="true">
+                <el-input  v-model="tmp.resourceEngineerZH" readonly="true">
                   <el-button :disabled="!iflag" @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </el-form-item>
               <el-form-item prop="needDate" :label="$t('pcn.form.RequireCompletionTime')">
                 <el-date-picker
                   style="width: 100%"
-                  :disabled="!iflag"
+                  :readonly="!iflag"
                   value-format="yyyy/MM/dd"
                   v-model="tmp.needDate"
                   type="date"
@@ -43,7 +43,10 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item prop="reasonDescription" :label="$t('pcn.form.DetailedDescription')">
-                <el-input :disabled="!iflag" type="textarea" v-model="tmp.description"></el-input>
+                <el-input :readonly="!iflag" type="textarea" v-model="tmp.description"></el-input>
+              </el-form-item>
+              <el-form-item prop="comment" :label="$t('pcn.form.comment')">
+                <el-input readonly="true" type="textarea" v-model="comment"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -81,7 +84,7 @@
             </el-table>
           </el-button-group>
           <div v-if="iflag" style="text-align: right">
-            <el-button size="mini" :loading="$store.getters.loading" type="primary" @click="onSubmit">提交</el-button>
+            <el-button size="mini" :loading="$store.getters.loading" type="primary" @click="onSubmit">驳回</el-button>
             <el-button size="mini" @click="dialogFormVisible=false">取消</el-button>
           </div>
         </el-form>
@@ -94,7 +97,7 @@
 <script>
 import ResourceEngineer from '@/components/PcnDialog/ResourceEngineer'
 import filesUpload from '../../components/filesUpload/index'
-import { resourceEngineer, ecrType, editEcr, reworkEcrInfo, downAttach } from '@/api/pcn'
+import { resourceEngineer, ecrComments, ecrType, editEcr, reworkEcrInfo, downAttach } from '@/api/pcn'
 export default {
   name: 'pcnUpdate',
   props: ['restData'],
@@ -132,15 +135,15 @@ export default {
     },
     removeRelatedWLFYDocs () {
       var that = this
+      console.log('submitFilesList', that.submitFilesList)
       this.selectionList.forEach(function (v, i) {
-        console.log(that.filesList)
         // 判断文件删除
-        if (that.submitFilesList.indexOf(v) !== -1) {
-          that.submitFilesList.splice(that.submitFilesList.indexOf(v), 1)
-        } else {
-          that.filesList.splice(that.filesList.indexOf(v), 1)
+        if (v.ftype === 'oid') {
           that.removeFilesList.push(v)
+        } else {
+          that.submitFilesList.splice(that.submitFilesList.indexOf(v), 1)
         }
+        that.filesList.splice(that.filesList.indexOf(v), 1)
       })
     },
     selectResourceEngineer (value) {
@@ -150,7 +153,6 @@ export default {
     handleSelectionChange (data) {
       if (data) {
         this.selectionList = data
-        console.log('当前选择文件数组:', this.selectionList)
       }
     },
     filesUploadClick () {
@@ -185,6 +187,11 @@ export default {
         this.options = sz
       })
     },
+    getEcrComments () {
+      ecrComments(this.ecrOid).then(r => {
+        this.comment = r.data.comment
+      })
+    },
     onSubmit () {
       this.$refs['form1'].validate((valid) => {
         if (valid) {
@@ -197,7 +204,7 @@ export default {
           jsonData.sourceEngineer = this.tmp.sourceEngineer
           jsonData.reasonDescription = this.tmp.description
           jsonData.removeOid = this.getFilePath(this.removeFilesList)
-          jsonData.addPath = this.getFilePath(this.submitFilesList)
+          jsonData.addPath = this.getFilePath2(this.submitFilesList)
           this.$store.commit('SET_LOADING', true)
           editEcr(JSON.stringify(jsonData)).then(r => {
             console.log('r->', r)
@@ -209,6 +216,7 @@ export default {
                 duration: 5 * 1000
               })
               this.tmp = {ecrType: '', sourceEngineerName: ''}
+              this.$props.restData()
               this.$refs['form1'].clearValidate()
             } else {
               this.$message({
@@ -225,6 +233,15 @@ export default {
       })
     },
     getFilePath (dataList) {
+      console.log('dataList-->', dataList)
+      var str = ''
+      dataList.forEach(function (v, i) {
+        str = str + v.attachOid + '@@@'
+      })
+      return str
+    },
+    getFilePath2 (dataList) {
+      console.log('dataList-->', dataList)
       var str = ''
       dataList.forEach(function (v, i) {
         str = str + v.filepath + '@@@'
@@ -240,8 +257,9 @@ export default {
         r.data.attachs.forEach(function (value, index) {
           // that.filePath += value.response.data[0] + ';'
           that.filesList.push({name: value.fileName, attachOid: value.attachOid, filepath: '', url: '', desc: '', ftype: 'oid'})
-          that.submitFilesList.push({name: value.fileName, attachOid: value.attachOid, filepath: '', url: '', desc: '', ftype: 'oid'})
+          // that.submitFilesList.push({name: value.fileName, attachOid: value.attachOid, filepath: '', url: '', desc: '', ftype: 'oid'})
         })
+        this.getEcrComments()
       })
     }
   },
@@ -251,7 +269,8 @@ export default {
       ecrOid: '',
       taskOid: '',
       iflag: true,
-      tmp: {ecrType: '', resourceEngineerZH: ''},
+      comment: '',
+      tmp: {ecrType: '', resourceEngineerZH: '', comment: ''},
       removeFilesList: [],
       submitFilesList: [],
       submitPath: '',

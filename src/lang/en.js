@@ -7,7 +7,8 @@ export default {
     password_error: 'password error',
     required: 'is required',
     please_selector: 'please selector data',
-    no_state: 'error.no_state'
+    no_state: 'error.no_state',
+    email: 'error email'
   },
   success: {
     update_success: 'update info success',
@@ -491,7 +492,8 @@ export default {
       userName: '拼音',
       DetailedDescription: '详细描述',
       RequireCompletionTime: '要求完成时间',
-      ResourceEngineer: '龙旗资源工程师'
+      ResourceEngineer: '龙旗资源工程师',
+      comment: '审批意见'
     },
     search: {
       name: '名称',

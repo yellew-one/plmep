@@ -135,7 +135,7 @@ export default {
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
         contactEmail: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+          { type: 'email', required: true, message: this.$t('error.email'), trigger: 'change' }
         ],
         contactTel: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
@@ -147,7 +147,7 @@ export default {
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
         managerEmail: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+          { type: 'email', required: true, message: this.$t('error.email'), trigger: 'change' }
         ],
         managerTel: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
