@@ -401,7 +401,6 @@ export default {
     downloadFile () {
       downloadEnvpTemplate('REACHREPORT').then(r => {
         if (r.data.flag) {
-          alert(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath)
           window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
