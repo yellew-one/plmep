@@ -1137,6 +1137,7 @@ export default {
                     dangerouslyUseHTMLString: true,
                     message: r.data.info
                   })
+                  this.getDataList(this.oid)
                 }
               } else {
                 this.$message.warning({
