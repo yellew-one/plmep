@@ -11,7 +11,7 @@
       top="15%"
       append-to-body>
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span>相关物料</span>
+        <span>{{$t('huanbaoTable.FMD.Relatedmaterials')}}</span>
       </div>
       <el-row class="card_row">
         <el-col span="24">

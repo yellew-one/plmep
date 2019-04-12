@@ -13,8 +13,8 @@
         <span class="longcheer_hr_span">{{title}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >添加报告</el-button>
-        <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
+        <el-button v-if="type === 'edit'" size="mini" type="primary" plain @click="addRoHSReport" >{{$t('huanbaoTable.detailTable.addReport')}}</el-button>
+        <el-button v-if="type === 'edit'" size="mini" type="danger"  plain @click="deleteRoHSReport">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -28,34 +28,34 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportNumber"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportNumber"  :label="$t('huanbaoTable.ROHS.reportNumber')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportDate"  label="报告日期" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportDate"  :label="$t('huanbaoTable.ROHS.reportDate')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="examUnit"  label="检测单位" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="examUnit"  :label="$t('huanbaoTable.ROHS.examUnit')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  :label="$t('huanbaoTable.ROHS.lastTime')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed="right" label="操作" width="100">
+            <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" >
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
-                <el-button v-if="type === 'edit'" @click="editGeneralReport(scope.row)" type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
+                <el-button v-if="type === 'edit'" @click="editGeneralReport(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -63,7 +63,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="type === 'edit'" size="mini" @click="generalReportDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type === 'view'" size="mini" @click="generalReportDialog = false">关闭</el-button>
+        <el-button v-if="type === 'view'" size="mini" @click="generalReportDialog = false">{{$t('tagsView.close')}}</el-button>
         <el-button v-if="type === 'edit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeGeneralReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"
@@ -218,8 +218,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

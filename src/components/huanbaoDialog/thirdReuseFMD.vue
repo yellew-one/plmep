@@ -14,7 +14,7 @@
       </div>
       <el-row :gutter="20" style="margin-top: 10px">
         <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
+          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="180px"
                    style=' margin-left:0px;'>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;">
               <el-col :span="16">
@@ -139,10 +139,10 @@
               width="120"
               fixed="right"
               align="center"
-              label="操作">
+              :label="$t('huanbaoTable.detailTable.operating')">
               <template slot-scope="scope">
-                <el-button @click="relevant(scope.row)" type="text" size="small">相关物料</el-button>
-                <el-button @click="uploadMaterial(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="relevant(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.Relatedmaterials')}}</el-button>
+                <el-button @click="uploadMaterial(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -150,7 +150,7 @@
       </el-row>
       <!--可复用的msds报告-->
       <div class="longcheer_hr" style="margin-top: 10px;">
-        <span>可复用的MSDS和申报物质报告</span>
+        <span>{{$t('huanbaoTable.FMD.Reusable')}}</span>
       </div>
       <el-row class="card_row">
         <el-col span="24">
@@ -217,9 +217,9 @@
               width="120"
               fixed="right"
               align="center"
-              label="操作">
+              :label="$t('huanbaoTable.detailTable.operating')">
               <template slot-scope="scope">
-                <el-button @click="uploadMsds(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="uploadMsds(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -365,8 +365,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 250px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

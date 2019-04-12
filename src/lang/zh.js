@@ -144,8 +144,14 @@ export default {
       unSupply: '不供货',
       remark: '备注',
       complete: '完成任务',
-      approval: '审批日志',
-      third: '过期第三方报告'
+      approvals: '审批日志',
+      third: '过期第三方报告',
+      approval: '审批',
+      approvalComments: '审批意见',
+      operating: '操作',
+      fileUpload: '文件上传',
+      uploadData: '上传数据',
+      addReport: '添加报告'
     },
     approval: {
       false: '未完成',
@@ -189,7 +195,11 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      Relatedmaterials: '相关物料',
+      Reusable: '可复用的MSDS和申报物质报告',
+      REPORT: '报告',
+      Selectfile: '添加文件'
     },
     MSDS: {
       fileName: '文件名',
@@ -203,7 +213,14 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      material: '原材料MSDS',
+      patentCertificate: '专利证明',
+      Attributes: '属性',
+      UploadNewFiles: '上传新文件',
+      Remove: '移除',
+      downloads: '下载IP Form模板',
+      download: '下载'
     },
     ROHS: {
       materialName: '原材料名称',
@@ -229,7 +246,14 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      download: '下载导入模板',
+      Upload: '上传环保数据',
+      editGeneralReport: '编辑RoHS总报告',
+      viewGeneralReport: '查看RoHS总报告',
+      lastTime: '上次修改时间',
+      report: 'RoHS报告',
+      remark: '备注'
     },
     HF: {
       materialName: '原材料名称',
@@ -245,7 +269,10 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      report: 'HF报告',
+      yes: '是',
+      no: '否'
     },
     REACH: {
       materialName: '原材料名称',
@@ -259,7 +286,12 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      Editstatement: '编辑REACH总声明',
+      Viewstatement: '查看REACH总声明',
+      statement: 'REACH总声明',
+      REACH: 'REACH报告',
+      downloads: '下载报告模板'
     },
     OTHER: {
       materialName: '原材料名称',
@@ -279,7 +311,12 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      OTHER: '其他报告',
+      AddSubstance: '添加新物质',
+      MaterialName: '物质名称',
+      substanceWeight: '物质重量',
+      Reporttype: '报告类型'
     },
     OTHER2: {
       fileName: '文件名',
@@ -289,7 +326,10 @@ export default {
       RELEASED: '已发布',
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
-      INWORK: '正在工作'
+      INWORK: '正在工作',
+      specialneeds: '编辑客户特殊需求申报',
+      SONYinformation: 'SONY项目必交资料',
+      Lenovoinformation: 'Lenovo项目必交资料'
     }
   },
   tagsView: {

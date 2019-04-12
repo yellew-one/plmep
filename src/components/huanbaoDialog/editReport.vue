@@ -1,7 +1,7 @@
 <template>
   <el-dialog top="30px"  :title="$t('m.editReport')" :visible.sync="dialogFormVisible" width="550px">
     <div class="longcheer_hr" style="">
-      <span>属性</span>
+      <span>{{$t('huanbaoTable.MSDS.Attributes')}}</span>
     </div>
     <el-row :gutter="20" >
       <el-col :span="24">
@@ -10,7 +10,7 @@
           <div style="padding-left: 5px">
           <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-top: 10px">
             <el-col :span="16">
-              <el-form-item prop="materialWeight" label="报告编号">
+              <el-form-item prop="materialWeight" :label="$t('huanbaoTable.ROHS.reportNumber')">
                 <el-input v-model="temp.reportNumber"></el-input>
               </el-form-item>
             </el-col>
@@ -21,7 +21,7 @@
           </el-row>
           <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-top: 10px">
             <el-col :span="16">
-             <el-form-item prop="materialName" label="报告日期">
+             <el-form-item prop="materialName" :label="$t('huanbaoTable.ROHS.reportDate')">
                <el-date-picker
                  v-model="thirdReportDateValue"
                  style="width: 100%"
@@ -38,7 +38,7 @@
           </el-row>
           <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-top: 10px">
             <el-col :span="16">
-              <el-form-item prop="materialGroup" label="检测单位">
+              <el-form-item prop="materialGroup" :label="$t('huanbaoTable.ROHS.examUnit')">
                 <el-select v-model="temp.examUnit" placeholder="" style="width: 100%">
                   <el-option
                     v-for="item in options"
@@ -56,8 +56,8 @@
           </el-row>
           <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-top: 10px">
             <el-col :span="20">
-              <el-form-item prop="manufacturer" label="报告">
-                <el-button size="mini" type="primary" plain @click="choseFile" >选择文件</el-button>
+              <el-form-item prop="manufacturer" :label="$t('huanbaoTable.FMD.REPORT')">
+                <el-button size="mini" type="primary" plain @click="choseFile" >{{$t('huanbaoTable.FMD.Selectfile')}}</el-button>
                 <el-input :disabled="true" v-model="fileName"></el-input>
               </el-form-item>
             </el-col>

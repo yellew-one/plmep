@@ -139,9 +139,15 @@ export default {
       Supply: 'Supply',
       unSupply: 'No Supply',
       remark: 'Remark',
-      complete: 'Finish task',
-      approval: 'Approval information',
-      third: 'Overdue third party reports'
+      complete: 'Finish Task',
+      approvals: 'Approval Information',
+      third: 'Overdue third party reports',
+      approval: 'Approval',
+      approvalComments: 'Approval Comments',
+      operating: 'Operating',
+      fileUpload: 'File Upload',
+      uploadData: 'Upload Data',
+      addReport: 'Add Report'
     },
     approval: {
       false: 'Unfinished',
@@ -185,7 +191,11 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under review',
-      INWORK: 'Inwork'
+      INWORK: 'Inwork',
+      Relatedmaterials: 'Related Materials',
+      Reusable: 'Reusable MSDS and Substance Report',
+      REPORT: 'REPORT',
+      Selectfile: 'Select File'
     },
     MSDS: {
       fileName: 'File name',
@@ -199,7 +209,14 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under Review',
-      INWORK: 'Inwork'
+      INWORK: 'Inwork',
+      material: 'Raw material MSDS',
+      patentCertificate: 'Patent certificate',
+      Attributes: 'Attributes',
+      UploadNewFiles: 'Upload',
+      Remove: 'Remove',
+      downloads: 'Download IP Form',
+      download: 'Download'
     },
     ROHS: {
       materialName: 'Material name',
@@ -225,7 +242,14 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under review',
-      INWORK: 'Inwork'
+      INWORK: 'Inwork',
+      download: 'Download Template',
+      Upload: 'Upload Data',
+      editGeneralReport: 'Edit General Report',
+      viewGeneralReport: 'View General Report',
+      lastTime: 'Last modified time',
+      report: 'RoHS Report',
+      remark: 'Remark'
     },
     HF: {
       materialName: 'Material name',
@@ -241,7 +265,10 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under Review',
-      INWORK: 'In Work'
+      INWORK: 'In Work',
+      report: 'HF Report',
+      yes: 'YES',
+      no: 'NO'
     },
     REACH: {
       materialName: 'Material name',
@@ -255,7 +282,12 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under Review',
-      INWORK: 'In work'
+      INWORK: 'In work',
+      Editstatement: 'Edit statement',
+      Viewstatement: 'View statement',
+      statement: 'Statement',
+      REACH: 'REACH Report',
+      downloads: 'Downloads'
     },
     OTHER: {
       materialName: 'Material name',
@@ -275,7 +307,12 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under review',
-      INWORK: 'In work'
+      INWORK: 'In work',
+      OTHER: 'OTHER Report',
+      AddSubstance: 'Add new substance',
+      MaterialName: 'Material Name',
+      substanceWeight: 'Substance Weight',
+      Reporttype: 'Report Type'
     },
     OTHER2: {
       fileName: 'Files name',
@@ -285,7 +322,10 @@ export default {
       RELEASED: 'Released',
       REWORK: 'Rework',
       UNDERREVIEW: 'Under review',
-      INWORK: 'In work'
+      INWORK: 'In work',
+      specialneeds: 'Edit special needs',
+      SONYinformation: 'SONY Information',
+      Lenovoinformation: 'Lenovo Information'
     }
   },
   tagsView: {
@@ -297,7 +337,7 @@ export default {
     music: 'Music',
     login: 'Login',
     zdsc: 'Automatic generation',
-    loginTitle: 'Longcheer Sealing&HSF System',
+    loginTitle: 'Environmental&Sealing system',
     homepage: 'Home page',
     Logout: 'Log out',
     Notice: 'Notice',
@@ -482,18 +522,6 @@ export default {
       createPcn: 'Create PCN',
       rejectPcn: 'Reject PCN',
       information: 'Detailed information'
-    },
-    table: {
-      ResubmitPCN: '重新提交PCNEN',
-      pg_number: '变更单号EN',
-      pg_name: '变更名称EN',
-      ChangeType: '变更类型EN',
-      number: '编号EN',
-      Name: '名称EN',
-      project: '项目EN',
-      RequireCompletionTime: '要求完成时间EN',
-      SelectionResourceEngineer: '选择龙旗资源工程师EN',
-      state: '状态EN'
     },
     form: {
       comment: '驳回审批意见EN',

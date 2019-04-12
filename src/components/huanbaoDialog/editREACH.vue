@@ -10,11 +10,11 @@
       width="50%"
       top="2%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">REACH报告</span>
+        <span class="longcheer_hr_span">{{$t('huanbaoTable.REACH.REACH')}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加REACH报告</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >{{$t('huanbaoTable.detailTable.addReport')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -28,46 +28,46 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  :label="$t('huanbaoTable.ROHS.reportNumber')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="报告日期" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.reportDate')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="检测单位" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.examUnit')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.lastTime')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed="right" label="操作" width="100">
+            <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
-                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
+                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-col>
       </el-row>
-      <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">申报物质报告</span>
+      <div class="longcheer_hr" style="margin-top: 10px;">
+        <span class="longcheer_hr_span">{{$t('huanbaoTable.REACH.reportMaterialReport')}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="downloadFile">下载报告模板</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addFile">上传新文件</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteFile">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="downloadFile">{{$t('huanbaoTable.REACH.downloads')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addFile">{{$t('huanbaoTable.MSDS.UploadNewFiles')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteFile">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -81,21 +81,21 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  :label="$t('huanbaoTable.MSDS.fileName')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.fileName)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="modifyTime"  :label="$t('huanbaoTable.MSDS.endTime')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed="right" label="操作" width="100">
+            <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="download(scope.row)">下载</el-button>
+                <el-button type="text" size="small" @click="download(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -103,15 +103,15 @@
       </el-row>
       <div class="boxtext" v-if="type === 'itemview' || type === 'itemedit'">
         <div class="longcheer_hr" style="margin-top: 10px;">
-          <span class="longcheer_hr_span">属性</span>
+          <span class="longcheer_hr_span">{{$t('huanbaoTable.MSDS.Attributes')}}</span>
         </div>
-        <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
+        <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="200px"
                  style=' margin-left:0px;margin-top: 10px'>
           <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="materialName"  label="原材料名称">
+              <el-form-item prop="materialName"  :label="$t('huanbaoTable.REACH.materialName')">
                 <el-input disabled="true" v-model="temp.materialName">
                 </el-input>
               </el-form-item>
@@ -123,7 +123,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="manufacturer"  label="原材料制造商">
+              <el-form-item prop="manufacturer"  :label="$t('huanbaoTable.REACH.manufacturer')">
                 <el-input disabled="true" v-model="temp.manufacturer">
                 </el-input>
               </el-form-item>
@@ -135,7 +135,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="fileRetardant"  label="是否有申报物质">
+              <el-form-item prop="fileRetardant"  :label="$t('huanbaoTable.REACH.reportMaterialContained')">
                 <el-input disabled="true" v-model="temp.reportMaterialContained">
                 </el-input>
               </el-form-item>
@@ -147,7 +147,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="state"  label="状态">
+              <el-form-item prop="state"  :label="$t('huanbaoTable.REACH.state')">
                 <span disabled="true" >{{$t('huanbaoTable.HF.' + temp.state)}}</span>
               </el-form-item>
             </el-col>
@@ -158,7 +158,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="type=== 'itemedit'" size="mini" @click="reachDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type=== 'itemview'" size="mini" @click="reachDialog = false">关闭</el-button>
+        <el-button v-if="type=== 'itemview'" size="mini" @click="reachDialog = false">{{$t('tagsView.close')}}</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"
@@ -260,7 +260,7 @@ export default {
     },
     addFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '添加申报物质', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], this.$t('huanbaoTable.REACH.reportMaterialReport'), 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, 'REACH')
@@ -424,8 +424,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

@@ -10,11 +10,11 @@
       width="50%"
       top="2%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">报告</span>
+        <span class="longcheer_hr_span">{{$t('huanbaoTable.OTHER.OTHER')}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addOtherReport" >添加新报告</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteOtherReport">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addOtherReport" >{{$t('huanbaoTable.detailTable.addReport')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteOtherReport">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -28,40 +28,40 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportType"  label="报告类型" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="reportType"  :label="$t('huanbaoTable.OTHER.Reporttype')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportType)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  :label="$t('huanbaoTable.ROHS.reportNumber')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="报告日期" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.reportDate')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="检测单位" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.examUnit')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.lastTime')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed="right" label="操作" width="100">
+            <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
-                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
+                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -69,7 +69,7 @@
       </el-row>
       <div class="boxtext" v-if="type === 'itemview' || type === 'itemedit'">
         <div class="longcheer_hr" style="margin-top: 10px;">
-          <span class="longcheer_hr_span">属性</span>
+          <span class="longcheer_hr_span">{{$t('huanbaoTable.MSDS.Attributes')}}</span>
         </div>
         <el-scrollbar style="height: 250px">
           <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
@@ -78,7 +78,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="materialName"  label="原材料名称">
+                <el-form-item prop="materialName"  :label="$t('huanbaoTable.OTHER.materialName')">
                   <el-input disabled="true" v-model="temp.materialName">
                   </el-input>
                 </el-form-item>
@@ -90,7 +90,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="manufacturer"  label="原材料制造商">
+                <el-form-item prop="manufacturer"  :label="$t('huanbaoTable.OTHER.manufacturer')">
                   <el-input disabled="true" v-model="temp.manufacturer">
                   </el-input>
                 </el-form-item>
@@ -102,7 +102,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="ni"  label="ni">
+                <el-form-item prop="ni"  :label="$t('huanbaoTable.OTHER.ni')">
                   <el-input :disabled="ifEdit" v-model="temp.ni">
                   </el-input>
                 </el-form-item>
@@ -114,7 +114,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="pahs"  label="pahs">
+                <el-form-item prop="pahs"  :label="$t('huanbaoTable.OTHER.pahs')">
                   <el-input :disabled="ifEdit" v-model="temp.pahs">
                   </el-input>
                 </el-form-item>
@@ -126,7 +126,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="didp"  label="didp">
+                <el-form-item prop="didp"  :label="$t('huanbaoTable.OTHER.didp')">
                   <el-input :disabled="ifEdit" v-model="temp.didp">
                   </el-input>
                 </el-form-item>
@@ -138,7 +138,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="dinp"  label="dinp">
+                <el-form-item prop="dinp"  :label="$t('huanbaoTable.OTHER.dinp')">
                   <el-input :disabled="ifEdit" v-model="temp.dinp">
                   </el-input>
                 </el-form-item>
@@ -150,7 +150,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="dnhp"  label="dnhp">
+                <el-form-item prop="dnhp"  :label="$t('huanbaoTable.OTHER.dnhp')">
                   <el-input :disabled="ifEdit" v-model="temp.dnhp">
                   </el-input>
                 </el-form-item>
@@ -162,7 +162,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="sccp"  label="sccp">
+                <el-form-item prop="sccp"  :label="$t('huanbaoTable.OTHER.sccp')">
                   <el-input :disabled="ifEdit" v-model="temp.sccp">
                   </el-input>
                 </el-form-item>
@@ -174,7 +174,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="be"   label="be">
+                <el-form-item prop="be"   :label="$t('huanbaoTable.OTHER.be')">
                   <el-input :disabled="ifEdit" v-model="temp.be">
                   </el-input>
                 </el-form-item>
@@ -186,7 +186,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="sb"  label="sb">
+                <el-form-item prop="sb"  :label="$t('huanbaoTable.OTHER.sb')">
                   <el-input :disabled="ifEdit" v-model="temp.sb">
                   </el-input>
                 </el-form-item>
@@ -198,7 +198,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="state"  label="状态">
+                <el-form-item prop="state"  :label="$t('huanbaoTable.OTHER.state')">
                   <span>{{$t('huanbaoTable.HF.' + temp.state)}}</span>
                 </el-form-item>
               </el-col>
@@ -209,7 +209,7 @@
               <el-col :span="2">
               </el-col>
               <el-col :span="16">
-                <el-form-item prop="remark"  label="备注">
+                <el-form-item prop="remark"  :label="$t('huanbaoTable.ROHS.remark')">
                   <el-input type="textarea" :rows="3" :disabled="ifEdit" v-model="value">
                   </el-input>
                 </el-form-item>
@@ -224,8 +224,8 @@
         <span class="longcheer_hr_span">其他物质含量</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addSubstances" >添加新物质</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteSubstances">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addSubstances" >{{$t('huanbaoTable.OTHER.AddSubstance')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteSubstances">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -239,14 +239,14 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="materialName"  label="物质名称" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="materialName"  :label="$t('huanbaoTable.OTHER.MaterialName')" >
               <template
                 slot-scope="scope">
                 <el-input size="mini" :disabled="false" v-model="scope.row.materialName">
                 </el-input>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="materialContent"  label="物质重量" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="materialContent"  :label="$t('huanbaoTable.OTHER.substanceWeight')" >
               <template
                 slot-scope="scope">
                 <el-input size="mini" :disabled="false" v-model="scope.row.materialContent">
@@ -258,7 +258,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="type=== 'itemedit'" size="mini" @click="otherDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type=== 'itemview'" size="mini" @click="otherDialog = false">关闭</el-button>
+        <el-button v-if="type=== 'itemview'" size="mini" @click="otherDialog = false">{{$t('tagsView.close')}}</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"

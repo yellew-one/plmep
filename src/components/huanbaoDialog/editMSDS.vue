@@ -10,11 +10,11 @@
       width="60%">
       <!--// msds-->
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span>原材料MSDS</span>
+        <span>{{$t('huanbaoTable.MSDS.material')}}</span>
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
-        <el-button size="mini" type="primary" plain @click="uploadMsds">上传新文件</el-button>
-        <el-button size="mini" type="danger"  plain @click="deleteMsds">移除</el-button>
+        <el-button size="mini" type="primary" plain @click="uploadMsds">{{$t('huanbaoTable.MSDS.UploadNewFiles')}}</el-button>
+        <el-button size="mini" type="danger"  plain @click="deleteMsds">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -45,7 +45,7 @@
               align="center"
               label="操作">
               <template slot-scope="scope">
-                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="download(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -53,11 +53,11 @@
       </el-row>
       <!--// 专利证明-->
       <div class="longcheer_hr" style="margin-top: 10px;">
-        <span>专利证明</span>
+        <span>{{$t('huanbaoTable.MSDS.patentCertificate')}}</span>
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
-        <el-button size="mini" type="primary" plain @click="uploadPatent">上传新文件</el-button>
-        <el-button size="mini" type="danger"  plain @click="deletePatent">移除</el-button>
+        <el-button size="mini" type="primary" plain @click="uploadPatent">{{$t('huanbaoTable.MSDS.UploadNewFiles')}}</el-button>
+        <el-button size="mini" type="danger"  plain @click="deletePatent">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -88,7 +88,7 @@
               align="center"
               label="操作">
               <template slot-scope="scope">
-                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="download(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -99,9 +99,9 @@
         <span>IP FORM</span>
       </div>
       <el-row v-if="showButton" style="margin-top: 10px;margin-left: 20px">
-        <el-button size="mini" type="primary" plain @click="downloadloadIP" >下载IP Form模板</el-button>
-        <el-button size="mini" type="primary" plain @click="uploadIPFORM">上传新文件</el-button>
-        <el-button size="mini" type="danger"  plain @click="deleteIPFORM">移除</el-button>
+        <el-button size="mini" type="primary" plain @click="downloadloadIP" >{{$t('huanbaoTable.MSDS.downloads')}}</el-button>
+        <el-button size="mini" type="primary" plain @click="uploadIPFORM">{{$t('huanbaoTable.MSDS.UploadNewFiles')}}</el-button>
+        <el-button size="mini" type="danger"  plain @click="deleteIPFORM">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -132,7 +132,7 @@
               align="center"
               label="操作">
               <template slot-scope="scope">
-                <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="download(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -140,7 +140,7 @@
       </el-row>
       <!--// 属性-->
       <div class="longcheer_hr" style="margin-top: 10px;">
-        <span>属性</span>
+        <span>{{$t('huanbaoTable.MSDS.Attributes')}}</span>
       </div>
       <el-row class="card_row">
         <el-col span="24">
@@ -518,8 +518,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 200px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

@@ -11,15 +11,15 @@
       top="15%"
       append-to-body>
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span>属性</span>
+        <span>{{$t('huanbaoTable.MSDS.Attributes')}}</span>
       </div>
       <el-row :gutter="20" >
         <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="100px"
+          <el-form size="mini" ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="180px"
                    style=' margin-left:0px;' >
             <el-row v-if="itemCategory === 'OTHER' && this.type !== 'TOTAL'" :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="materialGroup" label="报告类型">
+                <el-form-item prop="materialGroup" :label="$t('huanbaoTable.OTHER.Reporttype')">
                   <el-select v-model="value" multiple  placeholder="" style="width: 100%">
                     <el-option
                       v-for="item in options2"
@@ -37,7 +37,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="rohsReportDateValue" label="报告日期">
+                <el-form-item prop="rohsReportDateValue" :label="$t('huanbaoTable.ROHS.reportDate')">
                   <el-date-picker
                     v-model="rohsReportDateValue"
                     style="width: 100%"
@@ -56,7 +56,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="reportNumber" label="报告编号">
+                <el-form-item prop="reportNumber" :label="$t('huanbaoTable.ROHS.reportNumber')">
                   <el-input v-model="temp.reportNumber"></el-input>
                 </el-form-item>
               </el-col>
@@ -67,7 +67,7 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
-                <el-form-item prop="examUnit" label="检测单位">
+                <el-form-item prop="examUnit" :label="$t('huanbaoTable.ROHS.examUnit')">
                   <el-select v-model="temp.examUnit" placeholder="" style="width: 100%">
                     <el-option
                       v-for="item in options"
@@ -85,8 +85,8 @@
             </el-row>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="20">
-                <el-form-item prop="manufacturer" label="报告">
-                  <el-button size="mini" type="primary" plain @click="choseFile" >选择文件</el-button>
+                <el-form-item prop="manufacturer" :label="$t('huanbaoTable.FMD.REPORT')">
+                  <el-button size="mini" type="primary" plain @click="choseFile" >{{$t('huanbaoTable.FMD.Selectfile')}}</el-button>
                   <el-input :disabled="true" v-model="fileName"></el-input>
                 </el-form-item>
               </el-col>

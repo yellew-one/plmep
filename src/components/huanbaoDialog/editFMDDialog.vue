@@ -14,7 +14,7 @@
       </div>
       <el-row :gutter="20" v-if="isSub === 'NOSUB'">
         <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
+          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="180px"
                    style=' margin-left:0px;'>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
@@ -231,7 +231,7 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
+    width: 200px;
     padding: 5px 15px;
     height: 27px;
     color: #ffffff;

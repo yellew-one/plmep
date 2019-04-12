@@ -92,7 +92,7 @@
                   width="1000px"
                   trigger="hover"
                   :content="fmdOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -160,7 +160,7 @@
                     <span>{{$t('huanbaoTable.FMD.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100"
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100"
                   v-if="fmdEditAble">
                   <template slot-scope="scope">
                     <el-button @click="editFMD(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
@@ -177,7 +177,7 @@
                   width="1000px"
                   trigger="hover"
                   :content="msdsOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -221,7 +221,7 @@
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="msdsEditAble" @click="editMSDS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkMSDS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -231,21 +231,21 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('huanbaoTable.submitted.RoHS')">
               <el-row>
-                <el-button size="mini" type="primary" plain @click="downloadRoHS">下载导入模板</el-button>
+                <el-button size="mini" type="primary" plain @click="downloadRoHS">{{$t('huanbaoTable.ROHS.download')}}</el-button>
                 <el-button size="mini" type="success" plain
                            v-if="ROHSUPLOAD"
-                           @click="ROHSUpload">上传环保数据</el-button>
+                           @click="ROHSUpload">{{$t('huanbaoTable.ROHS.Upload')}}</el-button>
                 <el-button size="mini" type="warning" plain
                            v-if="rohsEditAble"
-                           @click="editRoHSReport">编辑RoHS总报告</el-button>
-                <el-button @click="checkRoHSReport" size="mini" type="info" plain>查看RoHS总报告</el-button>
+                           @click="editRoHSReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
+                <el-button @click="checkRoHSReport" size="mini" type="info" plain>{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
                   width="1000px"
                   trigger="hover"
                   :content="rohsOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -367,7 +367,7 @@
                     <span>{{$t('huanbaoTable.ROHS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="rohsEditAble" @click="editRoHS(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkRoHS(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -379,15 +379,15 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="hfEditAble"
-                           @click="editHFReport">编辑HF总报告</el-button>
-                <el-button @click="checkHFReport" size="mini" type="info" plain>查看HF总报告</el-button>
+                           @click="editHFReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
+                <el-button @click="checkHFReport" size="mini" type="info" plain>{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
                   width="1000px"
                   trigger="hover"
                   :content="hfOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -455,7 +455,7 @@
                     <span>{{$t('huanbaoTable.HF.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="hfEditAble" @click="editHF(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkHF(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -467,17 +467,17 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="reachEditAble"
-                           @click="editREACHTotalReport">编辑REACH总报告</el-button>
-                <el-button size="mini" type="info" plain @click="checkREACHTotalReport">查看REACH总报告</el-button>
-                <el-button size="mini" type="primary" plain v-if="reachEditAble" @click="editGeneralStatement">编辑REACH总声明</el-button>
-                <el-button size="mini" type="info" plain @click="checkGeneralStatement">查看REACH总声明</el-button>
+                           @click="editREACHTotalReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
+                <el-button size="mini" type="info" plain @click="checkREACHTotalReport">{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
+                <el-button size="mini" type="primary" plain v-if="reachEditAble" @click="editGeneralStatement">{{$t('huanbaoTable.REACH.Editstatement')}}</el-button>
+                <el-button size="mini" type="info" plain @click="checkGeneralStatement">{{$t('huanbaoTable.REACH.Viewstatement')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
                   width="1000px"
                   trigger="hover"
                   :content="reachOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -533,7 +533,7 @@
                     <span>{{$t('huanbaoTable.MSDS.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="reachEditAble" @click="editREACH(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkREACH(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -545,15 +545,15 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="other1EditAble"
-                           @click="editOtherReport">编辑其他总报告</el-button>
-                <el-button @click="checkOtherReport" size="mini" type="info" plain>查看其他总报告</el-button>
+                           @click="editOtherReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
+                <el-button @click="checkOtherReport" size="mini" type="info" plain>{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
                   width="1000px"
                   trigger="hover"
                   :content="otherOpinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -651,7 +651,7 @@
                     <span>{{$t('huanbaoTable.OTHER.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
                     <el-button v-if="other1EditAble" @click="editOther(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
                     <el-button @click="checkOther(scope.row)" type="text" size="small">{{$t('formButton.check')}}</el-button>
@@ -663,14 +663,14 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="other2EditAble"
-                           @click="editSpecialNeeds">编辑客户特殊需求申报</el-button>
+                           @click="editSpecialNeeds">{{$t('huanbaoTable.OTHER2.specialneeds')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
                   width="1000px"
                   trigger="hover"
                   :content="other2Opinion">
-                  <el-button slot="reference" size="mini" type="danger" plain>审批意见</el-button>
+                  <el-button slot="reference" size="mini" type="danger" plain>{{$t('huanbaoTable.detailTable.approvalComments')}}</el-button>
                 </el-popover>
               </el-row>
               <el-table
@@ -702,9 +702,9 @@
                     <span>{{$t('huanbaoTable.OTHER2.'+scope.row.state)}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="100">
+                <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" width="100">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="downloadNeeds(scope.row)">下载</el-button>
+                    <el-button type="text" size="small" @click="downloadNeeds(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -712,7 +712,7 @@
           </el-tabs>
           <el-row v-if="this.approvalType === 'YEAH'">
             <div class="longcheer_hr" style="margin-top: 20px">
-              <span>审批</span>
+              <span>{{$t('huanbaoTable.detailTable.approval')}}</span>
             </div>
             <el-row class="card_row">
               <el-col span="4" style="text-align: right">{{$t('huanbaoTable.detailTable.remark')}} :</el-col>
@@ -736,7 +736,7 @@
             </el-row>
           </el-row>
           <div class="longcheer_hr" style="margin-top: 20px">
-            <span>{{$t('huanbaoTable.detailTable.approval')}}</span>
+            <span>{{$t('huanbaoTable.detailTable.approvals')}}</span>
           </div>
           <el-row class="card_row">
             <el-col span="24">
@@ -1196,11 +1196,11 @@ export default {
     },
     // 编辑rohs总报告
     editRoHSReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'RoHS总报告', this.oid, 'RoHS')
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', this.$t('huanbaoTable.ROHS.report'), this.oid, 'RoHS')
     },
     // 查看rohs总报告
     checkRoHSReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('view', 'RoHS总报告', this.oid, 'RoHS')
+      this.$refs.generalReport.setgeneralReportDialogisible('view', this.$t('huanbaoTable.ROHS.report'), this.oid, 'RoHS')
     },
     // rohs 编辑
     editRoHS (row) {
@@ -1212,11 +1212,11 @@ export default {
     },
     // 编辑 HF 总报告
     editHFReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'HF总报告', this.oid, 'HF')
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', this.$t('huanbaoTable.HF.report'), this.oid, 'HF')
     },
     // 查看 HF 总报告
     checkHFReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('view', 'HF总报告', this.oid, 'HF')
+      this.$refs.generalReport.setgeneralReportDialogisible('view', this.$t('huanbaoTable.HF.report'), this.oid, 'HF')
     },
     // HF 编辑
     editHF (row) {
@@ -1228,11 +1228,11 @@ export default {
     },
     // 编辑 REACH 总报告
     editREACHTotalReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('edit', 'REACH总报告', this.oid, 'REACH')
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', this.$t('huanbaoTable.REACH.REACH'), this.oid, 'REACH')
     },
     // 查看 REACH 总报告
     checkREACHTotalReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('view', 'REACH总报告', this.oid, 'REACH')
+      this.$refs.generalReport.setgeneralReportDialogisible('view', this.$t('huanbaoTable.REACH.REACH'), this.oid, 'REACH')
     },
     // 编辑REACH总声明
     editGeneralStatement () {
@@ -1252,11 +1252,11 @@ export default {
     },
     // 编辑 other 总报告
     editOtherReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('edit', '编辑总报告', this.oid, 'OTHER')
+      this.$refs.generalReport.setgeneralReportDialogisible('edit', this.$t('huanbaoTable.OTHER.OTHER'), this.oid, 'OTHER')
     },
     // 查看 other 总报告
     checkOtherReport () {
-      this.$refs.generalReport.setgeneralReportDialogisible('view', '编辑总报告', this.oid, 'OTHER')
+      this.$refs.generalReport.setgeneralReportDialogisible('view', this.$t('huanbaoTable.OTHER.OTHER'), this.oid, 'OTHER')
     },
     // Other 编辑
     editOther (row) {
@@ -1273,7 +1273,7 @@ export default {
     // fmd 上传数据
     fmdUpload () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '上传FMD数据', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], this.$t('huanbaoTable.detailTable.uploadData'), 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, 'FMD')
@@ -1281,7 +1281,7 @@ export default {
     // rohs 上传数据
     ROHSUpload () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '上传RoHS数据', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], this.$t('huanbaoTable.detailTable.uploadData'), 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, 'RoHS')
@@ -1429,8 +1429,8 @@ export default {
     background-image: url(../../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

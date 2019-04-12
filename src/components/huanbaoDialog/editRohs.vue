@@ -11,11 +11,11 @@
       width="50%"
       top="2%">
       <div class="longcheer_hr" style="margin-top: -10px;">
-        <span class="longcheer_hr_span">RoHS报告</span>
+        <span class="longcheer_hr_span">{{$t('huanbaoTable.ROHS.report')}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
-        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >添加RoHS报告</el-button>
-        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">移除</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addRoHSReport" >{{$t('huanbaoTable.detailTable.addReport')}}</el-button>
+        <el-button v-if="type === 'itemedit'" size="mini" type="danger"  plain @click="deleteRoHSReport">{{$t('huanbaoTable.MSDS.Remove')}}</el-button>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
@@ -29,34 +29,34 @@
               type="selection"
               width="35">
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  label="报告编号" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="fileName"  :label="$t('huanbaoTable.ROHS.reportNumber')" >
               <template
                 slot-scope="scope">
                 <span>{{$t(scope.row.reportNumber)}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="报告日期" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.reportDate')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.reportDate}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="检测单位" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.examUnit')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.examUnit}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  label="上次修改时间" >
+            <el-table-column align="center" show-overflow-tooltip="true"  prop="endTime"  :label="$t('huanbaoTable.ROHS.lastTime')" >
               <template
                 slot-scope="scope">
                 <span>{{scope.row.modifyTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed="right" label="操作" width="100">
+            <el-table-column align="center" fixed="right" :label="$t('huanbaoTable.detailTable.operating')" >
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="upload(scope.row)">下载</el-button>
-                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small" @click="upload(scope.row)">{{$t('huanbaoTable.MSDS.download')}}</el-button>
+                <el-button v-if="type === 'itemedit'" @click="editRoHSReport(scope.row)" type="text" size="small">{{$t('huanbaoTable.FMD.edit')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -64,7 +64,7 @@
       </el-row>
       <div class="boxtext" v-if="type === 'itemview' || type === 'itemedit'">
         <div class="longcheer_hr" style="margin-top: 10px;">
-          <span class="longcheer_hr_span">属性</span>
+          <span class="longcheer_hr_span">{{$t('huanbaoTable.MSDS.Attributes')}}</span>
         </div>
         <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
                  style=' margin-left:0px;margin-top: 10px'>
@@ -72,7 +72,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="materialName"  label="原材料名称">
+              <el-form-item prop="materialName"  :label="$t('huanbaoTable.ROHS.materialName')">
                 <el-input disabled="true" v-model="temp.materialName">
                 </el-input>
               </el-form-item>
@@ -84,7 +84,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="manufacturer"  label="原材料制造商">
+              <el-form-item prop="manufacturer"  :label="$t('huanbaoTable.ROHS.manufacturer')">
                 <el-input disabled="true" v-model="temp.manufacturer">
                 </el-input>
               </el-form-item>
@@ -96,7 +96,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="pb"  label="Pb">
+              <el-form-item prop="pb"  :label="$t('huanbaoTable.ROHS.pb')">
                 <el-input :disabled="ifEdit" v-model="temp.pb">
                 </el-input>
               </el-form-item>
@@ -108,7 +108,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="cd"  label="Cd">
+              <el-form-item prop="cd"  :label="$t('huanbaoTable.ROHS.cd')">
                 <el-input :disabled="ifEdit" v-model="temp.cd">
                 </el-input>
               </el-form-item>
@@ -120,7 +120,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="hg"  label="Hg">
+              <el-form-item prop="hg"  :label="$t('huanbaoTable.ROHS.hg')">
                 <el-input :disabled="ifEdit" v-model="temp.hg">
                 </el-input>
               </el-form-item>
@@ -132,7 +132,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="cr6p"  label="Cr6+">
+              <el-form-item prop="cr6p"  :label="$t('huanbaoTable.ROHS.cr6p')">
                 <el-input :disabled="ifEdit" v-model="temp.cr6p">
                 </el-input>
               </el-form-item>
@@ -144,7 +144,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="pbbs"  label="PBBs">
+              <el-form-item prop="pbbs"  :label="$t('huanbaoTable.ROHS.pbbs')">
                 <el-input :disabled="ifEdit" v-model="temp.pbbs">
                 </el-input>
               </el-form-item>
@@ -156,7 +156,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="pbdes"  label="PBDEs">
+              <el-form-item prop="pbdes"  :label="$t('huanbaoTable.ROHS.pbdes')">
                 <el-input :disabled="ifEdit" v-model="temp.pbdes">
                 </el-input>
               </el-form-item>
@@ -168,7 +168,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="dehp"   label="DEHP">
+              <el-form-item prop="dehp"   :label="$t('huanbaoTable.ROHS.dehp')">
                 <el-input :disabled="ifEdit" v-model="temp.dehp">
                 </el-input>
               </el-form-item>
@@ -180,7 +180,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="bbp"  label="BBP">
+              <el-form-item prop="bbp"  :label="$t('huanbaoTable.ROHS.bbp')">
                 <el-input :disabled="ifEdit" v-model="temp.bbp">
                 </el-input>
               </el-form-item>
@@ -192,7 +192,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="dbp"  label="DBP">
+              <el-form-item prop="dbp"  :label="$t('huanbaoTable.ROHS.dbp')">
                 <el-input :disabled="ifEdit" v-model="temp.dbp">
                 </el-input>
               </el-form-item>
@@ -204,7 +204,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="dibp"  label="DIBP">
+              <el-form-item prop="dibp"  :label="$t('huanbaoTable.ROHS.dibp')">
                 <el-input :disabled="ifEdit" v-model="temp.dibp">
                 </el-input>
               </el-form-item>
@@ -216,7 +216,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="exemptions"  label="豁免条款">
+              <el-form-item prop="exemptions"  :label="$t('huanbaoTable.ROHS.exemptions')">
                 <el-input readonly="true" v-model="exemptions">
                   <i
                     class="el-icon-close el-input__icon"
@@ -234,7 +234,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="rohsState"  label="状态">
+              <el-form-item prop="rohsState"  :label="$t('huanbaoTable.ROHS.state')">
                 <span>{{temp.rohsState}}</span>
               </el-form-item>
             </el-col>
@@ -245,7 +245,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="remark"  label="备注">
+              <el-form-item prop="remark"  :label="$t('huanbaoTable.ROHS.remark')">
                 <el-input type="textarea" :rows="3" :disabled="ifEdit" v-model="temp.remark">
                 </el-input>
               </el-form-item>
@@ -257,7 +257,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="type=== 'itemedit'" size="mini" @click="rohsDialog = false">{{$t('huanbaoTable.escapeClause.cancel')}}</el-button>
-        <el-button v-if="type=== 'itemview'" size="mini" @click="rohsDialog = false">关闭</el-button>
+        <el-button v-if="type=== 'itemview'" size="mini" @click="rohsDialog = false">{{$t('tagsView.close')}}</el-button>
         <el-button v-if="type=== 'itemedit'" :loading="$store.getters.loading" size="mini" type="primary" @click="completeReport">{{$t('huanbaoTable.escapeClause.ensure')}}</el-button>
       </span>
       <processing-general-report ref="processingGeneralReport"
@@ -434,8 +434,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }
