@@ -337,7 +337,7 @@ export default {
     music: 'Music',
     login: 'Login',
     zdsc: 'Automatic generation',
-    loginTitle: 'Environmental&Sealing system',
+    loginTitle: 'Longcheer Sealing&HSF System',
     homepage: 'Home page',
     Logout: 'Log out',
     Notice: 'Notice',
@@ -522,6 +522,18 @@ export default {
       createPcn: 'Create PCN',
       rejectPcn: 'Reject PCN',
       information: 'Detailed information'
+    },
+    table: {
+      ResubmitPCN: '重新提交PCNEN',
+      pg_number: '变更单号EN',
+      pg_name: '变更名称EN',
+      ChangeType: '变更类型EN',
+      number: '编号EN',
+      Name: '名称EN',
+      project: '项目EN',
+      RequireCompletionTime: '要求完成时间EN',
+      SelectionResourceEngineer: '选择龙旗资源工程师EN',
+      state: '状态EN'
     },
     form: {
       comment: '驳回审批意见EN',
