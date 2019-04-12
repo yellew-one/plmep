@@ -7,8 +7,7 @@ export default {
     password_error: '密码错误',
     required: '必填',
     please_selector: '请选择',
-    no_state: '仅可编辑正在工作、驳回、已取消的封样文档',
-    email: '请正确输入邮箱'
+    no_state: '仅可编辑正在工作、驳回、已取消的封样文档'
   },
   success: {
     update_success: '修改成功',
@@ -182,7 +181,7 @@ export default {
       materialGroup: '原材料组',
       manufacturer: '原材料制造商',
       subMaterialName: '子物质名称',
-      casNo: 'casNo',
+      casNo: 'CAS No.',
       substanceWeight: '子物质重量',
       contentRate: '含有率',
       exemptions: '豁免条款',
@@ -197,7 +196,7 @@ export default {
       endTime: '上次修改时间',
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
-      ipForm: 'Ipform',
+      ipForm: 'IP Form',
       msds: '原材料MSDS',
       patentCert: '专利证明',
       state: '状态',
@@ -210,16 +209,16 @@ export default {
       materialName: '原材料名称',
       materialGroup: '原材料组',
       manufacturer: '原材料制造商',
-      pb: 'pb',
-      cd: 'cd',
-      hg: 'hg',
-      cr6p: 'cr6p',
-      pbbs: 'pbbs',
-      pbdes: 'pbdes',
-      dehp: 'dehp',
-      bbp: 'bbp',
-      dbp: 'dbp',
-      dibp: 'dibp',
+      pb: 'Pb',
+      cd: 'Cd',
+      hg: 'Hg',
+      cr6p: 'Cr6+',
+      pbbs: 'PBBs',
+      pbdes: 'PBDEs',
+      dehp: 'DEHP',
+      bbp: 'BBP',
+      dbp: 'DBP',
+      dibp: 'DIBP',
       exemptions: '豁免条款',
       reportName1: 'RoHS报告',
       examUnit: '检测单位',
@@ -235,9 +234,9 @@ export default {
     HF: {
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
-      cl: 'cl',
-      br: 'br',
-      clBr: 'clBr',
+      cl: 'Cl',
+      br: 'Br',
+      clBr: 'Cl+Br',
       fileRetardant: '是否阻燃剂',
       reportCount: 'HF报告',
       reportDate: '报告日期',
@@ -265,14 +264,14 @@ export default {
     OTHER: {
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
-      ni: 'ni',
-      pahs: 'pahs',
-      didp: 'didp',
-      dinp: 'dinp',
-      dnhp: 'dnhp',
-      sccp: 'sccp',
-      be: 'be',
-      sb: 'sb',
+      ni: 'Ni',
+      pahs: 'PAHs',
+      didp: 'DIDP',
+      dinp: 'DINP',
+      dnhp: 'DnHP',
+      sccp: 'SCCP',
+      be: 'Be',
+      sb: 'Sb',
       reportCount: '报告',
       reportDate: '报告日期',
       reportNumber: '报告编号',
@@ -497,8 +496,7 @@ export default {
       userName: '拼音',
       DetailedDescription: '详细描述',
       RequireCompletionTime: '要求完成时间',
-      ResourceEngineer: '龙旗资源工程师',
-      comment: '驳回审批意见'
+      ResourceEngineer: '龙旗资源工程师'
     },
     search: {
       name: '名称',
@@ -507,10 +505,7 @@ export default {
     },
     table: {
       ChangeType: '变更类型',
-      ResubmitPCN: '重新提交PCN',
       number: '编号',
-      pg_number: '变更编号',
-      pg_name: '变更名称',
       Name: '名称',
       project: '项目',
       RequireCompletionTime: '要求完成时间',
@@ -518,13 +513,6 @@ export default {
       state: '状态'
     },
     select: {
-      state: {
-        OPEN: '开启',
-        UNDERREVIEW: '正在审阅',
-        REWORK: '驳回',
-        RESOLVED: '已解决',
-        CANCELLED: '已取消'
-      }
     }
   }
 }
