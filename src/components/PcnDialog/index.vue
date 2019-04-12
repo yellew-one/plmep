@@ -5,9 +5,9 @@
     </div>
     <el-row style="margin-top: 5px;margin-left: 10px">
       <el-col :span="24">
-        <el-form ref="form1" :rules="rules" label-position="left" size="mini" :model="tmp" label-width="140px">
+        <el-form ref="form1" :rules="rules" label-position="left" size="mini" :model="tmp" :label-width="$store.getters.guojihua==='en'?'200px':'140px'">
           <el-row style="margin-top: 20px;margin-left: 20px">
-            <el-col :span="10">
+            <el-col :span="$store.getters.guojihua==='en'?'14':'10'">
               <el-form-item prop="ecrTypeValue" :label="$t('pcn.form.ChangeType')">
                 <el-select disabled="true" style="width: 100%" v-model="tmp.ecrTypeValue" placeholder="请选择">
                   <el-option
@@ -51,10 +51,10 @@
             </el-col>
           </el-row>
           <div class="longcheer_hr" style="margin-left: -10px">
-            <span class="longcheer_hr_span">文件</span>
+            <span class="longcheer_hr_span">{{$t('supplement.fengyang.file')}}</span>
           </div>
           <el-button-group style="margin-top: 10px">
-            <el-button v-if="iflag" size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">上传文件</el-button>
+            <el-button v-if="iflag" size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">{{$t('supplement.fengyang.UploadFiles')}}</el-button>
             <el-button v-if="iflag" size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
             <el-table
               size="mini"
@@ -69,7 +69,7 @@
                 type="selection"
                 width="55">
               </el-table-column>
-              <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="650">
+              <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('supplement.fengyang.LabelOrFilename')" width="650">
                 <template
                   slot-scope="scope">
                   <a @click="downFile(scope.row)" style="color: blue;">{{$t(scope.row.name)}}</a>
@@ -310,8 +310,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

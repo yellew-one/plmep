@@ -4,7 +4,7 @@
     <breadcrumb class="breadcrumb-container"></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img :title="loginName" class="user-avatar" :src="avatarImage">
+        <img :title="loginName" class="user-avatar" src="../../../assets/image/userDefualt.jpg">
         <i :title="loginName" class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -71,7 +71,7 @@ export default {
     return {
       loginName: '',
       textMap: '',
-      avatarImage: 'https://pic.qqtn.com/up/2014-7/14065364718533842.gif',
+      avatarImage: '../../../assets/image/userDefualt.png',
       dialogFormVisibledialogFormVisible: false,
       users: [],
       changePassword: {

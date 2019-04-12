@@ -47,8 +47,8 @@
             </el-row>
             <el-row style="padding-left: 10px">
               <el-col span=" 10">
-                <el-form-item label="模板下载" prop="explain">
-                  【<a style="color: blue" @click="downloadModel">点击下载模板</a>】
+                <el-form-item :label="$t('supplement.fengyang.Template_Download')" prop="explain">
+                  【<a style="color: blue" @click="downloadModel">{{$t('supplement.fengyang.Template_Download')}}</a>】
                 </el-form-item>
               </el-col>
             </el-row>
@@ -58,7 +58,7 @@
             <el-row style="padding-left: 10px">
               <el-col span="24">
                 <el-button-group>
-                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">上传文件</el-button>
+                  <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-plus" @click="filesUploadClick">{{$t('supplement.fengyang.UploadFiles')}}</el-button>
                   <el-button size="mini" :loading="$store.getters.loading" icon="el-icon-delete" @click="removeRelatedWLFYDocs">{{$t('fengyangTable.detail.remove')}}</el-button>
                   <el-table
                     size="mini"
@@ -73,7 +73,7 @@
                       type="selection"
                       width="55">
                     </el-table-column>
-                    <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  label="标签或文件名" width="650">
+                    <el-table-column   align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('supplement.fengyang.LabelOrFilename')" width="650">
                       <template
                         slot-scope="scope">
                         {{$t(scope.row.name)}}

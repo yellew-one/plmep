@@ -301,7 +301,7 @@ export default {
     music: '音乐',
     login: '登录',
     zdsc: '自动生成',
-    loginTitle: '环保封样系统',
+    loginTitle: '龙旗封样环保系统',
     homepage: '首页',
     Logout: '注销',
     back_home: '返回首页',
@@ -489,6 +489,7 @@ export default {
       information: '基本信息'
     },
     form: {
+      comment: '驳回审批意见',
       ChangeType: '变更类型',
       Name: '名称',
       project: '项目',
@@ -504,6 +505,9 @@ export default {
       userName: '拼音'
     },
     table: {
+      ResubmitPCN: '重新提交PCN',
+      pg_number: '变更单号',
+      pg_name: '变更名称',
       ChangeType: '变更类型',
       number: '编号',
       Name: '名称',
@@ -514,5 +518,18 @@ export default {
     },
     select: {
     }
+  },
+  supplement: {
+    fengyang: {
+      downExcel: '生成的承认书EXCEL附件',
+      Template_Download: '模板下载',
+      Template_click_down: '点击下载模板',
+      UploadFiles: '上传文件',
+      LabelOrFilename: '标签或文件名',
+      remark: '备注',
+      download: '下载',
+      file: '文件'
+    }
   }
+
 }

@@ -23,4 +23,8 @@ export default {
   /*text-align: center;*/
   /*color: #2c3e50;*/
 /*}*/
+.el-form-item label:before {
+  content: "\2002";
+  width: 100%;
+}
 </style>

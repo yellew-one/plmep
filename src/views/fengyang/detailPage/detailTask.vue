@@ -218,7 +218,7 @@
             </el-row>
             <el-row class="card_row" style="margin-top: 30px">
               <el-col :span="11" class="card_lable">
-               <a style="color: blue" @click="Acknowledgment">生成的承认书EXCEL附件</a>
+               <a style="color: blue" @click="Acknowledgment">{{$t('supplement.fengyang.downExcel')}}</a>
               </el-col>
               <el-col :span="13" class="card_lable">
 
@@ -308,7 +308,7 @@
               <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
             </div>
             <el-row v-if="state === 'true'" class="card_row">
-              <el-col span="4" style="text-align: right">备注：</el-col>
+              <el-col span="4" style="text-align: right">{{$t('supplement.fengyang.remark')}}：</el-col>
               <el-col span="1" style="text-align: right">&nbsp;</el-col>
               <el-col  span="12"><el-input  :disabled="state !== 'true'" v-model="model.comment" type="textarea" :rows="3"></el-input></el-col>
             </el-row>
@@ -666,10 +666,11 @@ export default {
     display: inline-block;
     background-image: url(../../../assets/image/tab2.png);
     background-repeat: no-repeat;
-    background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    background-size: 98% 100%;
+    /*padding: 5px 30px;*/
     height: 27px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     color: #ffffff;
   }
   .longcheer_hr_reight {

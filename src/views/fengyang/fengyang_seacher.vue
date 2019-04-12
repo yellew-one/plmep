@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <div class="boxtext">
-            <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
+            <el-form size="mini" ref="dataForm" :model="temp" label-position="left" :label-width="$store.getters.guojihua==='en'?'200px':'120px'"
                      style=' margin-left:0px;'>
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
@@ -24,7 +24,7 @@
               </el-row>
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
                 <el-col :span="8">
-                  <el-form-item prop="materialCode" :label="$t('fengyangTable.seacher.lq_class_category')">
+                  <el-form-item prop="materialCode" :label="$t('fengyangTable.detail.lq_class_category')">
                     <el-select style="width: 100%" v-model="model.serchItems.LQ_CLASS_CATEGORY" placeholder="请选择">
                       <el-option
                         v-for="item in options2"

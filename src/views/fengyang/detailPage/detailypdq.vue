@@ -210,7 +210,7 @@
             <span class="longcheer_hr_span">{{$t('formButton.Approval')}}</span>
           </div>
           <el-row v-if="state === 'true'" class="card_row">
-            <el-col span="4" style="text-align: right">备注：</el-col>
+            <el-col span="4" style="text-align: right">{{$t('supplement.fengyang.remark')}}：</el-col>
             <el-col span="1" style="text-align: right">&nbsp;</el-col>
             <el-col  span="12"><el-input v-model="model.comment" :disabled="state !== 'true'" type="textarea" :rows="3"></el-input></el-col>
           </el-row>
@@ -343,7 +343,7 @@ export default {
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)
-      completeSealedTask('MS' + this.model.materialNumber, this.model.comment, this.radio).then(r => {
+      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
         console.log(r)
         if (r.data.mes.indexOf('成功') !== -1) {
           this.$message({
@@ -359,7 +359,6 @@ export default {
             duration: 5 * 1000
           })
         }
-        this.getDetailInfo(this.oid)
       })
     },
     closePage () {
@@ -430,8 +429,8 @@ export default {
     background-image: url(../../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

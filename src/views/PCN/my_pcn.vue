@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <div class="boxtext">
-            <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="120px"
+            <el-form size="mini" ref="dataForm" :model="temp" label-position="left" :label-width="$store.getters.guojihua==='en'?'180px':'140px'"
                      style=' margin-left:0px;'>
               <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
               <el-col :span="8">
