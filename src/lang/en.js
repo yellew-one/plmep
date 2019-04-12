@@ -495,6 +495,18 @@ export default {
       ResourceEngineer: '龙旗资源工程师',
       comment: '审批意见'
     },
+    table: {
+      ChangeType: '变更类型',
+      ResubmitPCN: 'Resubmit PCN',
+      number: '编号',
+      pg_number: '变更编号',
+      pg_name: '变更名称',
+      Name: '名称',
+      project: '项目',
+      RequireCompletionTime: '要求完成时间',
+      SelectionResourceEngineer: '选择龙旗资源工程师',
+      state: '状态'
+    },
     search: {
       name: '名称',
       email: '邮件',

@@ -14,16 +14,16 @@
         <el-table-column align="center" :show-overflow-tooltip="true"   prop="ecrNum"  :label="$t('table.task_name')" width="280">
           <template
             slot-scope="scope">
-            <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t(scope.row.ecrNum)}}</a>
+            <a href="#" @click="goDetail(scope.row)" style="color: blue">{{$t('pcn.table.ResubmitPCN')}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="ecrNum"  :label="$t('table.material_number')" width="280">
+        <el-table-column align="center" sortable :show-overflow-tooltip="true"   prop="ecrNum"  :label="$t('pcn.table.pg_number')" width="280">
           <template
             slot-scope="scope">
             <span>{{scope.row.ecrNum}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" :show-overflow-tooltip="true"   prop="ecrName"  :label="$t('table.material_name')" width="280">
+        <el-table-column align="center" :show-overflow-tooltip="true"   prop="ecrName"  :label="$t('pcn.table.pg_name')" width="280">
           <template
             slot-scope="scope">
             <span>{{scope.row.ecrName}}</span>

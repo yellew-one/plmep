@@ -84,7 +84,7 @@
             </el-table>
           </el-button-group>
           <div v-if="iflag" style="text-align: right">
-            <el-button size="mini" :loading="$store.getters.loading" type="primary" @click="onSubmit">驳回</el-button>
+            <el-button size="mini" :loading="$store.getters.loading" type="primary" @click="onSubmit">提交</el-button>
             <el-button size="mini" @click="dialogFormVisible=false">取消</el-button>
           </div>
         </el-form>

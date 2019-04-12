@@ -507,7 +507,10 @@ export default {
     },
     table: {
       ChangeType: '变更类型',
+      ResubmitPCN: '重新提交PCN',
       number: '编号',
+      pg_number: '变更编号',
+      pg_name: '变更名称',
       Name: '名称',
       project: '项目',
       RequireCompletionTime: '要求完成时间',
