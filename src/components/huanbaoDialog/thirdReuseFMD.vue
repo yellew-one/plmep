@@ -62,14 +62,19 @@
       <div class="longcheer_hr" style="margin-top: 10px;">
         <span>{{$t('huanbaoTable.FMD.third')}}</span>
       </div>
+      <el-row style="margin-top: 10px;">
+        <el-col :span="6">
+          <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+        </el-col>
+      </el-row>
       <el-row class="card_row">
         <el-col span="24">
           <el-table
             ref="multipleTable1"
-            :data="thirdTable"
+            :data="thirdTable | tablefilters(tFilters)"
             border
             size="mini"
-            style="width: 100%"
+            style="width: 100%; margin-top: 10px"
             @selection-change="handleSelectionChangeThird">
             <el-table-column
               type="selection"
@@ -152,14 +157,19 @@
       <div class="longcheer_hr" style="margin-top: 10px;">
         <span>{{$t('huanbaoTable.FMD.Reusable')}}</span>
       </div>
+      <el-row style="margin-top: 10px;">
+        <el-col :span="6">
+          <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+        </el-col>
+      </el-row>
       <el-row class="card_row">
         <el-col span="24">
           <el-table
             ref="multipleTable2"
-            :data="msdsTable"
+            :data="msdsTable | tablefilters(tFilters)"
             border
             size="mini"
-            style="width: 100%"
+            style="width: 100%;margin-top: 10px"
             @selection-change="handleSelectionChangeMsds">
             <el-table-column
               type="selection"
@@ -242,6 +252,17 @@ export default {
   components: {RelevantMaterials},
   name: 'ThirdReuse',
   props: ['getDataList'],
+  filters: {
+    tablefilters: function (value, data) {
+      var sz = []
+      value.forEach(function (v, index) {
+        if (v.materialNumber.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
+    }
+  },
   mounted: function () {
   },
   data () {
