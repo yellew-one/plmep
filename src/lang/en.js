@@ -147,7 +147,9 @@ export default {
       operating: 'Operating',
       fileUpload: 'File Upload',
       uploadData: 'Upload Data',
-      addReport: 'Add Report'
+      addReport: 'Add Report',
+      selectFile: 'Please Select A File',
+      prompt: 'Prompt'
     },
     approval: {
       false: 'Unfinished',

@@ -542,7 +542,7 @@ export function searchReuseReport (e) {
   })
 }
 // envpDataCheck：物料环保资料完整性校验
-export function checkData (e) {
+export function checkData (e, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
     method: 'post',
@@ -555,7 +555,8 @@ export function checkData (e) {
     }],
     data: {
       operation: 'checkData',
-      envpNumber: e
+      envpNumber: e,
+      locale: locale
     }
   })
 }
@@ -883,7 +884,7 @@ export function viewRohs (rohsItemOid) {
 }
 
 // RoHS条目编辑确认
-export function execute (oid, temp, removeOid, addOid) {
+export function execute (oid, temp, removeOid, addOid, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/rohsItem.jsp',
     method: 'post',
@@ -910,7 +911,8 @@ export function execute (oid, temp, removeOid, addOid) {
       exemption: temp.exemptions,
       remark: temp.remark,
       removeOid: removeOid,
-      addOid: addOid
+      addOid: addOid,
+      locale: locale
     }
   })
 }
@@ -955,7 +957,7 @@ export function attachmentLink (number, fileName) {
 }
 
 // 上传环保fmd数据
-export function executeUploadFMDData (oid, uploadPath) {
+export function executeUploadFMDData (oid, uploadPath, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/uploadEnvpData.jsp',
     method: 'post',
@@ -969,12 +971,13 @@ export function executeUploadFMDData (oid, uploadPath) {
     data: {
       operation: 'executeUploadFMDData',
       oid: oid,
-      uploadPath: uploadPath
+      uploadPath: uploadPath,
+      locale: locale
     }
   })
 }
 // 上传环保ROHS数据
-export function executeUploadItemData (oid, uploadPath) {
+export function executeUploadItemData (oid, uploadPath, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/uploadEnvpData.jsp',
     method: 'post',
@@ -988,12 +991,13 @@ export function executeUploadItemData (oid, uploadPath) {
     data: {
       operation: 'executeUploadItemData',
       oid: oid,
-      uploadPath: uploadPath
+      uploadPath: uploadPath,
+      locale: locale
     }
   })
 }
 // FMD原材料条目编辑
-export function editMaterial (e) {
+export function editMaterial (e, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
     method: 'post',
@@ -1008,12 +1012,13 @@ export function editMaterial (e) {
       operation: 'editMaterial',
       oid: e.fmdOid,
       materialGroup: e.materialGroup,
-      manufacturer: e.manufacturer
+      manufacturer: e.manufacturer,
+      locale: locale
     }
   })
 }
 // FMD子物质编辑
-export function editSubstance (e) {
+export function editSubstance (e, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
     method: 'post',
@@ -1030,8 +1035,8 @@ export function editSubstance (e) {
       casNumber: e.casNo,
       substanceWeight: e.substanceWeight,
       exemptionNameInput: e.exemptions,
-      substanceName: e.subMaterialName
-
+      substanceName: e.subMaterialName,
+      locale: locale
     }
   })
 }
@@ -1054,7 +1059,7 @@ export function deleteFmdItem (e) {
   })
 }
 // 新增环保报告
-export function addReport (oid, data, isFinal, type, filePath) {
+export function addReport (oid, data, isFinal, type, filePath, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
     method: 'post',
@@ -1074,7 +1079,8 @@ export function addReport (oid, data, isFinal, type, filePath) {
       isFinal: isFinal,
       oid: oid,
       documentType: type,
-      filePath: filePath
+      filePath: filePath,
+      locale: locale
     }
   })
 }
@@ -1096,7 +1102,7 @@ export function examUnit () {
   })
 }
 // 编辑环保报告
-export function editReport (data, isFinal, filePath) {
+export function editReport (data, isFinal, filePath, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
     method: 'post',
@@ -1115,7 +1121,8 @@ export function editReport (data, isFinal, filePath) {
       reportNum: data.reportNumber,
       examUnit: data.examUnit,
       isFinal: isFinal,
-      filePath: filePath
+      filePath: filePath,
+      locale: locale
     }
   })
 }
@@ -1347,7 +1354,7 @@ export function itemMaterialInfo (oid) {
  * @param removeMaterialOid 删除自定义管控物质oid
  * @param addMaterialOid 添加自定义管控物质
  */
-export function executeEditOtherItem (oid, e, removeOid, addOid, removeMaterialOid, addMaterialOid) {
+export function executeEditOtherItem (oid, e, removeOid, addOid, removeMaterialOid, addMaterialOid, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/fmdItem.jsp',
     method: 'post',
@@ -1373,7 +1380,8 @@ export function executeEditOtherItem (oid, e, removeOid, addOid, removeMaterialO
       removeOid: removeOid,
       addOid: addOid,
       removeMaterialOid: removeMaterialOid,
-      addMaterialOid: addMaterialOid
+      addMaterialOid: addMaterialOid,
+      locale: locale
     }
   })
 }
@@ -1381,7 +1389,7 @@ export function executeEditOtherItem (oid, e, removeOid, addOid, removeMaterialO
  * 环保报告类型信息接口
  * @param oid 环保条目oid
  */
-export function reportType (oid) {
+export function reportType (oid, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/envpReportOperation.jsp',
     method: 'post',
@@ -1394,7 +1402,8 @@ export function reportType (oid) {
     }],
     data: {
       operation: 'reportType',
-      oid: oid
+      oid: oid,
+      locale: locale
     }
   })
 }
@@ -1601,7 +1610,7 @@ export function itemEditAble (oid) {
  * 待提交物料环保完成任务时物料属性更新校验(ps:此接口调用在完整性校验后）
  * @param oid 物料环保oid
  */
-export function checkMaterialAttr (oid) {
+export function checkMaterialAttr (oid, locale) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/processHistory.jsp',
     method: 'post',
@@ -1614,7 +1623,8 @@ export function checkMaterialAttr (oid) {
     }],
     data: {
       operation: 'checkMaterialAttr',
-      oid: oid
+      oid: oid,
+      locale: locale
     }
   })
 }

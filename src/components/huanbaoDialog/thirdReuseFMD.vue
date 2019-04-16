@@ -159,14 +159,14 @@
       </div>
       <el-row style="margin-top: 10px;">
         <el-col :span="6">
-          <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+          <el-input placeholder="筛选" size="mini" v-model="mFilters"></el-input>
         </el-col>
       </el-row>
       <el-row class="card_row">
         <el-col span="24">
           <el-table
             ref="multipleTable2"
-            :data="msdsTable | tablefilters(tFilters)"
+            :data="msdsTable | mablefilters(mFilters)"
             border
             size="mini"
             style="width: 100%;margin-top: 10px"
@@ -261,12 +261,23 @@ export default {
         }
       })
       return sz
+    },
+    mablefilters: function (value, data) {
+      var sz = []
+      value.forEach(function (v, index) {
+        if (v.materialNumber.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
     }
   },
   mounted: function () {
   },
   data () {
     return {
+      tFilters: '',
+      mFilters: '',
       oid: '',
       dialogVisible: false,
       temp: {

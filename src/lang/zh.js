@@ -151,7 +151,9 @@ export default {
       operating: '操作',
       fileUpload: '文件上传',
       uploadData: '上传数据',
-      addReport: '添加报告'
+      addReport: '添加报告',
+      selectFile: '请选择文件',
+      prompt: '提示'
     },
     approval: {
       false: '未完成',
@@ -249,8 +251,8 @@ export default {
       INWORK: '正在工作',
       download: '下载导入模板',
       Upload: '上传环保数据',
-      editGeneralReport: '编辑RoHS总报告',
-      viewGeneralReport: '查看RoHS总报告',
+      editGeneralReport: '编辑总报告',
+      viewGeneralReport: '查看总报告',
       lastTime: '上次修改时间',
       report: 'RoHS报告',
       remark: '备注'

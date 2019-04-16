@@ -76,7 +76,7 @@
       </el-row>
       <el-row :gutter="20" v-if="isSub === 'SUB'">
         <el-col :span="24">
-          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="100px"
+          <el-form size="mini" ref="dataForm" :model="temp" label-position="left" label-width="180px"
                    style=' margin-left:0px;'>
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
@@ -177,12 +177,13 @@ export default {
     },
     completeFMD () {
       this.dialog = false
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (this.isSub === 'NOSUB') {
-        editMaterial(this.temp).then(r => {
+        editMaterial(this.temp, types).then(r => {
           if (r.data.status === 'success') {
             this.$props.getDataList(this.oid)
             this.$message.success({
-              message: '修改数据成功'
+              message: this.$t('success.create_success')
             })
           } else {
             this.$message.error({
@@ -191,11 +192,11 @@ export default {
           }
         })
       } else {
-        editSubstance(this.temp).then(r => {
+        editSubstance(this.temp, types).then(r => {
           if (r.data.status === 'success') {
             this.$props.updateFMDData()
             this.$message.success({
-              message: '修改数据成功'
+              message: this.$t('success.create_success')
             })
           } else {
             this.$message.error({

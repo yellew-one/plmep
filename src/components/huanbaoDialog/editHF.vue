@@ -313,11 +313,12 @@ export default {
       str = this.editRemoveOid + ',' + this.removeOid
       this.temp.fileRetardant = this.value
       this.temp.remake = this.remark
-      executeEditHFItem(this.hfOid, this.temp, str, this.addOid).then(r => {
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      executeEditHFItem(this.hfOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateHFData()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({

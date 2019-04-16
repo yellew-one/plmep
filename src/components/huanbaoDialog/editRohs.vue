@@ -402,11 +402,12 @@ export default {
       var str = ''
       str = this.removeOid + ',' + this.editRemoveOid
       this.temp.exemptions = this.exemptions
-      execute(this.rohsOid, this.temp, str, this.addOid).then(r => {
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      execute(this.rohsOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateRoHSData()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({

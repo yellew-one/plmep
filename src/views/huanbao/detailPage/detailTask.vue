@@ -989,8 +989,17 @@ export default {
     this.approvalType = this.$route.params.approvalType
     if (this.oid) {
       this.getDataList(this.oid)
+      this.ifEditAble(this.oid)
+    }
+  },
+  methods: {
+    // 子组件调用
+    acceptSonValueByEdit () {
+      this.getDataList(this.oid)
+    },
+    ifEditAble (e) {
       if (this.approvalType === 'YEAH') {
-        itemEditAble(this.oid).then(r => {
+        itemEditAble(e).then(r => {
           console.log('itemEditAble', r)
           if (r.data.status === 'success') {
             this.fmdEditAble = r.data.FMD
@@ -1015,12 +1024,6 @@ export default {
         this.FMDUPLOAD = false
         this.ROHSUPLOAD = false
       }
-    }
-  },
-  methods: {
-    // 子组件调用
-    acceptSonValueByEdit () {
-      this.getDataList(this.oid)
     },
     getDataList (e) {
       showEnvprotectionTask(e).then(r => {
@@ -1090,7 +1093,19 @@ export default {
     },
     // FMD删除
     deleteFMD (row) {
-      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+      deleteFmdItem(row).then(r => {
+        if (r.data.status === 'success') {
+          this.getDataList(this.oid)
+          this.$message.success({
+            message: this.$t('success.remove_success')
+          })
+        } else {
+          this.$message.error({
+            message: r.data.warning
+          })
+        }
+      })
+      /* this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -1099,7 +1114,7 @@ export default {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
             this.$message.success({
-              message: '删除成功'
+              message: this.$t('success.remove_success')
             })
           } else {
             this.$message.error({
@@ -1108,26 +1123,23 @@ export default {
           }
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
+      }) */
     },
     // 提交
     submit () {
       this.$store.commit('SET_LOADING', true)
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (this.radio === '供货') {
-        checkData('HSF' + this.model.materialNumber).then(r => {
+        checkData('HSF' + this.model.materialNumber, types).then(r => {
           if (r.data.status === 'success') {
-            checkMaterialAttr(this.oid).then(r => {
+            checkMaterialAttr(this.oid, types).then(r => {
               if (r.data.status === 'success') {
                 if (r.data.flag) {
                   completeEnvp(this.oid, this.comment, this.radio).then(r => {
                     console.log('completeSealedTask', r)
                     if (r.data.status === 'success') {
                       this.$message.success({
-                        message: '任务已提交'
+                        message: this.$t('success.finsh_task_success')
                       })
                       this.closePage()
                     }
@@ -1159,7 +1171,7 @@ export default {
           console.log('completeSealedTask', r)
           if (r.data.status === 'success') {
             this.$message.success({
-              message: '任务已提交'
+              message: this.$t('success.finsh_task_success')
             })
             this.closePage()
           }
@@ -1341,12 +1353,14 @@ export default {
     // 文件路径传给后台
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (type === 'FMD') {
-        executeUploadFMDData(this.oid, e[0].response.data[0]).then(r => {
+        executeUploadFMDData(this.oid, e[0].response.data[0], types).then(r => {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
+            this.ifEditAble(this.oid)
             this.$message.success({
-              message: '上传FMD数据成功'
+              message: this.$t('success.create_success')
             })
           } else {
             this.$message.error({
@@ -1356,11 +1370,12 @@ export default {
         })
       }
       if (type === 'RoHS') {
-        executeUploadItemData(this.oid, e[0].response.data[0]).then(r => {
+        executeUploadItemData(this.oid, e[0].response.data[0], types).then(r => {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
+            this.ifEditAble(this.oid)
             this.$message.success({
-              message: '上传RoHS数据成功'
+              message: this.$t('success.create_success')
             })
           } else {
             this.$message.error({

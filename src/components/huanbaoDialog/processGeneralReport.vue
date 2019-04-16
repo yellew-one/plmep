@@ -185,9 +185,10 @@ export default {
           if (this.category === 'EDIT') {
             var v = []
             v = this.temp.reportType.split('\n')
-            this.value = v.slice(0, -1)
+            this.value = v
           }
-          reportType(this.oid).then(r => {
+          var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+          reportType(this.oid, types).then(r => {
             for (let i in r.data) {
               this.options2.push({
                 label: r.data[i].name,
@@ -201,7 +202,7 @@ export default {
     },
     choseFile () {
       this.$refs.fileUpload.openDialog()
-      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '添加报告', 'fileList', {
+      this.$refs.fileUpload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], this.$t('huanbaoTable.detailTable.addReport'), 'fileList', {
         number: this.$store.getters.huanbaoNum,
         userName: this.$store.getters.userInfo.username
       }, this.itemCategory)
@@ -218,8 +219,8 @@ export default {
           if (this.type === 'TOTAL') {
             // 判断是否选择文件
             if (this.fileName === '') {
-              this.$alert('请选择文件', '提示', {
-                confirmButtonText: '确定',
+              this.$alert(this.$t('huanbaoTable.detailTable.selectFile'), this.$t('huanbaoTable.detailTable.prompt'), {
+                confirmButtonText: this.$t('huanbaoTable.escapeClause.ensure'),
                 callback: action => {
                   this.$store.commit('SET_LOADING', false)
                 }
@@ -260,8 +261,8 @@ export default {
             }
           } else {
             if (this.fileName === '') {
-              this.$alert('请选择文件', '提示', {
-                confirmButtonText: '确定',
+              this.$alert(this.$t('huanbaoTable.detailTable.selectFile'), this.$t('huanbaoTable.detailTable.prompt'), {
+                confirmButtonText: this.$t('huanbaoTable.escapeClause.ensure'),
                 callback: action => {
                   this.$store.commit('SET_LOADING', false)
                 }
@@ -310,7 +311,8 @@ export default {
     },
     // 编辑报告
     editReport (num, type) {
-      editReport(this.temp, num, this.filePath).then(r => {
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      editReport(this.temp, num, this.filePath, types).then(r => {
         if (r.data.status === 'success') {
           this.ProcessingGeneralReportDialog = false
           this.temp.reportOid = r.data.add
@@ -318,12 +320,12 @@ export default {
           if (r.data.hasOwnProperty('warn')) {
             this.$message.success({
               dangerouslyUseHTMLString: true,
-              message: '<title>编辑成功</title><strong><i>' + r.data.warn + '</i></strong>'
+              message: '<title>' + this.$t('success.update_success') + '</title><strong><i>' + r.data.warn + '</i></strong>'
             })
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,
-              message: '编辑成功'
+              message: this.$t('success.update_success')
             })
           }
         } else {
@@ -334,7 +336,8 @@ export default {
     },
     // 添加报告
     addReport (num, type) {
-      addReport(this.oid, this.temp, num, type, this.filePath).then(r => {
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      addReport(this.oid, this.temp, num, type, this.filePath, types).then(r => {
         if (r.data.status === 'success') {
           this.ProcessingGeneralReportDialog = false
           this.temp.reportOid = r.data.add
@@ -342,12 +345,12 @@ export default {
           if (r.data.hasOwnProperty('warn')) {
             this.$message.success({
               dangerouslyUseHTMLString: true,
-              message: '<title>编辑成功</title><strong><i>' + r.data.warn + '</i></strong>'
+              message: '<title>' + this.$t('success.create_success') + '</title><strong><i>' + r.data.warn + '</i></strong>'
             })
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,
-              message: '编辑成功'
+              message: this.$t('success.create_success')
             })
           }
         } else {

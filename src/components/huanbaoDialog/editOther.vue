@@ -454,11 +454,12 @@ export default {
       var str = JSON.stringify(s)
       var removeOid = ''
       removeOid = this.removeOid + ',' + this.editRemoveOid
-      executeEditOtherItem(this.otherOid, this.temp, removeOid, this.addOid, this.substancesRemoveOid, str).then(r => {
+      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      executeEditOtherItem(this.otherOid, this.temp, removeOid, this.addOid, this.substancesRemoveOid, str, types).then(r => {
         if (r.data.status === 'success') {
           this.$props.updateOtherData()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({
