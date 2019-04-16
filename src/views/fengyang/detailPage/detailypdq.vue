@@ -344,17 +344,17 @@ export default {
     submitAprive () {
       this.$store.commit('SET_LOADING', true)
       completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
-        console.log(r)
-        if (r.data.mes.indexOf('成功') !== -1) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state !== 'failed') {
           this.$message({
-            message: this.$t('success.finsh_task_success'),
+            message: mesg,
             type: 'success',
             duration: 5 * 1000
           })
           this.closePage()
         } else {
           this.$message({
-            message: r.data.mes,
+            message: mesg,
             type: 'warning',
             duration: 5 * 1000
           })

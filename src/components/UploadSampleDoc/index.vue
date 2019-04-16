@@ -10,8 +10,8 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="boxtext">
-              <el-form  size="mini" ref="dataForm" :model="temp" label-position="left" :label-width="$store.getters.guojihua==='en'?'200px':'120px'"
-                        style=' margin-left:0px;'>
+              <el-form  size="mini" ref="dataForm" :model="temp" label-position="left" :label-width="$store.getters.guojihua==='en'?'200px': '140px'"
+                        style='margin-left:0px;'>
                 <el-row :gutter="20" type="flex" class="row-bg" style="height: 40px;">
                   <el-col :span="10">
                     <el-form-item prop="RoHSNumber" :label="$t('fengyangTable.seacher.doc_number')">
@@ -223,7 +223,15 @@ export default {
       })
       addDoc('MS' + this.number, str).then(r => {
         console.log(r)
-        if (r.data.oid) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        console.log(r)
+        if (r.data.state === 'failed') {
+          this.$message({
+            message: mesg,
+            type: 'warning',
+            duration: 8 * 1000
+          })
+        } else if (r.data.oid) {
           this.$message({
             message: r.data.attr[0].mes,
             type: 'success',
@@ -231,12 +239,6 @@ export default {
           })
           this.dialogVisible = false
           this.$props.restData(r.data.oid)
-        } else if (r.data.mes) {
-          this.$message({
-            message: r.data.mes,
-            type: 'warning',
-            duration: 8 * 1000
-          })
         }
       })
     }

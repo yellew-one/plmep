@@ -524,19 +524,19 @@ export default {
       information: 'Detailed information'
     },
     table: {
-      ResubmitPCN: '重新提交PCNEN',
-      pg_number: '变更单号EN',
-      pg_name: '变更名称EN',
-      ChangeType: '变更类型EN',
-      number: '编号EN',
-      Name: '名称EN',
-      project: '项目EN',
-      RequireCompletionTime: '要求完成时间EN',
-      SelectionResourceEngineer: '选择龙旗资源工程师EN',
-      state: '状态EN'
+      ResubmitPCN: 'Resubmission',
+      pg_number: 'Change the odd number',
+      pg_name: 'Change the odd name',
+      ChangeType: 'Change the odd type',
+      number: 'Number',
+      Name: 'Name',
+      project: 'Project',
+      RequireCompletionTime: 'Require completion time',
+      SelectionResourceEngineer: 'Selection Longcheer Resource Engineer',
+      state: 'Status'
     },
     form: {
-      comment: '驳回审批意见EN',
+      comment: 'Rejection of approval opinions',
       ChangeType: 'Change type',
       Name: 'Name',
       project: 'Project name',
@@ -553,21 +553,21 @@ export default {
     },
     select: {
       state: {
-        OPEN: '开启',
-        UNDERREVIEW: '正在审阅',
-        REWORK: '驳回',
-        RESOLVED: '已解决',
-        CANCELLED: '已取消'
+        OPEN: 'OPEN',
+        UNDERREVIEW: 'UNDERREVIEW',
+        REWORK: 'REWORK',
+        RESOLVED: 'RESOLVED',
+        CANCELLED: 'CANCELLED'
       }
     }
   },
   supplement: {
     fengyang: {
-      downExcel: '生成的承认书EXCEL附件EN',
-      Template_Download: '模板下载EN',
-      Template_click_down: '点击下载模板EN',
-      UploadFiles: '上传文件EN',
-      LabelOrFilename: '标签或文件名EN',
+      downExcel: 'Annex to the Generated Recognition EXCEL',
+      Template_Download: 'Template Download',
+      Template_click_down: 'Click Download Template',
+      UploadFiles: 'Upload file',
+      LabelOrFilename: 'Label or filename',
       remark: 'Remark',
       download: 'Download',
       file: 'Files'

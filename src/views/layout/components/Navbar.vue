@@ -126,11 +126,13 @@ export default {
       location.reload()
     },
     goNotice () {
-      window.open('http://plmtest.longcheer.com/Windchill/ptc1/ext/longcheer/helpDoc/helpDocSS', '_blank')
+      // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
+      // path = 'dev/plmsupplierfiles/files/' + path
+      // window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      // window.location.href = '../../../gongao.vue'
+      window.open('../../../gongao.vue', '_blank')
     },
     changePdUI () {
-      // this.textMap = '修改密码'
-      // this.dialogFormVisible = true
       this.$refs.userinfoDialog.dialogVisibleChange(true)
     },
     changePd (formName) {

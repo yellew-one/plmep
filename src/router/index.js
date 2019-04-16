@@ -7,6 +7,7 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/reset', component: () => import('@/views/login/reset'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/gongao', component: () => import('@/views/gongao'), hidden: true },
   {
     path: '',
     component: Layout,

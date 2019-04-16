@@ -429,9 +429,10 @@ export default {
     Acknowledgment () {
       downloadAcknowledgment('MS' + this.model.materialNumber).then(r => {
         console.log(r)
-        if (!r.data.flag || r.data.flag === false) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state === 'failed') {
           this.$message({
-            message: r.data.filePath,
+            message: mesg,
             type: 'warning',
             duration: 5 * 1000
           })
@@ -557,9 +558,10 @@ export default {
       this.$store.commit('SET_LOADING', true)
       removeRelatedWLFYDocs('MS' + this.model.materialNumber, this.filesOids).then(r => {
         console.log(r)
-        if (r.data.mes === '移除成功！') {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state === 'success！') {
           this.$message({
-            message: this.$t('success.remove_success'),
+            message: mesg,
             type: 'success',
             duration: 5 * 1000
           })
@@ -567,7 +569,7 @@ export default {
           this.updatedoc(r.data.oid)
         } else {
           this.$message({
-            message: '' + r.data.mes,
+            message: mesg,
             type: 'warning',
             duration: 5 * 1000
           })
@@ -578,16 +580,17 @@ export default {
       this.$store.commit('SET_LOADING', true)
       completeSealedTask('MS' + this.model.materialNumber, this.model.comment, this.radio).then(r => {
         console.log(r)
-        if (r.data.mes.indexOf('成功') !== -1) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state !== 'failed') {
           this.$message({
-            message: this.$t('success.finsh_task_success'),
+            message: mesg,
             type: 'success',
             duration: 5 * 1000
           })
           this.closePage()
         } else {
           this.$message({
-            message: r.data.mes,
+            message: mesg,
             dangerouslyUseHTMLString: true,
             type: 'warning',
             duration: 5 * 1000

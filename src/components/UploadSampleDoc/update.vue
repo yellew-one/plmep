@@ -258,9 +258,10 @@ export default {
     onEditWLFYDoc () {
       editWLFYDoc(this.model.number, this.submitPath, this.model.lq_third_level, this.model.explain).then(r => {
         console.log(r)
-        if (r.data.mes.indexOf('成功') !== -1) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state === 'success') {
           this.$message({
-            message: this.$t('success.update_success'),
+            message: mesg,
             type: 'success',
             duration: 5 * 1000
           })
@@ -268,7 +269,7 @@ export default {
           this.updatedialogFlag = false
         } else {
           this.$message({
-            message: r.data.mes,
+            message: mesg,
             type: 'warning',
             duration: 5 * 1000
           })
@@ -278,9 +279,10 @@ export default {
     oncreateWLFYDoc () {
       createWLFYDoc('MS' + this.model.materialNumber, this.model.lq_third_level, this.model.explain, this.submitPath).then(r => {
         console.log(r)
-        if (r.data.mes.indexOf('成功') !== -1) {
+        var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+        if (r.data.state === 'success') {
           this.$message({
-            message: this.$t('success.create_success'),
+            message: mesg,
             type: 'success',
             duration: 5 * 1000
           })
@@ -288,7 +290,7 @@ export default {
           this.updatedialogFlag = false
         } else {
           this.$message({
-            message: r.data.mes,
+            message: mesg,
             type: 'warning',
             duration: 5 * 1000
           })

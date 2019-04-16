@@ -114,18 +114,18 @@ export default {
           console.log('this.model------------>', this.model)
           this.$store.commit('SET_LOADING', true)
           editSealedDocInfo(temp, this.model.oid).then(r => {
-            console.log('r->', r)
-            if (r.data.mes === '保存成功！') {
+            var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
+            if (r.data.state === 'success') {
               this.dialogFormVisible = false
               this.$props.restData()
               this.$message({
-                message: this.$t('success.update_success'),
+                message: mesg,
                 type: 'success',
                 duration: 5 * 1000
               })
             } else {
               this.$message({
-                message: 'Submit Error',
+                message: mesg,
                 type: 'error',
                 duration: 5 * 1000
               })
