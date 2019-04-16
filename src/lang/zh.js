@@ -486,7 +486,7 @@ export default {
       'CP_Seq': 'CP',
       'CLCFB_ID_Seq': '材料成分表',
       'RZZS_ID_Seq': '3C认证证书',
-      'YPBGLLB_ID_Seq': '样品变更覆历表',
+      'YPBGLLB_ID_Seq': '样品变更履历表',
       'FM_ID_Seq': '封面',
       'PLSCLLBG_ID_Seq': '批量生产良率报告',
       'WLBOMO_ID_Seq': '物料BOM清单',

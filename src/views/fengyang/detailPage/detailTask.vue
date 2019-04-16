@@ -109,7 +109,7 @@
                 {{$t('fengyangTable.detail.approveddate')}}:
               </el-col>
               <el-col :span="7" class="card_value">&nbsp;
-                {{model.approveddate}}
+                <span style="color: red">{{model.approveddate}}</span>
               </el-col>
               <el-col :span="4" class="card_lable">
                 {{$t('fengyangTable.detail.lq_supplier_rank')}}:
@@ -247,19 +247,19 @@
                     type="selection"
                     width="55">
                   </el-table-column>
-                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('TableTile.files.number')" width="180">
-                    <template
-                      slot-scope="scope">
-                      {{scope.row.number}}
-                    </template>
-                  </el-table-column>
+                  <!--<el-table-column align="center" :show-overflow-tooltip="true"   prop="number"  :label="$t('TableTile.files.number')" width="180">-->
+                    <!--<template-->
+                      <!--slot-scope="scope">-->
+                      <!--{{scope.row.number}}-->
+                    <!--</template>-->
+                  <!--</el-table-column>-->
                   <el-table-column v-if="false" align="center" :show-overflow-tooltip="true"   prop="version"  :label="$t('TableTile.files.version')" width="180">
                     <template
                       slot-scope="scope">
                       {{scope.row.version}}
                     </template>
                   </el-table-column>
-                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('TableTile.files.name')" width="180">
+                  <el-table-column align="center" :show-overflow-tooltip="true"   prop="name"  :label="$t('TableTile.files.name')" width="220">
                     <template
                       slot-scope="scope">
                       {{scope.row.name}}
@@ -436,7 +436,7 @@ export default {
             duration: 5 * 1000
           })
         } else if (!r.data.flag || r.data.flag === true) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     },
@@ -448,7 +448,7 @@ export default {
     attachmentClick (number, name) {
       attachmentLink(number, name).then(r => {
         console.log(r)
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     fileseditClick () {

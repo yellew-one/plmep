@@ -99,7 +99,7 @@
               {{$t('fengyangTable.detail.approveddate')}}:
             </el-col>
             <el-col :span="7" class="card_value">&nbsp;
-              {{model.approveddate}}
+              <span style="color: red">{{model.approveddate}}</span>
             </el-col>
             <el-col :span="4" class="card_lable">
               {{$t('fengyangTable.detail.lq_supplier_rank')}}:

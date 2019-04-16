@@ -395,13 +395,13 @@ export default {
     downloadloadIP () {
       downloadEnvpTemplate('IPFORM').then(r => {
         if (r.data.flag) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     },
     download (row) {
       downloadAttach(row.attachmentOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     completeMSDS () {

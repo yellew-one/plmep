@@ -1,32 +1,30 @@
 <template>
-  <div ref="backgroundDiv" class="bg">
-    <div class="drag">
-      <div style="padding: 25px">
-        <!-- <div class="lang">
-          <el-select :change="langChage(lang)" size="mini" style="opacity:0.7;width: 80px;border: 0px" v-model="lang" placeholder="请选择">
-            <el-option
-              v-for="item in langs"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </div> -->
-        <div class="lang">
-          <el-dropdown @command="langChage">
+  <div>
+  <div class="login-header">
+    <img src="http://eip.longcheer.com:29002/Images/logo.png" />
+    <div class="lang" style="margin-top: -40px;margin-right: 50px">
+      <el-dropdown @command="langChage" style="float: right">
               <span class="el-dropdown-link">
                 {{langValue}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="zh">中文</el-dropdown-item>
-                  <el-dropdown-item command="en">English</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="zh"><a>中文</a></el-dropdown-item>
+          <el-dropdown-item command="en"><a>English</a></el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+  <div class="login-content" style="margin-top: 20px">
+    <div class="login-form">
+      <div class="login-form-header"></div>
+      <div class="login-form-body">
+        <div>
+        <h3 style="margin-top: 15px">{{$t('m.loginTitle')}}</h3>
+        <hr />
         </div>
-        <div class="tilte">{{$t('m.loginTitle')}}</div>
         <el-form ref="form"  :model="temp" label-width="0px">
           <el-form-item label="">
-            <el-input :placeholder="$t('placeholder.username')" v-model="temp.username"></el-input>
+            <el-input  :placeholder="$t('placeholder.username')" v-model="temp.username"></el-input>
           </el-form-item>
           <el-form-item label="">
             <el-input @keyup.enter.native="handleLogin" :placeholder="$t('placeholder.password')" type="password" v-model="temp.password"></el-input>
@@ -35,6 +33,10 @@
         <el-button :loading="loading" @click="handleLogin" style="width:100%;" type="primary">{{$t('m.login')}}</el-button>
       </div>
     </div>
+  </div>
+  <div class="login-footer">
+    <p>&copy;2019<span>上海龙旗科技股份有限公司 版权所有</span></p>
+  </div>
   </div>
 </template>
 <script>
@@ -119,73 +121,150 @@ export default {
   }
 }
 </script>
-<style>
-  .el-dropdown-link {
-    cursor: pointer;
-    color: white;
+<style scoped>
+  .lang{
   }
-  @keyframes bgchage
-  {
-    0%   {filter: blur(1px);}
-    25%   {filter: blur(4px);}
-    50%   {filter: blur(8px);}
-    75%   {filter: blur(4px);}
-    100%   {filter: blur(1px);}
+  body {
+    font-size: 14px;
+    font-family: "Microsoft YaHei",'Microsoft YaHei UI', Verdana, Helvetica, Sans-Serif;
+    margin: 0;
   }
 
-  @-webkit-keyframes bgchage /* Safari and Chrome */
-  {
-    0%   {filter: blur(1px);}
-    25%   {filter: blur(4px);}
-    50%   {filter: blur(8px);}
-    75%   {filter: blur(4px);}
-    100%   {filter: blur(1px);}
+  .login-header {
+    height: 50px;
+    padding: 10px 20px;
   }
-  .lang{
+
+  .login-header img {
+    height: 50px;
+    width: auto;
+  }
+
+  .login-content {
+    background: #d13038 url(http://eip.longcheer.com:29002/Images/bg.png) no-repeat left center;
+    background-size: auto 90%;
+    height: 500px;
+    margin: 0 auto;
+  }
+
+  #loginForm {
+    left: 45%;
+    margin-top: -30px;
     position: absolute;
-    top: 1px;
-    right: 2px;
+    right: 0;
   }
-  .tilte{
-    font-size: 20px;
-    color: white;
-    margin-bottom: 25px;
+
+  .login-form {
+    margin: 0 auto;
+    width: 430px;
   }
-  .bg{
-    width:100%;
-    height:100%;
-    position: fixed;
-    background: url("../../assets/image/bg1.jpg") no-repeat fixed;
-    padding:1px;
-    box-sizing:border-box;
+
+  .login-form-header {
+    /*margin-left: 350px;*/
+    /*background: transparent url(http://eip.longcheer.com:29002/Images/bv.png) no-repeat left center;*/
+    /*background-size: 100%;*/
+    /*height: 30px;*/
   }
-  .bg:after{
-    content: "";
-    width:100%;
-    height:100%;
-    position: absolute;
-    left:0;
-    top:0;
-    background: inherit;
-    animation:bgchage 8s;
-    -webkit-animation:bgchage 8s; /* Safari and Chrome */
-    animation-iteration-count: infinite;
-    -webkit-animation-iteration-count: infinite;
-    z-index: 1;
+
+  .login-form-body {
+    background-color: #f1f1f1;
+    /*margin: 0 auto;*/
+    padding: 1px 24px 24px;
+    width: 330px;
+    margin-left: 350px;
   }
-  .drag{
-    position: absolute;
-    left:65%;
-    top:15%;
-    /*transform: translate(-50%,-50%);*/
-    width:400px;
-    height:295px;
+
+  .login-form-body h3 {
+    margin-top: 0;
     text-align: center;
-    background: inherit;
-    z-index:11;
-    box-shadow:  0px 0px 1px 0px rgba(0,0,0,.5);
-    -webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,.5);
-    -moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,.5);
-    /*-moz-box-shadow: 0 0 1px 0px rgba(0,0,0,.5);*/
   }
-  </style>
+
+  .login-form-body hr {
+    border-bottom: 0 none;
+    border-top: 1px solid #ccc;
+  }
+
+  .login-form-body p {
+    color: #b4b4b4;
+    text-align: center;
+  }
+
+  .login-form-body .icon-left {
+    background-color: #f19457;
+  }
+
+  .icon-left {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    height: 30px;
+    padding: 5px;
+    position: absolute;
+    width: 30px;
+  }
+
+  .icon-user {
+    background: transparent url(http://eip.longcheer.com:29002/Images/zhanghu.png) no-repeat center;
+  }
+
+  .icon-password {
+    background: transparent url(http://eip.longcheer.com:29002/Images/mima.png) no-repeat center;
+  }
+
+  .login-input {
+    border: 1px solid #c4c4c4;
+    border-radius: 4px;
+    padding: 4px 8px 4px 48px;
+    height: 31px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 78%;
+  }
+
+  .login-input:focus {
+    border-color: #66afe9;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+    outline: 0 none;
+  }
+
+  .login-btn {
+    background-color: #f19457;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .login-btn:hover{
+    background-color: #f1853e;
+  }
+
+  .row-mt-10 {
+    margin-top: 10px;
+  }
+
+  .row-mt-20 {
+    margin-top: 20px;
+  }
+
+  .login-footer {
+    text-align: center;
+  }
+
+  .login-footer span {
+    margin-left: 20px;
+  }
+  .login_error {
+    background: #fff4a8;
+    color: #ff0000;
+    height: 28px;
+    line-height: 28px;
+    text-indent: 10px;
+    float: left;
+    width: 264px;
+    margin-bottom: 10px;
+  }
+</style>

@@ -196,7 +196,7 @@ export default {
     },
     upload (row) {
       downloadAttach(row.reportOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + r.data.filePath + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }
