@@ -467,8 +467,8 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="reachEditAble"
-                           @click="editREACHTotalReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
-                <el-button size="mini" type="info" plain @click="checkREACHTotalReport">{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
+                           @click="editREACHTotalReport">{{$t('huanbaoTable.REACH.editGeneralReport')}}</el-button>
+                <el-button size="mini" type="info" plain @click="checkREACHTotalReport">{{$t('huanbaoTable.REACH.viewGeneralReport')}}</el-button>
                 <el-button size="mini" type="primary" plain v-if="reachEditAble" @click="editGeneralStatement">{{$t('huanbaoTable.REACH.Editstatement')}}</el-button>
                 <el-button size="mini" type="info" plain @click="checkGeneralStatement">{{$t('huanbaoTable.REACH.Viewstatement')}}</el-button>
                 <el-popover
@@ -545,8 +545,8 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="other1EditAble"
-                           @click="editOtherReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
-                <el-button @click="checkOtherReport" size="mini" type="info" plain>{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
+                           @click="editOtherReport">{{$t('huanbaoTable.OTHER.editGeneralReport')}}</el-button>
+                <el-button @click="checkOtherReport" size="mini" type="info" plain>{{$t('huanbaoTable.OTHER.viewGeneralReport')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"

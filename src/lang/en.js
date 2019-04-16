@@ -247,8 +247,8 @@ export default {
       INWORK: 'Inwork',
       download: 'Download Template',
       Upload: 'Upload Data',
-      editGeneralReport: 'Edit General Report',
-      viewGeneralReport: 'View General Report',
+      editGeneralReport: 'Edit RoHS General Report',
+      viewGeneralReport: 'View RoHS General Report',
       lastTime: 'Last modified time',
       report: 'RoHS Report',
       remark: 'Remark'
@@ -285,6 +285,8 @@ export default {
       REWORK: 'Rework',
       UNDERREVIEW: 'Under Review',
       INWORK: 'In work',
+      editGeneralReport: 'Edit REACH General Report',
+      viewGeneralReport: 'View REACH General Report',
       Editstatement: 'Edit statement',
       Viewstatement: 'View statement',
       statement: 'Statement',
@@ -292,6 +294,8 @@ export default {
       downloads: 'Downloads'
     },
     OTHER: {
+      editGeneralReport: 'Edit OTHER General Report',
+      viewGeneralReport: 'View OTHER General Report',
       materialName: 'Material name',
       manufacturer: 'Manufacturer',
       ni: 'Ni',

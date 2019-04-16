@@ -251,8 +251,8 @@ export default {
       INWORK: '正在工作',
       download: '下载导入模板',
       Upload: '上传环保数据',
-      editGeneralReport: '编辑总报告',
-      viewGeneralReport: '查看总报告',
+      editGeneralReport: '编辑RoHS总报告',
+      viewGeneralReport: '查看RoHS总报告',
       lastTime: '上次修改时间',
       report: 'RoHS报告',
       remark: '备注'
@@ -289,6 +289,8 @@ export default {
       REWORK: '驳回',
       UNDERREVIEW: '正在审阅',
       INWORK: '正在工作',
+      editGeneralReport: '编辑REACH总报告',
+      viewGeneralReport: '查看REACH总报告',
       Editstatement: '编辑REACH总声明',
       Viewstatement: '查看REACH总声明',
       statement: 'REACH总声明',
@@ -296,6 +298,8 @@ export default {
       downloads: '下载报告模板'
     },
     OTHER: {
+      editGeneralReport: '编辑其他总报告',
+      viewGeneralReport: '查看其他总报告',
       materialName: '原材料名称',
       manufacturer: '原材料制造商',
       ni: 'Ni',
