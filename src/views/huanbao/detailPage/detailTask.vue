@@ -98,6 +98,7 @@
               <el-table
                 :data="tableDataFMD"
                 border
+                :height="tableDataFMD.length === 0 ? '100' : '400'"
                 size="mini"
                 style="width: 100%;margin-top: 10px">
                 <el-table-column prop="materialName" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.FMD.materialName')" >
@@ -148,10 +149,13 @@
                     <span>{{scope.row.contentRate}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="exemptions" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.FMD.exemptions')" >
+                <el-table-column prop="exemptions" align="center"  :label="$t('huanbaoTable.FMD.exemptions')" >
                   <template
                     slot-scope="scope">
-                    <span>{{scope.row.exemptions}}</span>
+                    <span v-for="(item, index) in scope.row.exemptions" v-bind:key="index">
+                      <span v-if="item.exemptionsIsRed === 'true'" style="color: red">{{item.exemption + ','}}</span>
+                      <span v-if="item.exemptionsIsRed === 'false'" >{{item.exemption + ','}}</span>
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column prop="state" align="center" show-overflow-tooltip="true" :label="$t('huanbaoTable.FMD.state')">
@@ -379,8 +383,8 @@
               <el-row>
                 <el-button size="mini" type="warning" plain
                            v-if="hfEditAble"
-                           @click="editHFReport">{{$t('huanbaoTable.ROHS.editGeneralReport')}}</el-button>
-                <el-button @click="checkHFReport" size="mini" type="info" plain>{{$t('huanbaoTable.ROHS.viewGeneralReport')}}</el-button>
+                           @click="editHFReport">{{$t('huanbaoTable.HF.editGeneralReport')}}</el-button>
+                <el-button @click="checkHFReport" size="mini" type="info" plain>{{$t('huanbaoTable.HF.viewGeneralReport')}}</el-button>
                 <el-popover
                   v-if="isShow"
                   placement="top-start"
@@ -877,7 +881,7 @@ export default {
         casNo: '',
         substanceWeight: '',
         contentRate: '',
-        exemptions: '',
+        exemptions: [],
         state: ''
       }],
       tableDataMSDS: [{

@@ -274,7 +274,9 @@ export default {
       INWORK: '正在工作',
       report: 'HF报告',
       yes: '是',
-      no: '否'
+      no: '否',
+      editGeneralReport: '编辑HF总报告',
+      viewGeneralReport: '查看HF总报告'
     },
     REACH: {
       materialName: '原材料名称',

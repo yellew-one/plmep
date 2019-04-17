@@ -64,7 +64,7 @@
       </div>
       <el-row style="margin-top: 10px;">
         <el-col :span="6">
-          <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+          <el-input placeholder="" size="mini" v-model="tFilters"></el-input>
         </el-col>
       </el-row>
       <el-row class="card_row">
@@ -73,8 +73,9 @@
             ref="multipleTable1"
             :data="thirdTable | tablefilters(tFilters)"
             border
+            :height="thirdTable.length === 0 ? '100' : '300'"
             size="mini"
-            style="width: 100%; margin-top: 10px"
+            style="width: 100%; margin-top: 0px"
             @selection-change="handleSelectionChangeThird">
             <el-table-column
               type="selection"
@@ -159,7 +160,7 @@
       </div>
       <el-row style="margin-top: 10px;">
         <el-col :span="6">
-          <el-input placeholder="筛选" size="mini" v-model="mFilters"></el-input>
+          <el-input placeholder="" size="mini" v-model="mFilters"></el-input>
         </el-col>
       </el-row>
       <el-row class="card_row">
@@ -168,8 +169,9 @@
             ref="multipleTable2"
             :data="msdsTable | mablefilters(mFilters)"
             border
+            :height="msdsTable.length === 0 ? '100' : '300'"
             size="mini"
-            style="width: 100%;margin-top: 10px"
+            style="width: 100%;margin-top: 0px"
             @selection-change="handleSelectionChangeMsds">
             <el-table-column
               type="selection"
@@ -178,7 +180,7 @@
             <el-table-column align="center" show-overflow-tooltip="true"  prop="materilaNum"  :label="$t('huanbaoTable.FMD.materialNumber')" >
               <template
                 slot-scope="scope">
-                <span>{{$t(scope.row.materilaNum)}}</span>
+                <span>{{scope.row.materilaNum}}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip="true"  prop="documentType"  :label="$t('huanbaoTable.FMD.documentType')" >
@@ -265,7 +267,7 @@ export default {
     mablefilters: function (value, data) {
       var sz = []
       value.forEach(function (v, index) {
-        if (v.materialNumber.indexOf(data) !== -1) {
+        if (v.materilaNum.indexOf(data) !== -1) {
           sz.push(v)
         }
       })
@@ -330,7 +332,7 @@ export default {
         if (r.data.status === 'success') {
           this.$props.getDataList(this.oid)
           this.$message.success({
-            message: '编辑完成'
+            message: this.$t('success.update_success')
           })
         }
       })
@@ -343,6 +345,7 @@ export default {
         console.log('searchReuseReport', r)
         this.thirdTable = r.data.report
         this.msdsTable = r.data.attach
+        console.log('xoxo', this.thirdTable)
         /* for (let i in r.data) {
           this.thirdTable = r.data[i].report
           this.msdsTable = r.data[i].attach
