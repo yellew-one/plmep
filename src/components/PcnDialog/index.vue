@@ -61,7 +61,7 @@
               :data="filesList"
               border
               ref="multipleTable"
-              height="200px"
+              :height="filesList.length === 0 ? '100': '200'"
               @selection-change="handleSelectionChange"
               style="width: 100%">
               <el-table-column

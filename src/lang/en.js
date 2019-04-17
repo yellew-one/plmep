@@ -387,7 +387,8 @@ export default {
     INWORK: 'Inwork',
     SAMPLE_EXPIRE: 'Sealed sample expiration',
     UNDERREVIEW: 'Under review',
-    RELEASED: 'Released'
+    RELEASED: 'Released',
+    CANCELLED: 'Cancelled'
   },
   formButton: {
     submit: 'Submit',

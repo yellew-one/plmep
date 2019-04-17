@@ -391,7 +391,8 @@ export default {
     INWORK: '正在工作',
     SAMPLE_EXPIRE: '封样到期',
     UNDERREVIEW: '正在审阅',
-    RELEASED: '发布'
+    RELEASED: '发布',
+    CANCELLED: '已取消'
   },
   formButton: {
     cancel: '取消',

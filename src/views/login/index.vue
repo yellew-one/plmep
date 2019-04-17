@@ -2,6 +2,7 @@
   <div>
   <div class="login-header">
     <img src="http://eip.longcheer.com:29002/Images/logo.png" />
+    <span style="color: red;font-size: 20px;margin-left: 18%">公告！ 系统将在4月20号正式启用，谢谢</span>
     <div class="lang" style="margin-top: -40px;margin-right: 50px">
       <el-dropdown @command="langChage" style="float: right">
               <span class="el-dropdown-link">
@@ -30,7 +31,7 @@
             <el-input @keyup.enter.native="handleLogin" :placeholder="$t('placeholder.password')" type="password" v-model="temp.password"></el-input>
           </el-form-item>
         </el-form>
-        <el-button :loading="loading" @click="handleLogin" style="width:100%;" type="primary">{{$t('m.login')}}</el-button>
+        <el-button :loading="loading" @click="handleLogin" style="width:100%;background-color: #6BBFC6;border-color: #6BBFC6" type="primary">{{$t('m.login')}}</el-button>
       </div>
     </div>
   </div>
@@ -141,8 +142,8 @@ export default {
   }
 
   .login-content {
-    background: #d13038 url(http://eip.longcheer.com:29002/Images/bg.png) no-repeat left center;
-    background-size: auto 90%;
+    background: #2BA4AE url(http://eip.longcheer.com:29002/Images/bg.png) no-repeat left center;
+    /*background-size: auto 90%;*/
     height: 500px;
     margin: 0 auto;
   }

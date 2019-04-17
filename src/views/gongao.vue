@@ -19,7 +19,7 @@
       <p style="margin:3pt 0pt 3pt 39.4pt"><span style="font-family:宋体; font-size:10.5pt">附</span><span
       style="font-family:Arial; font-size:10.5pt">1</span><span style="font-family:宋体; font-size:10.5pt">：</span><a
       style="color:#4472c4"
-      href=""><span
+       @click="fileDown1"><span
       style="color:#4472c4; font-family:宋体; font-size:10.5pt; text-decoration:underline">龙旗</span><span
       style="color:#4472c4; font-family:Arial; font-size:10.5pt; text-decoration:underline">HSF</span><span
       style="color:#4472c4; font-family:宋体; font-size:10.5pt; text-decoration:underline">系统使用说明</span><span
@@ -38,7 +38,7 @@
       <p style="margin:3pt 0pt 3pt 19.5pt; text-indent:20pt"><span style="font-family:宋体; font-size:10.5pt">附</span><span
       style="font-family:Arial; font-size:10.5pt">2</span><span style="font-family:宋体; font-size:10.5pt">：</span><a
       style="color:#4472c4"
-      href="http://plm.longcheer.com/Windchill/netmarkets/jsp/ext/longcheer/helpDoc/Sealedsample/%E9%BE%99%E6%97%97%E6%9C%89%E6%AF%92%E6%9C%89%E5%AE%B3%E7%89%A9%E8%B4%A8%E9%99%90%E5%88%B6%E6%B8%85%E5%8D%95.xlsx"><span
+      @click="fileDown2"><span
       style="color:#4472c4; font-family:宋体; font-size:10.5pt; text-decoration:underline">龙旗有毒有害物质限制清单</span></a></p>
       <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span
       style="font-family:等线; font-size:10.5pt">&#xa0;</span></p>
@@ -84,8 +84,7 @@
       <td
       style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:4.9pt; padding-right:4.9pt; vertical-align:top; width:415.3pt">
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span
-      style="font-family:宋体; font-size:10.5pt">1：请在系统首页下载模板《</span><a style="color:#4472c4"
-      href="http://plm.longcheer.com/Windchill/netmarkets/jsp/ext/longcheer/helpDoc/Sealedsample/ApprovalSheet_longcheer.xlsx"><span
+      style="font-family:宋体; font-size:10.5pt">1：请在系统首页下载模板《</span><a style="color:#4472c4" @click="fileDown3"><span
       style="color:#4472c4; font-family:'Times New Roman'; font-size:10.5pt; text-decoration:underline">ApprovalSheet_longcheer.xls</span></a><span
       style="font-family:宋体; font-size:10.5pt">》；</span></p></td>
       </tr>
@@ -137,7 +136,7 @@
       style="font-family:宋体; font-size:10.5pt">手机：</span><span
       style="font-family:宋体; font-size:12pt">13585828875</span></p>
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span style="font-family:宋体; font-size:12pt">Email：</span><a
-      style="color:#000000" href="mailto:lixiaoyong1@longcheer.com"><span
+      style="color:#000000" ><span
       style="font-family:宋体; font-size:12pt; text-decoration:underline">lixiaoyong1@longcheer.com</span></a></p>
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span
       style="font-family:宋体; font-size:10.5pt; font-weight:bold">惠州</span></p>
@@ -157,7 +156,7 @@
       style="font-family:宋体; font-size:10.5pt">手机：</span><span
       style="font-family:宋体; font-size:12pt">13413158323</span></p>
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span style="font-family:宋体; font-size:12pt">Email：</span><a
-      style="color:#000000" href="mailto:zhangsuqin@longcheer.com"><span
+      style="color:#000000" ><span
       style="font-family:宋体; font-size:12pt; text-decoration:underline">zhangsuqin@longcheer.com</span></a></p></td>
       </tr>
       <tr style="height:19.85pt">
@@ -217,7 +216,27 @@
 export default {
   name: 'gongao',
   created () {
-    this.$i18n.locale = 'en'
+  },
+  methods: {
+    fileDown1 () {
+      // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
+      var path = '龙旗环保系统使用培训.pptx'
+      path = 'dev/plmsupplierfiles/files/' + path
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+    },
+    fileDown2 () {
+      // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
+      var path = 'F-QS028-001_龙旗有毒有害物质限制清单_V2.5.xlsx'
+      path = 'dev/plmsupplierfiles/files/' + path
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+    },
+    fileDown3 () {
+      // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
+      var path = 'ApprovalSheet_longcheer.xlsx'
+      path = 'dev/plmsupplierfiles/files/' + path
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+    }
+
   },
   data () {
     return {

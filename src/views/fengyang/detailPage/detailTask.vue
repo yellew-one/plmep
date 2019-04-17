@@ -106,7 +106,7 @@
             </el-row>
             <el-row class="card_row">
               <el-col :span="4" class="card_lable">
-                {{$t('fengyangTable.detail.approveddate')}}:
+                <span style="background-color: red;color: white;">{{$t('fengyangTable.detail.approveddate')}}:</span>
               </el-col>
               <el-col :span="7" class="card_value">&nbsp;
                 <span style="color: red">{{model.approveddate}}</span>

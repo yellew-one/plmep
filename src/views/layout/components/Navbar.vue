@@ -130,7 +130,10 @@ export default {
       // path = 'dev/plmsupplierfiles/files/' + path
       // window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       // window.location.href = '../../../gongao.vue'
-      window.open('../../../gongao.vue', '_blank')
+      let routeData = this.$router.resolve({
+        path: '/gongao'
+      })
+      window.open(routeData.href, '_blank')
     },
     changePdUI () {
       this.$refs.userinfoDialog.dialogVisibleChange(true)
