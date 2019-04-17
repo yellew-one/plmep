@@ -29,8 +29,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
-              <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;">
-                <el-col :span="8">
+              <el-row  :gutter="100" type="flex" class="row-bg" style="height: 40px;">
+                <el-col v-show="false" :span="8">
                   <el-form-item prop="materialCode" :label="$t('pcn.table.project')">
                     <el-input   v-model="model.serchItems.LQ_PROJECT"></el-input>
                   </el-form-item>
@@ -114,12 +114,12 @@
             <span>{{scope.row.ecrName}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="project" :label="$t('pcn.table.project')" align="center" show-overflow-tooltip="true"  width="180">
-          <template
-            slot-scope="scope">
-            <span>{{scope.row.project}}</span>
-          </template>
-        </el-table-column>
+        <!--<el-table-column  prop="project" :label="$t('pcn.table.project')" align="center" show-overflow-tooltip="true"  width="180">-->
+          <!--<template-->
+            <!--slot-scope="scope">-->
+            <!--<span>{{scope.row.project}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column prop="RequireCompletionTime" :label="$t('pcn.table.RequireCompletionTime')" align="center" show-overflow-tooltip="true"  width="180">
           <template
             slot-scope="scope">

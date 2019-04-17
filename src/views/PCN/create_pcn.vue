@@ -22,8 +22,8 @@
                 <el-form-item prop="name" :label="$t('pcn.form.Name')">
                   <el-input v-model="tmp.name"></el-input>
                 </el-form-item>
-                <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
-                  <el-input v-model="tmp.LQ_PROJECT"></el-input>
+                <el-form-item  v-show="false" prop="LQ_PROJECT" :label="$t('pcn.form.project')">
+                  <el-input  v-model="tmp.LQ_PROJECT"></el-input>
                 </el-form-item>
                 <el-form-item prop="sourceEngineerName" :label="$t('pcn.form.ResourceEngineer')">
                   <el-input v-model="tmp.sourceEngineerName" readonly="true">

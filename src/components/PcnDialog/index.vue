@@ -24,9 +24,11 @@
               <el-form-item prop="ecrName" :label="$t('pcn.form.Name')">
                 <el-input :readonly="!iflag" v-model="tmp.ecrName"></el-input>
               </el-form-item>
+              <div v-show="!iflag">
               <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
-                <el-input :readonly="!iflag" v-model="tmp.requestProject"></el-input>
+                <el-input  v-model="tmp.requestProject"></el-input>
               </el-form-item>
+              </div>
               <el-form-item prop="resourceEngineerZH" :label="$t('pcn.form.ResourceEngineer')">
                 <el-input  v-model="tmp.resourceEngineerZH" readonly="true">
                   <el-button :disabled="!iflag" @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
@@ -268,7 +270,7 @@ export default {
       dialogFormVisible: false,
       ecrOid: '',
       taskOid: '',
-      iflag: true,
+      iflag: false,
       comment: '',
       tmp: {ecrType: '', resourceEngineerZH: '', comment: ''},
       removeFilesList: [],
