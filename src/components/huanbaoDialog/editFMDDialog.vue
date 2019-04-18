@@ -125,7 +125,7 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;margin-top: 10px">
               <el-col :span="16">
                 <el-form-item prop="exemptions" :label="$t('huanbaoTable.FMD.exemptions')">
-                  <el-input readonly="true" v-model="temp.exemptions">
+                  <el-input readonly="true" v-model="exemptions">
                     <el-button @click="escapeClick"  slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-form-item>
@@ -158,6 +158,7 @@ export default {
   },
   data () {
     return {
+      exemptions: '',
       isSub: '',
       oid: '',
       dialog: false,
@@ -167,6 +168,7 @@ export default {
   },
   methods: {
     seteditFMDDialogFormVisible (row, oid, sub) {
+      this.exemptions = ''
       this.temp = {}
       this.oid = ''
       this.isSub = ''
@@ -174,6 +176,10 @@ export default {
       this.temp = Object.assign({}, row)
       this.oid = oid
       this.isSub = sub
+      var that = this
+      that.temp.exemptions.forEach(function (v) {
+        that.exemptions += v.exemption + ','
+      })
     },
     completeFMD () {
       this.dialog = false
@@ -182,9 +188,23 @@ export default {
         editMaterial(this.temp, types).then(r => {
           if (r.data.status === 'success') {
             this.$props.getDataList(this.oid)
-            this.$message.success({
-              message: this.$t('success.create_success')
-            })
+            if (r.data.hasOwnProperty('warning')) {
+              this.$message.warning({
+                dangerouslyUseHTMLString: true,
+                message: r.data.warning
+              })
+              setTimeout(r => {
+                this.$message.success({
+                  dangerouslyUseHTMLString: true,
+                  message: this.$t('success.update_success')
+                })
+              }, 2000)
+            } else {
+              this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: this.$t('success.update_success')
+              })
+            }
           } else {
             this.$message.error({
               message: r.data.info
@@ -194,10 +214,24 @@ export default {
       } else {
         editSubstance(this.temp, types).then(r => {
           if (r.data.status === 'success') {
-            this.$props.updateFMDData()
-            this.$message.success({
-              message: this.$t('success.create_success')
-            })
+            this.$props.getDataList(this.oid)
+            if (r.data.hasOwnProperty('warning')) {
+              this.$message.warning({
+                dangerouslyUseHTMLString: true,
+                message: r.data.warning
+              })
+              setTimeout(r => {
+                this.$message.success({
+                  dangerouslyUseHTMLString: true,
+                  message: this.$t('success.update_success')
+                })
+              }, 2000)
+            } else {
+              this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: this.$t('success.update_success')
+              })
+            }
           } else {
             this.$message.error({
               message: r.data.info
@@ -212,6 +246,7 @@ export default {
     // 接受子组件传值
     acceptSonValue (e) {
       this.temp.exemptions = e
+      this.exemptions = e
     }
   }
 }

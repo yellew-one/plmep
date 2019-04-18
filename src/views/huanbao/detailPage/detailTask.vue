@@ -1363,9 +1363,32 @@ export default {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
             this.ifEditAble(this.oid)
-            this.$message.success({
-              message: this.$t('success.create_success')
-            })
+            var warn = ''
+            if (r.data.warning) {
+              warn = r.data.warning
+              this.$message.warning({
+                dangerouslyUseHTMLString: true,
+                message: warn
+              })
+              if (r.data.warning2) {
+                warn = r.data.warning + r.data.warning2
+                this.$message.warning({
+                  dangerouslyUseHTMLString: true,
+                  message: warn
+                })
+              }
+              setTimeout(r => {
+                this.$message.success({
+                  dangerouslyUseHTMLString: true,
+                  message: this.$t('success.create_success')
+                })
+              }, 2000)
+            } else {
+              this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: this.$t('success.create_success')
+              })
+            }
           } else {
             this.$message.error({
               message: r.data.info

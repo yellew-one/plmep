@@ -318,14 +318,20 @@ export default {
           this.temp.reportOid = r.data.add
           this.$props.getBABAData(this.oid, type, r.data, this.temp)
           if (r.data.hasOwnProperty('warn')) {
-            this.$message.success({
+            this.$message.warning({
               dangerouslyUseHTMLString: true,
-              message: '<title>' + this.$t('success.update_success') + '</title><strong><i>' + r.data.warn + '</i></strong>'
+              message: r.data.warn
             })
+            setTimeout(r => {
+              this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: this.$t('success.create_success')
+              })
+            }, 2000)
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,
-              message: this.$t('success.update_success')
+              message: this.$t('success.create_success')
             })
           }
         } else {
@@ -343,10 +349,16 @@ export default {
           this.temp.reportOid = r.data.add
           this.$props.getBABAData(this.oid, type, r.data, this.temp)
           if (r.data.hasOwnProperty('warn')) {
-            this.$message.success({
+            this.$message.warning({
               dangerouslyUseHTMLString: true,
-              message: '<title>' + this.$t('success.create_success') + '</title><strong><i>' + r.data.warn + '</i></strong>'
+              message: r.data.warn
             })
+            setTimeout(r => {
+              this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: this.$t('success.create_success')
+              })
+            }, 2000)
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,

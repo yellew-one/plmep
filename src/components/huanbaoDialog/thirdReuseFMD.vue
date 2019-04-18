@@ -332,7 +332,13 @@ export default {
         if (r.data.status === 'success') {
           this.$props.getDataList(this.oid)
           this.$message.success({
-            message: this.$t('success.update_success')
+            dangerouslyUseHTMLString: true,
+            message: this.$t('success.update_success') + '<br/>' + r.data.warning
+          })
+        } else {
+          this.$message.error({
+            dangerouslyUseHTMLString: true,
+            message: r.data.info
           })
         }
       })
@@ -345,7 +351,6 @@ export default {
         console.log('searchReuseReport', r)
         this.thirdTable = r.data.report
         this.msdsTable = r.data.attach
-        console.log('xoxo', this.thirdTable)
         /* for (let i in r.data) {
           this.thirdTable = r.data[i].report
           this.msdsTable = r.data[i].attach
