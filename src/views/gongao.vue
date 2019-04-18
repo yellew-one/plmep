@@ -206,7 +206,7 @@
       <p style="margin:14pt 0pt 3pt; padding-left:39.7pt; text-indent:-39.7pt"><span
       style="color:#40637a; font-family:宋体; font-size:12pt; font-weight:bold">三、帮助手册</span></p>
       <p style="margin:14pt 0pt 3pt; padding-left:39.7pt; text-indent:-39.7pt"><span
-      style="margin-left: 30px;color: blue; font-family:宋体; font-size:10.5pt">帮助手册附件</span></p>
+      style="margin-left: 30px;color: blue; font-family:宋体; font-size:10.5pt"><a @click="fileDown4()">帮助手册附件</a></span></p>
     <!--</div>-->
     </div>
   </div>
@@ -233,6 +233,12 @@ export default {
     fileDown3 () {
       // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
       var path = 'ApprovalSheet_longcheer.xlsx'
+      path = 'dev/plmsupplierfiles/files/' + path
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+    },
+    fileDown4 () {
+      // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
+      var path = 'PLM系统签样流程和PCN帮助手册.pdf'
       path = 'dev/plmsupplierfiles/files/' + path
       window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
     }

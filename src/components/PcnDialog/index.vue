@@ -24,7 +24,7 @@
               <el-form-item prop="ecrName" :label="$t('pcn.form.Name')">
                 <el-input :readonly="!iflag" v-model="tmp.ecrName"></el-input>
               </el-form-item>
-              <div v-show="!iflag">
+              <div v-show="false">
               <el-form-item prop="LQ_PROJECT" :label="$t('pcn.form.project')">
                 <el-input  v-model="tmp.requestProject"></el-input>
               </el-form-item>
