@@ -11,9 +11,9 @@ const whiteList = ['/login', '/404', '/reset']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-  if (store.getters.fengyangTaskNum === -1) {
-    store.dispatch('getNum', store.commit)
-  }
+  // if (store.getters.fengyangTaskNum === -1) {
+  //   store.dispatch('getNum', store.commit)
+  // }
   if (getUserInfo() && getUserInfo() !== 'false') { // determine if there has tokena
     if (!store.getters.permission_routers) {
       store.dispatch('GenerateRoutes', JSON.parse(getUserInfo()))

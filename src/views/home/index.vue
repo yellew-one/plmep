@@ -3,7 +3,7 @@
     </div>
 </template>
 <script>
-import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
+// import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
 export default {
   components: {},
   name: 'HelloWorld',
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getNum () {
-      showSealedSampleTasks().then(r => {
+      /* showSealedSampleTasks().then(r => {
         this.$store.commit('SET_FENGYANGTASKNUM', r.data.length)
       })
       expiredSealedSampleTasks().then(r => {
@@ -37,7 +37,7 @@ export default {
       })
       showEnvProtectionTasks().then(r => {
         this.$store.commit('SET_HUANBAOTASKNUM', r.data.length)
-      })
+      }) */
     },
     handleClick () {
       this.$router.push({ path: '/404' })

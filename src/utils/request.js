@@ -2,11 +2,11 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '../stores'
 // 创建axios实例
-// var arr = window.location.host.toString().split(':')
+var arr = window.location.host.toString().split(':')
 const service = axios.create({
   // baseURL: process.env.API_BASEURL, // ap  i的base_url
-  baseURL: 'http://plmtest.longcheer.com',
-  // baseURL: 'http://' + arr[0] + ':8082',
+  // baseURL: 'http://plmtest.longcheer.com',
+  baseURL: 'http://' + arr[0] + ':8084',
   timeout: 15000 // 请求超时时间
 })
 

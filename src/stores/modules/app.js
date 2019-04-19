@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import { showSealedSampleTasks, expiredSealedSampleTasks, showEnvProtectionTasks } from '@/api/index'
 
 const app = {
   state: {
@@ -72,7 +71,7 @@ const app = {
       commit('TOGGLE_DEVICE', device)
     },
     getNum ({ commit }) {
-      showSealedSampleTasks().then(r => {
+      /* showSealedSampleTasks().then(r => {
         commit('SET_FENGYANGTASKNUM', r.data.length)
       })
       expiredSealedSampleTasks().then(r => {
@@ -80,7 +79,7 @@ const app = {
       })
       showEnvProtectionTasks().then(r => {
         commit('SET_HUANBAOTASKNUM', r.data.length)
-      })
+      }) */
     }
   }
 }
