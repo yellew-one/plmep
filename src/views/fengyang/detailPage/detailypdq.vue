@@ -343,7 +343,7 @@ export default {
     },
     submitAprive () {
       this.$store.commit('SET_LOADING', true)
-      completeSealedTask(this.oid, this.model.comment, this.radio).then(r => {
+      completeSealedTask('MS' + this.model.materialNumber, this.model.comment, this.radio).then(r => {
         var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
         if (r.data.state !== 'failed') {
           this.$message({
