@@ -1377,12 +1377,6 @@ export default {
                   message: warn
                 })
               }
-              setTimeout(r => {
-                this.$message.success({
-                  dangerouslyUseHTMLString: true,
-                  message: this.$t('success.create_success')
-                })
-              }, 2000)
             } else {
               this.$message.success({
                 dangerouslyUseHTMLString: true,

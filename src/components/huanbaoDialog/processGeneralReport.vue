@@ -322,12 +322,6 @@ export default {
               dangerouslyUseHTMLString: true,
               message: r.data.warn
             })
-            setTimeout(r => {
-              this.$message.success({
-                dangerouslyUseHTMLString: true,
-                message: this.$t('success.create_success')
-              })
-            }, 2000)
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,
@@ -353,12 +347,6 @@ export default {
               dangerouslyUseHTMLString: true,
               message: r.data.warn
             })
-            setTimeout(r => {
-              this.$message.success({
-                dangerouslyUseHTMLString: true,
-                message: this.$t('success.create_success')
-              })
-            }, 2000)
           } else {
             this.$message.success({
               dangerouslyUseHTMLString: true,
