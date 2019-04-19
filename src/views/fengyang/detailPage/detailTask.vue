@@ -559,7 +559,7 @@ export default {
       removeRelatedWLFYDocs('MS' + this.model.materialNumber, this.filesOids).then(r => {
         console.log(r)
         var mesg = this.$store.getters.guojihua === 'zh' ? r.data.zh : r.data.en
-        if (r.data.state === 'success！') {
+        if (r.data.state === 'success') {
           this.$message({
             message: mesg,
             type: 'success',
