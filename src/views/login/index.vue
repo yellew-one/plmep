@@ -2,7 +2,7 @@
   <div style="height: 100%">
   <div class="login-header">
     <img src="http://eip.longcheer.com:29002/Images/logo.png" />
-    <span style="color: red;font-size: 20px;margin-left: 18%">公告！ 系统将在4月20号正式启用，谢谢</span>
+    <!--<span style="color: red;font-size: 20px;margin-left: 18%">公告！ 系统将在4月20号正式启用，谢谢</span>-->
     <div class="lang" style="margin-top: -40px;margin-right: 50px">
       <el-dropdown @command="langChage" style="float: right">
               <span class="el-dropdown-link">
