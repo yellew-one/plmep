@@ -628,7 +628,8 @@ export default {
       selectCount: 0,
       filesOids: '',
       checkedone: {},
-      stateName: ''
+      stateName: '',
+      approvalTable: []
     }
   }
 }
