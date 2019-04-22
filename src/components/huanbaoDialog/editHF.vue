@@ -308,7 +308,6 @@ export default {
       } */
     },
     completeReport () {
-      this.hfDialog = false
       var str = ''
       str = this.editRemoveOid + ',' + this.removeOid
       this.temp.fileRetardant = this.value
@@ -316,6 +315,7 @@ export default {
       var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       executeEditHFItem(this.hfOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
+          this.hfDialog = false
           this.$props.updateHFData()
           this.$message.success({
             message: this.$t('success.update_success')

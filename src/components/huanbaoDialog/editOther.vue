@@ -442,7 +442,6 @@ export default {
       } */
     },
     completeReport () {
-      this.otherDialog = false
       var s = []
       for (let i in this.substancesTotal) {
         if (this.substancesTotal[i].materialName) {
@@ -459,6 +458,7 @@ export default {
       var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       executeEditOtherItem(this.otherOid, this.temp, removeOid, this.addOid, this.substancesRemoveOid, str, types).then(r => {
         if (r.data.status === 'success') {
+          this.otherDialog = false
           this.$props.updateOtherData()
           this.$message.success({
             message: this.$t('success.update_success')

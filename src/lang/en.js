@@ -74,7 +74,7 @@ export default {
       RoHS: 'RoHS',
       HF: 'HF',
       REACH: 'REACH',
-      OTHER: 'Other',
+      OTHER: 'OTHER',
       OTHER2: 'Customer Special Needs',
       envProtectionStatus: 'Environmental attributes'
     },

@@ -19,7 +19,14 @@
             <el-row :gutter="100" type="flex" class="row-bg" style="height: 40px;margin-left: 20px;">
               <el-col :span="16">
                 <el-form-item prop="materialName" :label="$t('huanbaoTable.FMD.documentType')">
-                  <el-input v-model="temp.selectedDocumentType"></el-input>
+                  <el-select v-model="temp.selectedDocumentType" placeholder="" style="width: 100%">
+                    <el-option
+                      v-for="item in options2"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -62,7 +69,7 @@
       <div class="longcheer_hr" style="margin-top: 10px;">
         <span>{{$t('huanbaoTable.FMD.third')}}</span>
       </div>
-      <el-row style="margin-top: 10px;">
+      <el-row style="margin-top: 5px;">
         <el-col :span="6">
           <el-input placeholder="" size="mini" v-model="tFilters"></el-input>
         </el-col>
@@ -75,7 +82,7 @@
             border
             :height="thirdTable.length === 0 ? '100' : '300'"
             size="mini"
-            style="width: 100%; margin-top: 0px"
+            style="width: 100%; margin-top: 5px"
             @selection-change="handleSelectionChangeThird">
             <el-table-column
               type="selection"
@@ -155,7 +162,7 @@
         </el-col>
       </el-row>
       <!--可复用的msds报告-->
-      <div class="longcheer_hr" style="margin-top: 10px;">
+      <div class="longcheer_hr" style="margin-top: 5px;">
         <span>{{$t('huanbaoTable.FMD.Reusable')}}</span>
       </div>
       <el-row style="margin-top: 10px;">
@@ -171,7 +178,7 @@
             border
             :height="msdsTable.length === 0 ? '100' : '300'"
             size="mini"
-            style="width: 100%;margin-top: 0px"
+            style="width: 100%;margin-top: 5px"
             @selection-change="handleSelectionChangeMsds">
             <el-table-column
               type="selection"
@@ -249,7 +256,7 @@
 <script>
 import RelevantMaterials from './relevantMaterials'
 import { searchReuseReport, getMaterialName, reuseReportsExecute } from '@/api/index'
-import { downloadAttach } from '@/api/huanbaoAPI'
+import { downloadAttach, docType } from '@/api/huanbaoAPI'
 export default {
   components: {RelevantMaterials},
   name: 'ThirdReuse',
@@ -306,6 +313,7 @@ export default {
       this.thirdTable = []
       this.msdsTable = []
       this.options = []
+      this.options2 = []
       this.dialogVisible = true
       this.temp.envpNumber = e
       this.oid = ''
@@ -323,6 +331,27 @@ export default {
           })
         }
         this.options = names
+      })
+      var that = this
+      docType().then(r => {
+        var names = [{
+          value: '',
+          label: ''
+        }]
+        for (let i in r.data) {
+          if (r.data[i].name === '其他') {
+            names.push({
+              value: r.data[i].id,
+              label: that.$t('huanbaoTable.submitted.OTHER')
+            })
+          } else {
+            names.push({
+              value: r.data[i].id,
+              label: r.data[i].name
+            })
+          }
+        }
+        this.options2 = names
       })
     },
     completeFMD () {

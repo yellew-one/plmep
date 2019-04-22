@@ -398,13 +398,13 @@ export default {
       } */
     },
     completeReport () {
-      this.rohsDialog = false
       var str = ''
       str = this.removeOid + ',' + this.editRemoveOid
       this.temp.exemptions = this.exemptions
       var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       execute(this.rohsOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
+          this.rohsDialog = false
           this.$props.updateRoHSData()
           this.$message.success({
             message: this.$t('success.update_success')

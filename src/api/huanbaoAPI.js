@@ -1628,3 +1628,24 @@ export function checkMaterialAttr (oid, locale) {
     }
   })
 }
+/**
+ * 条目类型
+ * @param oid
+ * @param locale
+ */
+export function docType () {
+  return request({
+    url: '/Windchill/netmarkets/jsp/ext/longcheer/common/reuseReport.jsp',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      operation: 'docType'
+    }
+  })
+}

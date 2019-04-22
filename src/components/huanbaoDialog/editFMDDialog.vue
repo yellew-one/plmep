@@ -182,11 +182,11 @@ export default {
       })
     },
     completeFMD () {
-      this.dialog = false
       var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (this.isSub === 'NOSUB') {
         editMaterial(this.temp, types).then(r => {
           if (r.data.status === 'success') {
+            this.dialog = false
             this.$props.getDataList(this.oid)
             if (r.data.hasOwnProperty('warning')) {
               this.$message.warning({
@@ -208,6 +208,7 @@ export default {
       } else {
         editSubstance(this.temp, types).then(r => {
           if (r.data.status === 'success') {
+            this.dialog = false
             this.$props.getDataList(this.oid)
             if (r.data.hasOwnProperty('warning')) {
               this.$message.warning({
