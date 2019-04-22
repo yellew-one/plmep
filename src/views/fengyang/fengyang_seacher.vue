@@ -112,12 +112,12 @@
             <a style="color: blue" @click="goDetail(scope.row)">{{scope.row.partNumber}}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" show-overflow-tooltip="true" prop="seacher_info"  :label="$t('fengyangTable.seacher.seacher_info')" width="180">
-          <template
-            slot-scope="scope">
-            <span>{{scope.row.partName}}</span>
-          </template>
-        </el-table-column>
+        <!--<el-table-column align="center" show-overflow-tooltip="true" prop="seacher_info"  :label="$t('fengyangTable.seacher.seacher_info')" width="180">-->
+          <!--<template-->
+            <!--slot-scope="scope">-->
+            <!--<span>{{scope.row.partName}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column align="center" show-overflow-tooltip="true" prop="name"  :label="$t('fengyangTable.seacher.name')" width="180">
           <template
             slot-scope="scope">
