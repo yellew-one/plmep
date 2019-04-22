@@ -19,10 +19,10 @@
           </el-upload>
         </el-card>
       </el-scrollbar>
-      <span slot="footer" class="dialog-footer" >
-        <el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>
-        <el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.ensure')}}</el-button>
-      </span>
+      <!--<span slot="footer" class="dialog-footer" >-->
+        <!--<el-button  size="mini" @click="dialogFormVisible = false">{{$t('formButton.cancel')}}</el-button>-->
+        <!--<el-button :loading="$store.getters.loading" size="mini" type="primary" @click="submit">{{$t('formButton.ensure')}}</el-button>-->
+      <!--</span>-->
     </div>
   </el-dialog>
 </template>

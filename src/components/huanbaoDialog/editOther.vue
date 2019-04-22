@@ -221,7 +221,7 @@
         </el-scrollbar>
       </div>
       <div class="longcheer_hr" style="margin-top: 0px;">
-        <span class="longcheer_hr_span">其他物质含量</span>
+        <span class="longcheer_hr_span">{{$t('huanbaoTable.OTHER.substance')}}</span>
       </div>
       <el-row style="margin-top: 10px;margin-left: 20px">
         <el-button v-if="type === 'itemedit'" size="mini" type="primary" plain @click="addSubstances" >{{$t('huanbaoTable.OTHER.AddSubstance')}}</el-button>
@@ -445,10 +445,12 @@ export default {
       this.otherDialog = false
       var s = []
       for (let i in this.substancesTotal) {
-        s.push({
-          materialName: this.substancesTotal[i].materialName,
-          materialContent: this.substancesTotal[i].materialContent
-        })
+        if (this.substancesTotal[i].materialName) {
+          s.push({
+            materialName: this.substancesTotal[i].materialName,
+            materialContent: this.substancesTotal[i].materialContent
+          })
+        }
       }
       this.temp.remark = this.value
       var str = JSON.stringify(s)
@@ -492,8 +494,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

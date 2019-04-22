@@ -1,11 +1,16 @@
 <template>
     <div class="app-container">
       <el-card class="box-card">
+        <el-row style="margin-top: -10px;">
+          <el-col :span="6">
+            <el-input placeholder="" size="mini" v-model="tFilters"></el-input>
+          </el-col>
+        </el-row>
       <el-table
-        :data="tableData"
+        :data="tableData | tablefilters(tFilters)"
         border
         size="mini"
-        style="width: 100%"
+        style="width: 100%; margin-top: 5px"
         @cell-click="cellClick">
         <el-table-column align="center" show-overflow-tooltip="true"  prop="taskName"  :label="$t('huanbaoTable.third.taskName')" >
           <template
@@ -53,14 +58,27 @@ export default {
   components: {
   },
   name: 'HelloWorld',
+  filters: {
+    tablefilters: function (value, data) {
+      var sz = []
+      value.forEach(function (v, index) {
+        if (v.materialNumber.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
+    }
+  },
   activated: function () {
+    this.getDataList()
   },
   mounted: function () {
     this.getDataList()
   },
   data () {
     return {
-      tableData: []
+      tableData: [],
+      tFilters: ''
     }
   },
   methods: {

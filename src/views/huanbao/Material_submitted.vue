@@ -3,14 +3,14 @@
       <el-card class="box-card">
         <el-row style="margin-top: -10px;">
           <el-col :span="6">
-            <el-input placeholder="筛选" size="mini" v-model="tFilters"></el-input>
+            <el-input placeholder="" size="mini" v-model="tFilters"></el-input>
           </el-col>
         </el-row>
         <el-table
           :data="tableData | tablefilters(tFilters)"
           border
           size="mini"
-          style="width: 100%; margin-top: 10px"
+          style="width: 100%; margin-top: 5px"
           @cell-click="cellClick">
           <el-table-column align="center" show-overflow-tooltip="true" prop="taskName"  :label="$t('huanbaoTable.submitted.taskName')" width="180">
             <template

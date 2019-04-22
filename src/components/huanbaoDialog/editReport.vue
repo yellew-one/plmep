@@ -166,8 +166,8 @@ export default {
     background-image: url(../../assets/image/tab2.png);
     background-repeat: no-repeat;
     background-size: 95% 100%;
-    width: 120px;
-    padding: 5px 15px;
+    padding: 5px 30px 0px 15px;
+    width: auto;
     height: 27px;
     color: #ffffff;
   }

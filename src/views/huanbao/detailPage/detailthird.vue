@@ -219,7 +219,7 @@ export default {
       completeReportTask(this.oid, this.comment, this.radio).then(r => {
         if (r.data.status === 'success') {
           this.$message.success({
-            message: '任务已提交'
+            message: this.$t('success.finsh_task_success')
           })
           this.closePage()
         }

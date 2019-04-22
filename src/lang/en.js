@@ -318,7 +318,8 @@ export default {
       AddSubstance: 'Add new substance',
       MaterialName: 'Material Name',
       substanceWeight: 'Substance Weight',
-      Reporttype: 'Report Type'
+      Reporttype: 'Report Type',
+      substance: 'Other Substance'
     },
     OTHER2: {
       fileName: 'Files name',

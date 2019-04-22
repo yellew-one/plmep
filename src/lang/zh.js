@@ -324,7 +324,8 @@ export default {
       AddSubstance: '添加新物质',
       MaterialName: '物质名称',
       substanceWeight: '物质重量',
-      Reporttype: '报告类型'
+      Reporttype: '报告类型',
+      substance: '其他物质含量'
     },
     OTHER2: {
       fileName: '文件名',
