@@ -11,7 +11,7 @@ const app = {
     fengyangdaoqiNum: -1,
     huanbaoNum: '',
     device: 'desktop',
-    guojihua: localStorage.getItem('guojihua') || 'zh',
+    guojihua: sessionStorage.getItem('guojihua') || 'zh',
     loading: false,
     baseUrl: '',
     filesPath: ''
@@ -39,7 +39,7 @@ const app = {
       state.loading = loading
     },
     SET_GUOJIHUA: (state, guojihua) => {
-      localStorage.setItem('guojihua', guojihua)
+      sessionStorage.setItem('guojihua', guojihua)
       state.guojihua = guojihua
     },
     TOGGLE_SIDEBAR: state => {

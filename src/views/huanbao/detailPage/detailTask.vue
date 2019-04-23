@@ -1132,7 +1132,7 @@ export default {
     // 提交
     submit () {
       this.$store.commit('SET_LOADING', true)
-      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (this.radio === '供货') {
         checkData('HSF' + this.model.materialNumber, types).then(r => {
           if (r.data.status === 'success') {
@@ -1357,7 +1357,7 @@ export default {
     // 文件路径传给后台
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
-      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (type === 'FMD') {
         executeUploadFMDData(this.oid, e[0].response.data[0], types).then(r => {
           if (r.data.status === 'success') {

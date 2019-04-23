@@ -6,7 +6,8 @@ const guojihua = 'guojihua'
 const userInfo = 'userInfo'
 
 export function getUserInfo () {
-  return Cookies.get(userInfo)
+  // return Cookies.get(userInfo)
+  return sessionStorage.getItem('userInfo')
 }
 
 export function setUserInfo () {

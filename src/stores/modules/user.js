@@ -2,26 +2,26 @@
  * Created by heganxin on 2019/2/18.
  */
 import { login } from '@/api/login'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 
 const user = {
   state: {
-    userInfo: JSON.parse(localStorage.getItem('userInfo')) || {},
-    token: JSON.parse(localStorage.getItem('token')) || '',
-    islogin: localStorage.getItem('userInfo') || false
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || {},
+    token: JSON.parse(sessionStorage.getItem('token')) || '',
+    islogin: sessionStorage.getItem('userInfo') || false
   },
   mutations: {
     SET_ISLOGIN: (state, islogin) => {
-      localStorage.setItem('islogin', JSON.stringify(islogin))
+      sessionStorage.setItem('islogin', JSON.stringify(islogin))
       state.islogin = islogin
     },
     SET_USERINFO: (state, userInfo) => {
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
-      Cookies.set('userInfo', JSON.stringify(userInfo))
+      sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
+      // Cookies.set('userInfo', JSON.stringify(userInfo))
       state.userInfo = userInfo
     },
     SET_TOKEN: (state, token) => {
-      localStorage.setItem('token', JSON.stringify(token))
+      sessionStorage.setItem('token', JSON.stringify(token))
       state.token = token
     }
   },

@@ -84,7 +84,7 @@ export const asyncRouterMap = [
       path: 'submitted',
       component: () => import('@/views/huanbao/Material_submitted'),
       name: 'submitted',
-      meta: { title: 'huanbaoRoute.Material_submitted', icon: 'issue', noCache: true }
+      meta: { title: 'huanbaoRoute.Material_submitted', icon: 'dtj', noCache: true }
     }]
   },
   {
@@ -96,7 +96,7 @@ export const asyncRouterMap = [
       path: 'third',
       component: () => import('@/views/huanbao/third'),
       name: 'third',
-      meta: { title: 'huanbaoRoute.third_report', icon: 'user', noCache: true }
+      meta: { title: 'huanbaoRoute.third_report', icon: 'fydq3', noCache: true }
     }]
   },
   {
@@ -108,7 +108,7 @@ export const asyncRouterMap = [
       path: 'search',
       component: () => import('@/views/huanbao/Material_Search'),
       name: 'search',
-      meta: { title: 'huanbaoRoute.Material_Search', icon: 'dashboard', noCache: true }
+      meta: { title: 'huanbaoRoute.Material_Search', icon: 'fsearch', noCache: true }
     }]
   },
   {

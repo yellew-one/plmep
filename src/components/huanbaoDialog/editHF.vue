@@ -312,7 +312,7 @@ export default {
       str = this.editRemoveOid + ',' + this.removeOid
       this.temp.fileRetardant = this.value
       this.temp.remake = this.remark
-      var types = localStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       executeEditHFItem(this.hfOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
           this.hfDialog = false

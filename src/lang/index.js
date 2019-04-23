@@ -10,7 +10,7 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 Vue.use(VueI18n)
 const i18n = new VueI18n({
-  locale: localStorage.lang || 'zh',
+  locale: sessionStorage.lang || 'zh',
   messages: {
     en: {
       ...enlocale,

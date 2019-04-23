@@ -5,7 +5,11 @@ import store from '../stores'
 var arr = window.location.host.toString().split(':')
 const service = axios.create({
   // baseURL: process.env.API_BASEURL, // ap  i的base_url
+  // 本地测试
   // baseURL: 'http://plmtest.longcheer.com',
+  // 170 测试
+  // baseURL: 'http://' + arr[0] + ':8082',
+  // 170  正式
   baseURL: 'http://' + arr[0] + ':8084',
   timeout: 15000 // 请求超时时间
 })

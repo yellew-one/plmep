@@ -1,7 +1,7 @@
 const tagsView = {
   state: {
-    visitedViews: JSON.parse(localStorage.getItem('visitedViews')) || [],
-    cachedViews: JSON.parse(localStorage.getItem('cachedViews')) || []
+    visitedViews: JSON.parse(sessionStorage.getItem('visitedViews')) || [],
+    cachedViews: JSON.parse(sessionStorage.getItem('cachedViews')) || []
   },
   mutations: {
     ADD_VISITED_VIEWS: (state, view) => {
@@ -15,15 +15,15 @@ const tagsView = {
       })
       if (!view.meta.noCache) {
         state.cachedViews.push(view.name)
-        localStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
+        sessionStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
       }
-      localStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
+      sessionStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
     },
     DEL_VISITED_VIEWS: (state, view) => {
       for (const [i, v] of state.visitedViews.entries()) {
         if (v.path === view.path) {
           state.visitedViews.splice(i, 1)
-          localStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
+          sessionStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
           break
         }
       }
@@ -31,7 +31,7 @@ const tagsView = {
         if (i === view.name) {
           const index = state.cachedViews.indexOf(i)
           state.cachedViews.splice(index, 1)
-          localStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
+          sessionStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
           break
         }
       }
@@ -40,7 +40,7 @@ const tagsView = {
       for (const [i, v] of state.visitedViews.entries()) {
         if (v.path === view.path) {
           state.visitedViews = state.visitedViews.slice(i, i + 1)
-          localStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
+          sessionStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
           break
         }
       }
@@ -48,7 +48,7 @@ const tagsView = {
         if (i === view.name) {
           const index = state.cachedViews.indexOf(i)
           state.cachedViews = state.cachedViews.slice(index, i + 1)
-          localStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
+          sessionStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
           break
         }
       }
@@ -56,8 +56,8 @@ const tagsView = {
     DEL_ALL_VIEWS: (state) => {
       state.visitedViews = []
       state.cachedViews = []
-      localStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
-      localStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
+      sessionStorage.setItem('visitedViews', JSON.stringify(state.visitedViews))
+      sessionStorage.setItem('cachedViews', JSON.stringify(state.cachedViews))
     }
   },
   actions: {
