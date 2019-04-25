@@ -1408,20 +1408,20 @@ export default {
     },
     downloadNeeds (row) {
       downloadAttach(row.attachmentOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     fmdDownload () {
       downloadEnvpTemplate('FMD').then(r => {
         if (r.data.flag) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     },
     downloadRoHS () {
       downloadEnvpTemplate('ROHS').then(r => {
         if (r.data.flag) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     }

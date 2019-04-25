@@ -68,7 +68,7 @@ export default {
       console.log('file', file)
       console.log('fileList', fileList)
     },
-    beforeUpload (file) {
+    /* beforeUpload (file) {
       console.log('f---->', file)
       if (file.name.indexOf(' ') !== -1) {
         this.$message({
@@ -87,7 +87,7 @@ export default {
         return false
       }
       return true
-    },
+    }, */
     success (response, file, fileList) {
       if (response.type === 'success') {
         this.fileList = []

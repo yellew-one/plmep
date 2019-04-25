@@ -407,12 +407,12 @@ export default {
     },
     uploadMaterial (row) {
       downloadAttach(row.reportOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     uploadMsds (row) {
       downloadAttach(row.attachOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     }
   }

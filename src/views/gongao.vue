@@ -222,25 +222,25 @@ export default {
       // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
       var path = '龙旗环保系统使用培训.pptx'
       path = 'dev/plmsupplierfiles/files/' + path
-      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
     },
     fileDown2 () {
       // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
       var path = 'F-QS028-001_龙旗有毒有害物质限制清单_V2.5.xlsx'
       path = 'dev/plmsupplierfiles/files/' + path
-      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
     },
     fileDown3 () {
       // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
       var path = 'ApprovalSheet_longcheer.xlsx'
       path = 'dev/plmsupplierfiles/files/' + path
-      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
     },
     fileDown4 () {
       // var path = this.$store.getters.guojihua === 'zh' ? '公告.docx' : 'Notice.docx'
       var path = 'PLM系统签样流程和PCN帮助手册.pdf'
       path = 'dev/plmsupplierfiles/files/' + path
-      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
     }
 
   },

@@ -395,13 +395,13 @@ export default {
     },
     download (row) {
       downloadAttach(row.reportOid).then(r => {
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     downloadFile () {
       downloadEnvpTemplate('REACHREPORT').then(r => {
         if (r.data.flag) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     }
