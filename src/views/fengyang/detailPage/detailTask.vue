@@ -437,7 +437,7 @@ export default {
             duration: 5 * 1000
           })
         } else if (!r.data.flag || r.data.flag === true) {
-          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+          window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
         }
       })
     },
@@ -449,7 +449,7 @@ export default {
     attachmentClick (number, name) {
       attachmentLink(number, name).then(r => {
         console.log(r)
-        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURI(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+        window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(r.data.filePath) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
       })
     },
     fileseditClick () {
