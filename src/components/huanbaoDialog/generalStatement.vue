@@ -85,7 +85,8 @@ export default {
       str2: '',
       fileName: '',
       filePath: '',
-      filePathArray: []
+      filePathArray: [],
+      ifDeleteState: 'no'
     }
   },
   methods: {
@@ -99,6 +100,7 @@ export default {
       this.generalStatementDialog = true
       this.type = type
       this.oid = oid
+      this.ifDeleteState = 'no'
       this.getDataList(this.oid)
     },
     getDataList (oid) {
@@ -129,6 +131,7 @@ export default {
       } */
     },
     deleteFile () {
+      this.ifDeleteState = 'yes'
       var that = this
       for (let i in that.totalReport) {
         for (let j in that.totalReportBefore) {
@@ -155,11 +158,13 @@ export default {
     completeGeneralStatement () {
       this.$store.commit('SET_LOADING', true)
       var that = this
-      if (this.totalReportBefore.length > 0) {
-        for (let i in this.filePathArray) {
-          for (let j in this.totalReportBefore) {
-            if (this.filePathArray[i].fileName === this.totalReportBefore[j].fileName) {
-              this.filePathArray.splice(i, 1)
+      if (this.ifDeleteState === 'yes') {
+        if (this.totalReportBefore.length > 0) {
+          for (let i in this.filePathArray) {
+            for (let j in this.totalReportBefore) {
+              if (this.filePathArray[i].fileName === this.totalReportBefore[j].fileName) {
+                this.filePathArray.splice(i, 1)
+              }
             }
           }
         }
@@ -171,13 +176,14 @@ export default {
         if (r.data.status === 'success') {
           this.generalStatementDialog = false
           this.$message.success({
-            message: '编辑完成'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({
             message: r.data.info
           })
         }
+        this.ifDeleteState = 'no'
       })
     },
     /**

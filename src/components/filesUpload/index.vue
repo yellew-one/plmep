@@ -13,6 +13,7 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
+            :on-change="handleChange"
             multiple
             :file-list="fileList">
             <el-button size="small" type="primary">{{$t('huanbaoTable.detailTable.fileUpload')}}</el-button>
@@ -68,6 +69,14 @@ export default {
       console.log('file', file)
       console.log('fileList', fileList)
     },
+    // 上传文件，获取文件流
+    handleChange (file) {
+      this.file.push(file.raw)
+    },
+    myUpload (fiel) {
+      console.log('xoxo', arguments)
+      fiel.onSuccess()
+    },
     /* beforeUpload (file) {
       console.log('f---->', file)
       if (file.name.indexOf(' ') !== -1) {
@@ -99,11 +108,12 @@ export default {
     return {
       dialogFormVisible: false,
       action: '', // 接口地址
-      fileList: '',
+      fileList: [],
       title: '',
       name: '',
       ref: '',
-      type: ''
+      type: '',
+      file: []
     }
   }
 }

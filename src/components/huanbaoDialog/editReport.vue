@@ -116,7 +116,7 @@ export default {
         if (r.data.status === 'success') {
           this.$props.getDataList()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({

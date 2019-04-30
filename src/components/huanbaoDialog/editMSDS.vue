@@ -219,8 +219,10 @@ export default {
       addPatent: '',
       removePatent: '',
       addIpform: '',
-      removeIpform: ''
-
+      removeIpform: '',
+      ifRemoveMsds: 'no',
+      ifRemovePatent: 'no',
+      ifRemoveIP: 'no'
     }
   },
   methods: {
@@ -251,6 +253,9 @@ export default {
       this.ipAttachmentOid = ''
       this.path = ''
       this.fileType = ''
+      this.ifRemoveMsds = 'no'
+      this.ifRemovePatent = 'no'
+      this.ifRemoveIP = 'no'
       this.envpNumber = envpNumber
       if (action === 'edit') {
         this.showButton = true
@@ -322,6 +327,7 @@ export default {
       } */
     },
     deleteMsds () {
+      this.ifRemoveMsds = 'yes'
       var that = this
       for (let i in that.approvalTable1) {
         for (let j in that.msdsBeforeDelete) {
@@ -337,6 +343,7 @@ export default {
       })
     },
     deletePatent () {
+      this.ifRemovePatent = 'yes'
       var that = this
       for (let i in that.approvalTable2) {
         for (let j in that.patentBeforeDelete) {
@@ -359,6 +366,7 @@ export default {
       } */
     },
     deleteIPFORM () {
+      this.ifRemoveIP = 'yes'
       var that = this
       for (let i in that.approvalTable3) {
         for (let j in that.ipBeforeDelete) {
@@ -407,11 +415,13 @@ export default {
     completeMSDS () {
       this.dialogVisible = false
       var that = this
-      if (this.msdsBeforeDelete.length > 0) {
-        for (let i in this.filePathArray1) {
-          for (let j in this.msdsBeforeDelete) {
-            if (this.filePathArray1[i].fileName === this.msdsBeforeDelete[j].fileName) {
-              this.filePathArray1.splice(i, 1)
+      if (this.ifRemoveMsds === 'yes') {
+        if (this.msdsBeforeDelete.length > 0) {
+          for (let i in this.filePathArray1) {
+            for (let j in this.msdsBeforeDelete) {
+              if (this.filePathArray1[i].fileName === this.msdsBeforeDelete[j].fileName) {
+                this.filePathArray1.splice(i, 1)
+              }
             }
           }
         }
@@ -419,11 +429,13 @@ export default {
       that.filePathArray1.forEach(function (value, index) {
         that.addMsds += value.filePath + '@@@'
       })
-      if (this.patentBeforeDelete.length > 0) {
-        for (let i in this.filePathArray2) {
-          for (let j in this.patentBeforeDelete) {
-            if (this.filePathArray2[i].fileName === this.patentBeforeDelete[j].fileName) {
-              this.filePathArray2.splice(i, 1)
+      if (this.ifRemovePatent === 'yes') {
+        if (this.patentBeforeDelete.length > 0) {
+          for (let i in this.filePathArray2) {
+            for (let j in this.patentBeforeDelete) {
+              if (this.filePathArray2[i].fileName === this.patentBeforeDelete[j].fileName) {
+                this.filePathArray2.splice(i, 1)
+              }
             }
           }
         }
@@ -431,11 +443,13 @@ export default {
       that.filePathArray2.forEach(function (value, index) {
         that.addPatent += value.filePath + '@@@'
       })
-      if (this.ipBeforeDelete.length > 0) {
-        for (let i in this.filePathArray3) {
-          for (let j in this.ipBeforeDelete) {
-            if (this.filePathArray3[i].fileName === this.ipBeforeDelete[j].fileName) {
-              this.filePathArray3.splice(i, 1)
+      if (this.ifRemoveIP === 'yes') {
+        if (this.ipBeforeDelete.length > 0) {
+          for (let i in this.filePathArray3) {
+            for (let j in this.ipBeforeDelete) {
+              if (this.filePathArray3[i].fileName === this.ipBeforeDelete[j].fileName) {
+                this.filePathArray3.splice(i, 1)
+              }
             }
           }
         }
@@ -447,13 +461,16 @@ export default {
         if (r.data.status === 'success') {
           this.$props.updateMSDSData()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({
             message: r.data.info
           })
         }
+        this.ifRemoveMsds = 'no'
+        this.ifRemovePatent = 'no'
+        this.ifRemoveIP = 'no'
       })
     },
     returnFilePath (e, type) {

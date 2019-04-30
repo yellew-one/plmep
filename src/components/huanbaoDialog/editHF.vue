@@ -137,7 +137,7 @@
             <el-col :span="2">
             </el-col>
             <el-col :span="16">
-              <el-form-item prop="state"  :label="$t('huanbaoTable.HF.reportDate')">
+              <el-form-item prop="state"  :label="$t('huanbaoTable.REACH.state')">
                 <span :disabled="ifEdit" >{{$t('huanbaoTable.HF.' + temp.state)}}</span>
               </el-form-item>
             </el-col>

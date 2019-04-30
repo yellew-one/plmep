@@ -132,7 +132,9 @@ export default {
       fileSONYPath: '',
       fileLenovoPathArray: [],
       fileSONYPathArray: [],
-      envprotectionDocumentOid: ''
+      envprotectionDocumentOid: '',
+      ifDeleteSONY: 'no',
+      ifDeleteLENOVO: 'no'
     }
   },
   methods: {
@@ -152,6 +154,8 @@ export default {
       this.specialNeedsDialog = true
       this.type = type
       this.oid = oid
+      this.ifDeleteSONY = 'no'
+      this.ifDeleteLENOVO = 'no'
       this.getDataList(this.oid)
     },
     getDataList (oid) {
@@ -184,6 +188,7 @@ export default {
        } */
     },
     deleteLenovoFile () {
+      this.ifDeleteLENOVO = 'yes'
       var that = this
       for (let i in that.totalReport) {
         for (let j in that.totalReportBefore) {
@@ -229,6 +234,7 @@ export default {
       } */
     },
     deleteSONYFile () {
+      this.ifDeleteSONY = 'yes'
       var that = this
       for (let i in that.totalReport2) {
         for (let j in that.totalReport2Before) {
@@ -256,11 +262,13 @@ export default {
       this.$store.commit('SET_LOADING', true)
       this.specialNeedsDialog = false
       var that = this
-      if (that.totalReportBefore.length > 0) {
-        for (let i in that.fileLenovoPathArray) {
-          for (let j in that.totalReportBefore) {
-            if (that.fileLenovoPathArray[i].fileName === that.totalReportBefore[j].fileName) {
-              that.fileLenovoPathArray.splice(i, 1)
+      if (this.ifDeleteLENOVO === 'yes') {
+        if (that.totalReportBefore.length > 0) {
+          for (let i in that.fileLenovoPathArray) {
+            for (let j in that.totalReportBefore) {
+              if (that.fileLenovoPathArray[i].fileName === that.totalReportBefore[j].fileName) {
+                that.fileLenovoPathArray.splice(i, 1)
+              }
             }
           }
         }
@@ -268,11 +276,13 @@ export default {
       that.fileLenovoPathArray.forEach(function (value, index) {
         that.fileLenovoPath += value.filePath + '@@@'
       })
-      if (that.totalReport2Before.length > 0) {
-        for (let i in that.fileSONYPathArray) {
-          for (let j in that.totalReport2Before) {
-            if (that.fileSONYPathArray[i].fileName === that.totalReport2Before[j].fileName) {
-              that.fileSONYPathArray.splice(i, 1)
+      if (this.ifDeleteSONY === 'yes') {
+        if (that.totalReport2Before.length > 0) {
+          for (let i in that.fileSONYPathArray) {
+            for (let j in that.totalReport2Before) {
+              if (that.fileSONYPathArray[i].fileName === that.totalReport2Before[j].fileName) {
+                that.fileSONYPathArray.splice(i, 1)
+              }
             }
           }
         }
@@ -284,7 +294,7 @@ export default {
         if (r.data.status === 'success') {
           this.$props.updateOther2Data()
           this.$message.success({
-            message: '编辑成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({

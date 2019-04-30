@@ -176,7 +176,7 @@ export default {
             that.removeList.push(value)
           } else {
             that.$message({
-              message: '移除成功',
+              message: this.$t('success.remove_success'),
               type: 'success',
               duration: 5 * 1000
             })

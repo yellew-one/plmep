@@ -201,7 +201,8 @@ export default {
       str4: '',
       filePath: '',
       filePathArray: [],
-      editRemoveOid: ''
+      editRemoveOid: '',
+      ifDeleteFile: 'no'
     }
   },
   methods: {
@@ -227,6 +228,7 @@ export default {
       this.reachOid = row.reachOid
       this.temp = {}
       this.temp = Object.assign(row)
+      this.ifDeleteFile = 'no'
       if (e === 'itemedit' || e === 'itemview') {
         this.getDataList(row.reachOid)
       }
@@ -312,6 +314,7 @@ export default {
       } */
     },
     deleteFile () {
+      this.ifDeleteFile = 'yes'
       var that = this
       for (let i in that.totalReport2) {
         for (let j in that.totalReport2Before) {
@@ -345,11 +348,13 @@ export default {
     completeReport () {
       this.$store.commit('SET_LOADING', true)
       var that = this
-      if (this.totalReport2Before.length > 0) {
-        for (let i in this.filePathArray) {
-          for (let j in this.totalReport2Before) {
-            if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
-              this.filePathArray.splice(i, 1)
+      if (this.ifDeleteFile === 'yes') {
+        if (this.totalReport2Before.length > 0) {
+          for (let i in this.filePathArray) {
+            for (let j in this.totalReport2Before) {
+              if (this.filePathArray[i].fileName === this.totalReport2Before[j].fileName) {
+                this.filePathArray.splice(i, 1)
+              }
             }
           }
         }
@@ -365,13 +370,14 @@ export default {
         if (r.data.status === 'success') {
           this.$props.updateREACHData()
           this.$message.success({
-            message: '修改成功'
+            message: this.$t('success.update_success')
           })
         } else {
           this.$message.error({
             message: r.data.info
           })
         }
+        this.ifDeleteFile = 'no'
       })
     },
     /**
