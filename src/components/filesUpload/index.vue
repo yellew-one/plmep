@@ -13,7 +13,6 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
-            :on-change="handleChange"
             multiple
             :file-list="fileList">
             <el-button size="small" type="primary">{{$t('huanbaoTable.detailTable.fileUpload')}}</el-button>
@@ -71,11 +70,26 @@ export default {
     },
     // 上传文件，获取文件流
     handleChange (file) {
+      console.log('a', arguments)
       this.file.push(file.raw)
+      console.log('xoxo', this.file.indexOf(file.raw))
+      if (this.file.indexOf(file.raw) === -1) {
+        this.file.push(file.raw)
+      }
+      console.log('xoxo', this.file)
     },
     myUpload (fiel) {
-      console.log('xoxo', arguments)
-      fiel.onSuccess()
+      var url = 'http://172.16.9.169:8080/files/upLoad'
+      var reader = new FormData()
+      this.file.forEach(function (value, item) {
+        reader.append('fileList', value)
+      })
+      reader.append('number', this.$store.getters.huanbaoNum)
+      reader.append('userName', this.$store.getters.userInfo.username)
+      var xhr = new XMLHttpRequest()
+      xhr.open('post', url, true)
+      xhr.send(reader)
+      this.file = []
     },
     /* beforeUpload (file) {
       console.log('f---->', file)
@@ -113,7 +127,8 @@ export default {
       name: '',
       ref: '',
       type: '',
-      file: []
+      file: [],
+      form: ''
     }
   }
 }

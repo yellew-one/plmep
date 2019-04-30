@@ -955,7 +955,8 @@ export function attachmentLink (number, fileName) {
       fileName: fileName
     }
   })
-}// // 附件承认书接口
+}
+// 附件承认书接口
 export function downloadAcknowledgment (number, fileName) {
   return request({
     url: '/Windchill/netmarkets/jsp/ext/longcheer/common/taskDetails.jsp',
@@ -970,6 +971,26 @@ export function downloadAcknowledgment (number, fileName) {
     data: {
       operation: 'downloadAcknowledgment',
       number: number
+    }
+  })
+}
+
+// 自定义文件上传
+export function myUpload (formData, ref) {
+  return request({
+    url: 'http://172.16.9.169:8080' + '/files/upLoad',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    transformRequest: [function (data) {
+      data = Qs.stringify(data)
+      return data
+    }],
+    data: {
+      fileList: formData,
+      number: ref.number,
+      userName: ref.userName
     }
   })
 }
