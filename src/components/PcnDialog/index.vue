@@ -168,7 +168,7 @@ export default {
       console.log('xxoo', data)
       var that = this
       data.forEach(function (value, index) {
-        var path = value.response.data[0]
+        var path = value.path
         that.filesList.push({name: value.name, attachOid: value.attachOid, filepath: path, url: '', desc: '', ftype: 'new'})
         that.submitFilesList.push({name: value.name, attachOid: value.attachOid, filepath: path, url: '', desc: '', ftype: 'new'})
       })

@@ -42,7 +42,8 @@
                       :label="item.label"
                       :value="item.value">
                     </el-option>
-                  </el-select></el-form-item>
+                  </el-select>
+                </el-form-item>
               </el-col>
             </el-row>
             <el-row style="padding-left: 10px">
@@ -124,8 +125,8 @@ export default {
       console.log('xxoo', data)
       var that = this
       data.forEach(function (value, index) {
-        // that.filePath += value.response.data[0] + ';'
-        var path = value.response.data[0]
+        // that.filePath += value.response.data[0] + ';' var path = value.path
+        var path = value.path
         that.submitPath = that.submitPath + path + ';'
         that.filesList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
         that.updatefielsList.push({name: value.name, filepath: path, url: '', desc: '', ftype: 'new'})
