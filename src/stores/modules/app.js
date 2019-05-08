@@ -14,7 +14,8 @@ const app = {
     guojihua: sessionStorage.getItem('guojihua') || 'zh',
     loading: false,
     baseUrl: '',
-    filesPath: ''
+    filesPath: '',
+    websiteType: ''
   },
   mutations: {
     SET_BASEURL: (state, baseUrl) => {
@@ -22,6 +23,9 @@ const app = {
     },
     SET_FILESPATH: (state, filesPath) => {
       state.filesPath = filesPath
+    },
+    SET_WEBSITETYPE: (state, websiteType) => {
+      state.websiteType = websiteType
     },
     SET_FENGYANGDAOQINUM: (state, fengyangdaoqiNum) => {
       state.fengyangdaoqiNum = fengyangdaoqiNum

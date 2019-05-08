@@ -580,5 +580,11 @@ export default {
       download: 'Download',
       file: 'Files'
     }
+  },
+  OUTRESOURCE: {
+    tittle: {
+      out: '我的待下载资料',
+      search: '所有资料查询'
+    }
   }
 }

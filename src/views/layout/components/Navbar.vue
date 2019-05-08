@@ -16,8 +16,8 @@
         <el-dropdown-item divided>
           <span  @click="changePdUI" style="display:block;">{{$t('m.editUserInfo')}}</span>
         </el-dropdown-item>
-        <el-dropdown-item divided>
-          <span  @click="goNotice" style="display:block;">{{$t('m.Notice')}}</span>
+        <el-dropdown-item divided v-if="websiteType !== '外发'">
+          <span   @click="goNotice" style="display:block;">{{$t('m.Notice')}}</span>
         </el-dropdown-item>
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">{{$t('m.Logout')}}</span>
@@ -25,6 +25,7 @@
       </el-dropdown-menu>
     </el-dropdown>
     <userInfoEdit ref="userinfoDialog"></userInfoEdit>
+    <user-info ref="userInfo"></user-info>
   </el-menu>
 </template>
 
@@ -38,8 +39,10 @@ import waves from '@/directive/waves'
 // import user from '@/store/modules/user'
 // import user from '@/store/modules/user'
 import userInfoEdit from '../../../components/UserInfoEdit/index'
+import UserInfo from '../../../components/UserInfoEdit/userInfo'
 export default {
   components: {
+    UserInfo,
     Breadcrumb,
     Hamburger,
     userInfoEdit
@@ -91,7 +94,8 @@ export default {
         confirmPassword: [
           { validator: validatePass2, required: true, trigger: 'blur' }
         ]
-      }
+      },
+      websiteType: ''
     }
   },
   mounted: function () {
@@ -103,6 +107,7 @@ export default {
     }
   },
   created () {
+    this.websiteType = this.$store.getters.websiteType
     this.UserCode = Cookies.get('UserCode')
     this.initUsetInfo()
   },
@@ -136,7 +141,11 @@ export default {
       window.open(routeData.href, '_blank')
     },
     changePdUI () {
-      this.$refs.userinfoDialog.dialogVisibleChange(true)
+      if (this.websiteType === '外发') {
+        this.$refs.userInfo.userInfoDialogVisible(true)
+      } else {
+        this.$refs.userinfoDialog.dialogVisibleChange(true)
+      }
     },
     changePd (formName) {
       this.$refs[formName].validate((valid) => {

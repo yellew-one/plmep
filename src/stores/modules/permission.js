@@ -258,11 +258,39 @@ const permission = {
               }]
           }
         ]
+        const dynamicRouter4 = [
+          {
+            redirect: '/download',
+            title: 'OUTRESOURCE.tittle.out',
+            meta: { title: 'OUTRESOURCE.tittle.out', icon: 'dtj' },
+            children: [
+              {
+                title: 'OUTRESOURCE.tittle.out',
+                name: 'download',
+                meta: { title: 'OUTRESOURCE.tittle.out', icon: 'dtj' }
+              }]
+          },
+          {
+            redirect: '/outsearch',
+            title: 'OUTRESOURCE.tittle.search',
+            meta: { title: 'OUTRESOURCE.tittle.search', icon: 'fsearch' },
+            children: [
+              {
+                title: 'OUTRESOURCE.tittle.search',
+                name: 'outsearch',
+                meta: { title: 'OUTRESOURCE.tittle.search', icon: 'fsearch' }
+              }]
+          }]
         var accessedRouters
+        commit('SET_WEBSITETYPE', data.type)
         if (data.type === '封样') {
           accessedRouters = recursionRouter(dynamicRouter.concat(dynamicRouter3), asyncRouterMap)
         } else {
-          accessedRouters = recursionRouter(dynamicRouter2.concat(dynamicRouter3), asyncRouterMap)
+          if (data.type === '环保') {
+            accessedRouters = recursionRouter(dynamicRouter2.concat(dynamicRouter3), asyncRouterMap)
+          } else {
+            accessedRouters = recursionRouter(dynamicRouter4, asyncRouterMap)
+          }
         }
         commit('SET_ROUTERS', accessedRouters)
         resolve()

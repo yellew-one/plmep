@@ -199,5 +199,29 @@ export const asyncRouterMap = [
       meta: { title: 'pcn.title.rejectPcn', icon: 'rejectpcn' }
     }]
   },
+  {
+    path: '/download',
+    component: Layout,
+    redirect: '/download',
+    meta: { title: 'OUTRESOURCE.tittle.out', icon: 'dtj' },
+    children: [{
+      path: 'download',
+      component: () => import('@/views/resource/download'),
+      name: 'download',
+      meta: { title: 'OUTRESOURCE.tittle.out', icon: 'dtj' }
+    }]
+  },
+  {
+    path: '/outsearch',
+    component: Layout,
+    redirect: '/outsearch',
+    meta: { title: 'OUTRESOURCE.tittle.search', icon: 'fsearch' },
+    children: [{
+      path: 'outsearch',
+      component: () => import('@/views/resource/outsearch'),
+      name: 'outsearch',
+      meta: { title: 'OUTRESOURCE.tittle.search', icon: 'fsearch' }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

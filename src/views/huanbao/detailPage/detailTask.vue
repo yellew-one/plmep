@@ -1359,7 +1359,7 @@ export default {
       this.$refs.fileUpload.closeDialog()
       var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
       if (type === 'FMD') {
-        executeUploadFMDData(this.oid, e[0].response.data[0], types).then(r => {
+        executeUploadFMDData(this.oid, e[0].path, types).then(r => {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
             this.ifEditAble(this.oid)
@@ -1391,7 +1391,7 @@ export default {
         })
       }
       if (type === 'RoHS') {
-        executeUploadItemData(this.oid, e[0].response.data[0], types).then(r => {
+        executeUploadItemData(this.oid, e[0].path, types).then(r => {
           if (r.data.status === 'success') {
             this.getDataList(this.oid)
             this.ifEditAble(this.oid)

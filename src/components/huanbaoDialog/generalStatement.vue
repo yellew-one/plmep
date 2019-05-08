@@ -192,16 +192,17 @@ export default {
      */
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
-      this.fileName = e[0].name
-      this.filePathArray.push({
-        filePath: e[0].response.data[0],
-        fileName: e[0].name
-      })
-      this.totalReport.push({
-        filePath: e[0].response.data[0],
-        fileName: this.fileName,
-        modifyTime: ''
-      })
+      for (let i in e) {
+        this.filePathArray.push({
+          filePath: e[i].path,
+          fileName: e[i].name
+        })
+        this.totalReport.push({
+          filePath: e[i].path,
+          fileName: e[i].name,
+          modifyTime: ''
+        })
+      }
     },
     upload (row) {
       downloadAttach(row.oid).then(r => {

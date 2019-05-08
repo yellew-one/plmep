@@ -483,8 +483,8 @@ export default {
             fileName: e[i].name
           })
           this.filePathArray1.push({
-            filePath: e[0].response.data[0],
-            fileName: e[0].name,
+            filePath: e[i].path,
+            fileName: e[i].name,
             fileType: '02'
           })
         }
@@ -495,8 +495,8 @@ export default {
             fileName: e[i].name
           })
           this.filePathArray2.push({
-            filePath: e[0].response.data[0],
-            fileName: e[0].name,
+            filePath: e[i].path,
+            fileName: e[i].name,
             fileType: '03'
           })
         }
@@ -507,8 +507,8 @@ export default {
             fileName: e[i].name
           })
           this.filePathArray3.push({
-            filePath: e[0].response.data[0],
-            fileName: e[0].name,
+            filePath: e[i].path,
+            fileName: e[i].name,
             fileType: '01'
           })
         }

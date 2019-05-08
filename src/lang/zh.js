@@ -587,6 +587,34 @@ export default {
       download: '下载',
       file: '文件'
     }
+  },
+  OUTRESOURCE: {
+    tittle: {
+      out: '我的待下载资料',
+      search: '所有资料查询'
+    },
+    userInfo: {
+      account: '账号',
+      password: '密码',
+      userName: '姓名',
+      email: '邮箱',
+      telephone: '固定电话',
+      phone: '移动电话',
+      unit: '所属单位',
+      group: '所在组'
+    },
+    download: {
+      number: '单号',
+      name: '名称',
+      project: '项目',
+      date: '发布日期',
+      person: '发布人',
+      option: '操作',
+      situation: '情况',
+      down: '下载',
+      ifdown: '未下载',
+      downs: '已下载'
+    }
   }
 
 }

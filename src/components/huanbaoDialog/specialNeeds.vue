@@ -309,43 +309,30 @@ export default {
      */
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
-      if (type === 'Lenovo') {
-        this.fileName = e[0].name
-        this.fileLenovoPathArray.push({
-          filePath: e[0].response.data[0],
-          fileName: e[0].name
-        })
-        this.totalReport.push({
-          filePath: e[0].response.data[0],
-          fileName: this.fileName,
-          modifyTime: ''
-        })
-        /* this.fileLenovoName = e[0].name
-        this.fileLenovoPath = e[0].response.data[0] + ',' + this.fileLenovoPath
-        this.fileLenovoPath = this.fileLenovoPath.substring(0, this.fileLenovoPath.length - 1)
-        this.totalReport.push({
-          fileName: this.fileLenovoName,
-          modifyTime: ''
-        }) */
-      }
-      if (type === 'SONY') {
-        this.fileName = e[0].name
-        this.fileSONYPathArray.push({
-          filePath: e[0].response.data[0],
-          fileName: e[0].name
-        })
-        this.totalReport2.push({
-          filePath: e[0].response.data[0],
-          fileName: this.fileName,
-          modifyTime: ''
-        })
-        /* this.fileSONYName = e[0].name
-        this.fileSONYPath = e[0].response.data[0] + ',' + this.fileSONYPath
-        this.fileSONYPath = this.fileSONYPath.substring(0, this.fileSONYPath.length - 1)
-        this.totalReport2.push({
-          fileName: this.fileSONYName,
-          modifyTime: ''
-        }) */
+      for (let i in e) {
+        if (type === 'Lenovo') {
+          this.fileLenovoPathArray.push({
+            filePath: e[i].path,
+            fileName: e[i].name
+          })
+          this.totalReport.push({
+            filePath: e[i].path,
+            fileName: e[i].name,
+            modifyTime: ''
+          })
+        }
+        if (type === 'SONY') {
+          this.fileName = e[0].name
+          this.fileSONYPathArray.push({
+            filePath: e[i].path,
+            fileName: e[i].name
+          })
+          this.totalReport2.push({
+            filePath: e[i].path,
+            fileName: e[i].name,
+            modifyTime: ''
+          })
+        }
       }
     },
     download (row) {

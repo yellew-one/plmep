@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" :title="title" :visible.sync="dialogFormVisible" width="60%" append-to-body>
+  <el-dialog :title="title" :visible.sync="dialogFormVisible" width="60%" append-to-body>
     <div style="margin-top: 10px;text-align:right">
       <el-scrollbar style="height: 300px">
         <el-card>
@@ -89,11 +89,9 @@ export default {
     // 上传文件，获取文件流
     handleChange (file) {
       this.file.push(file.raw)
-      console.log('xoxo', this.file.indexOf(file.raw))
       if (this.file.indexOf(file.raw) === -1) {
         this.file.push(file.raw)
       }
-      console.log('xoxo', this.file)
     },
     myUpload (file) {
       console.log('fileData--->', this.fileData)
@@ -128,7 +126,7 @@ export default {
             Info.push({name: sz[sz.length - 1], path: v})
           })
           console.log('info', Info)
-          that.$props.returnFilePath(Info, 'success')
+          that.$props.returnFilePath(Info, that.type)
         } else {
           this.$message({
             message: '文件上传失败! 请联系管理员; 注:文件不得超过50M',

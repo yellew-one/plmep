@@ -386,18 +386,17 @@ export default {
      */
     returnFilePath (e, type) {
       this.$refs.fileUpload.closeDialog()
-      this.fileName = e[0].name
-      this.filePathArray.push({
-        filePath: e[0].response.data[0],
-        fileName: e[0].name
-      })
-      // this.filePath = e[0].response.data[0] + ',' + this.filePath
-      // this.filePath = this.filePath.substring(0, this.filePath.length - 1)
-      this.totalReport2.push({
-        fileName: this.fileName,
-        filePath: e[0].response.data[0],
-        modifyTime: ''
-      })
+      for (let i in e) {
+        this.filePathArray.push({
+          filePath: e[i].path,
+          fileName: e[i].name
+        })
+        this.totalReport2.push({
+          fileName: e[i].name,
+          filePath: e[i].path,
+          modifyTime: ''
+        })
+      }
     },
     download (row) {
       downloadAttach(row.reportOid).then(r => {
