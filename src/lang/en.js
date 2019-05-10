@@ -583,8 +583,33 @@ export default {
   },
   OUTRESOURCE: {
     tittle: {
-      out: '我的待下载资料',
-      search: '所有资料查询'
+      out: 'Downloaded',
+      search: 'All Data Inquiry'
+    },
+    userInfo: {
+      account: 'Account',
+      password: 'Password',
+      fullname: 'UserName',
+      mail: 'E-Mail',
+      mobile: 'Telephone',
+      tel: 'Phone',
+      unit: 'Unit',
+      group: 'Group'
+    },
+    download: {
+      number: 'Number',
+      name: 'Name',
+      project: 'Project',
+      date: 'Date',
+      person: 'Person',
+      option: 'Option',
+      situation: 'Situation',
+      down: 'Download',
+      ifdown: 'Not Downloaded',
+      downs: 'Downloaded'
+    },
+    search: {
+      result: 'Search Results'
     }
   }
 }

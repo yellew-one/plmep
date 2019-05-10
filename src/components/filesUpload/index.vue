@@ -100,7 +100,7 @@ export default {
       if (this.file.length === 0) { return 1 }
       var that = this
       // var myUpload = this.$refs.myUpload
-      var url = 'http://172.16.9.169:8080/files/upLoad'
+      var url = this.$store.state.filePath + '/files/upLoad'
       var reader = new FormData()
       this.file.forEach(function (value, item) {
         reader.append('fileList', value)

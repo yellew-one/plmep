@@ -7,22 +7,22 @@
       <el-card>
         <el-form  status-icon="true" :rules="rules" :label-position="$store.getters.guojihua==='en'?'top':'left'" size="mini" ref="editUserform" :model="userInfoModel" label-width="120px">
           <el-form-item :label="$t('OUTRESOURCE.userInfo.account')" prop="account">
-            <el-input :disabled="true" v-model="userInfoModel.account"></el-input>
+            <el-input :disabled="true" v-model="userInfoModel.username"></el-input>
           </el-form-item>
           <el-form-item :label="$t('OUTRESOURCE.userInfo.password')" prop="password">
             <el-input type="password" v-model="userInfoModel.password"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('OUTRESOURCE.userInfo.userName')" prop="userName">
-            <el-input v-model="userInfoModel.userName"></el-input>
+          <el-form-item :label="$t('OUTRESOURCE.userInfo.fullname')" prop="fullname">
+            <el-input v-model="userInfoModel.fullname"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('OUTRESOURCE.userInfo.email')" prop="email">
-            <el-input v-model="userInfoModel.email"></el-input>
+          <el-form-item :label="$t('OUTRESOURCE.userInfo.mail')" prop="mail">
+            <el-input v-model="userInfoModel.mail"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('OUTRESOURCE.userInfo.telephone')" prop="telephone">
-            <el-input v-model="userInfoModel.telephone"></el-input>
+          <el-form-item :label="$t('OUTRESOURCE.userInfo.mobile')" prop="mobile">
+            <el-input type="number" v-model="userInfoModel.mobile"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('OUTRESOURCE.userInfo.phone')" prop="phone">
-            <el-input v-model="userInfoModel.phone"></el-input>
+          <el-form-item :label="$t('OUTRESOURCE.userInfo.tel')" prop="tel">
+            <el-input type="number" v-model="userInfoModel.tel"></el-input>
           </el-form-item>
           <el-form-item :label="$t('OUTRESOURCE.userInfo.unit')" prop="unit">
             <el-input :disabled="true" v-model="userInfoModel.unit"></el-input>
@@ -40,7 +40,7 @@
   </el-dialog>
 </template>
 <script>
-import { userInfo, updateUser } from '@/api/index'
+import { receiverInfo, saveReceiverInfo } from '@/api/outresource'
 export default {
   name: 'userInfo',
   props: ['data'],
@@ -53,7 +53,8 @@ export default {
       // this.$refs['editUserform'].clearValidate()
     },
     getUserInfo () {
-      userInfo().then(r => {
+      receiverInfo().then(r => {
+        console.log('xoxo', r)
         this.userInfoModel = r.data
       })
     },
@@ -61,9 +62,9 @@ export default {
       this.$refs['editUserform'].validate((valid) => {
         if (valid) {
           this.$store.commit('SET_LOADING', true)
-          updateUser(this.userInfoModel).then(r => {
+          saveReceiverInfo(this.userInfoModel).then(r => {
             console.log('r->', r)
-            if (r.data.msg === '修改成功') {
+            if (r.data.status) {
               this.dialogFormVisible = false
               this.$message({
                 message: this.$t('success.update_success'),
@@ -71,11 +72,10 @@ export default {
                 duration: 5 * 1000
               })
               var user = Object.assign({}, this.$store.getters.userInfo)
-              user.activation = '已激活'
               this.$store.commit('SET_USERINFO', user)
             } else {
               this.$message({
-                message: 'Submit Error',
+                message: r.data.info,
                 type: 'error',
                 duration: 5 * 1000
               })
@@ -94,37 +94,22 @@ export default {
       userInfoModel: {},
       loading: false,
       rules: {
-        account: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
         password: [
           { required: true, message: this.$t('error.required'), trigger: 'blur' }
         ],
-        telephone: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        fullname: [
+          { required: true, message: this.$t('error.required'), trigger: 'change' }
         ],
-        phone: [
-          { type: 'email', required: true, message: this.$t('error.email'), trigger: 'change' }
+        mobile: [
+          { required: true, message: this.$t('error.required'), trigger: 'change' }
         ],
-        contactTel: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
-        contactMobile: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
-        managerName: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
-        managerTel: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
-        ],
-        managerMobile: [
-          { required: true, message: this.$t('error.required'), trigger: 'blur' }
+        tel: [
+          { required: true, message: this.$t('error.required'), trigger: 'change' }
         ],
         passWord: [
           { required: true, message: this.$t('error.required'), trigger: 'change' }
         ],
-        email: [
+        mail: [
           { type: 'email', required: true, message: this.$t('error.email'), trigger: 'change' }
         ]
       }

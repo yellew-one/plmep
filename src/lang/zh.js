@@ -596,10 +596,10 @@ export default {
     userInfo: {
       account: '账号',
       password: '密码',
-      userName: '姓名',
-      email: '邮箱',
-      telephone: '固定电话',
-      phone: '移动电话',
+      fullname: '姓名',
+      mail: '邮箱',
+      mobile: '固定电话',
+      tel: '移动电话',
       unit: '所属单位',
       group: '所在组'
     },
@@ -614,6 +614,9 @@ export default {
       down: '下载',
       ifdown: '未下载',
       downs: '已下载'
+    },
+    search: {
+      result: '搜索结果'
     }
   }
 

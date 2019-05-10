@@ -67,11 +67,21 @@ export default {
   components: {
   },
   name: 'HelloWorld',
+  filters: {
+    tablefilters: function (value, data) {
+      var sz = []
+      value.forEach(function (v, index) {
+        if (v.num.indexOf(data) !== -1) {
+          sz.push(v)
+        }
+      })
+      return sz
+    }
+  },
   activated: function () {
   },
   mounted: function () {
     listDownloadTask().then(r => {
-      console.log('xoxo', r)
       this.tableData = r.data
     })
   },
@@ -88,7 +98,7 @@ export default {
   data () {
     return {
       tableData: [],
-      tFilters: '123'
+      tFilters: ''
     }
   }
 }
