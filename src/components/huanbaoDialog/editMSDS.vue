@@ -390,15 +390,15 @@ export default {
     },
     uploadPatent () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '专利证明', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '03')
     },
     uploadIPFORM () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], 'IP FORM', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '01')
     },
     uploadMsds () {
       this.$refs.upload.openDialog()
-      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '原材料MSDS', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
+      this.$refs.upload.setAttribute(this.$store.state.filePath + '/files/upLoad', [], '', 'fileList', {number: this.envpNumber, userName: this.$store.getters.userInfo.username}, '02')
     },
     downloadloadIP () {
       downloadEnvpTemplate('IPFORM').then(r => {

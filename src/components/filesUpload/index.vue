@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" width="60%" append-to-body>
-    <div style="margin-top: 5px;text-align:right">
+    <div style="margin-top: 0px;text-align:right">
       <el-scrollbar style="height: 300px;width: 100%">
         <el-card>
           <!--:http-request="myUpload"-->
