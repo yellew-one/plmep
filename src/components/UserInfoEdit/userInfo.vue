@@ -117,7 +117,7 @@ export default {
   }
 }
 </script>
-<style type="scope">
+<style scoped>
   .el-scrollbar__wrap {
     overflow-x: hidden;
   }

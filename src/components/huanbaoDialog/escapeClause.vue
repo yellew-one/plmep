@@ -235,7 +235,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .boxtext {
     font-size: 15px;
   }

@@ -392,7 +392,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .card_title{
     font-weight: bold;
     padding-bottom: 20px;

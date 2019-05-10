@@ -339,7 +339,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .longcheer_hr{
     padding: 0;
     background-color: transparent;

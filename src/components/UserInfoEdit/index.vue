@@ -61,7 +61,7 @@ export default {
       this.dialogFormVisible = type
       if (type) {
         this.getUserInfo()
-        // this.$refs['editUserform'].clearValidate()
+        this.$refs['editUserform'].clearValidate()
       }
     },
     getUserInfo () {
@@ -166,7 +166,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .el-scrollbar__wrap {
      overflow-x: hidden;
     }

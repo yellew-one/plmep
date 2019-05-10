@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" width="60%" append-to-body>
-    <div style="margin-top: 10px;text-align:right">
-      <el-scrollbar style="height: 300px">
+    <div style="margin-top: 5px;text-align:right">
+      <el-scrollbar style="height: 300px;width: 100%">
         <el-card>
           <!--:http-request="myUpload"-->
           <!--:on-change="handleChange"-->
@@ -9,6 +9,7 @@
           <!--:auto-upload="false"-->
           <!---->
           <el-upload
+            style="width: 90%"
             class="upload-demo"
             ref="myUpload"
             :on-change="handleChange"
@@ -37,6 +38,7 @@
 <script>
 import axios from 'axios'
 export default {
+  components: {},
   name: 'filesUpload',
   props: ['returnFilePath'],
   mounted: function () {
@@ -52,6 +54,7 @@ export default {
     },
     // 初始化值
     setAttribute (aciton, fileList, title, name, ref, type) {
+      this.file = []
       this.action = aciton
       this.fileList = fileList
       this.title = title
@@ -128,6 +131,7 @@ export default {
           console.log('info', Info)
           that.$props.returnFilePath(Info, that.type)
         } else {
+          that.file = []
           this.$message({
             message: '文件上传失败! 请联系管理员; 注:文件不得超过50M',
             type: 'warning',
@@ -184,3 +188,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  ::-webkit-scrollbar{
+    width: 10px;
+    height: 0px;
+  }
+  ::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.2);
+    /*border-radius: 10px;*/
+  }
+</style>

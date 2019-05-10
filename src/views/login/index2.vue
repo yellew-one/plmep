@@ -119,7 +119,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .el-dropdown-link {
     cursor: pointer;
     color: white;
