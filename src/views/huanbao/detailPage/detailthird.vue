@@ -222,6 +222,13 @@ export default {
             message: this.$t('success.finsh_task_success')
           })
           this.closePage()
+        } else if (r.data.status === 'fail') {
+          this.$message({
+            message: r.data.info,
+            dangerouslyUseHTMLString: true,
+            type: 'warning',
+            duration: 5 * 1000
+          })
         }
       })
     },

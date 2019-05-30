@@ -82,7 +82,12 @@ export default {
       } else {
         this.loading = true
         login(this.temp.username, this.temp.password).then(r => {
-          console.log('登录返回信息->', r.data.result)
+          console.log('登录返回信息->', r)
+          /* if (r.data.type === '外发' && (r.data.type !== '环保' && r.data.type !== '封样')) {
+            this.loading = false
+            this.$message('资料外发暂未开放...')
+            return
+          } */
           if (r.data.msg !== '') {
             this.$message(this.$t(r.data.msg))
             this.loading = false

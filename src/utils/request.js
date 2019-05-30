@@ -7,7 +7,7 @@ const service = axios.create({
   // baseURL: process.env.API_BASEURL, // ap  i的base_url
   // 本地测试
   // baseURL: 'http://plmtest.longcheer.com',
-  // baseURL: 'http://172.16.9.157:80',
+  // baseURL: 'http://172.16.9.159:80',
   // 170 测试
   baseURL: 'http://' + arr[0] + ':8082',
   // 170  正式
@@ -58,14 +58,23 @@ service.interceptors.response.use(
     store.commit('SET_LOADING', false)
     return response
   },
-  error => {
-    console.log('error', error)
+  function (error) {
+    console.log('a', arguments)
+    // console.log('error', error)
     store.commit('SET_LOADING', false)
-    Message({
-      message: '出现服务器连接错误, 请联系管理员! \n\r ' + error,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    if (error.message.includes('timeout')) {
+      Message({
+        message: error + '\n\r接口地址:\n\r' + arguments[0].config.url + '\n\r参数:\n\r' + arguments[0].config.data,
+        type: 'error',
+        duration: 10 * 1000
+      })
+    } else {
+      Message({
+        message: error + '\n\r接口地址:\n\r' + arguments[0].config.url + '\n\r参数:\n\r' + arguments[0].config.data,
+        type: 'error',
+        duration: 7 * 1000
+      })
+    }
     return Promise.reject(error)
   }
 )
