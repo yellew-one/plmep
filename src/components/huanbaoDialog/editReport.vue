@@ -147,7 +147,7 @@ export default {
       this.$refs.fileUpload.closeDialog()
       this.fileName = e[0].name
       this.fileType = type
-      this.filePath = e[0].response.data[0]
+      this.filePath = e[0].path
       this.temp.filePath = this.filePath
     }
   }

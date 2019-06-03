@@ -187,7 +187,7 @@ export default {
             v = this.temp.reportType.split('\n')
             this.value = v
           }
-          var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+          var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
           reportType(this.oid, types).then(r => {
             for (let i in r.data) {
               this.options2.push({
@@ -311,7 +311,7 @@ export default {
     },
     // 编辑报告
     editReport (num, type) {
-      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
       editReport(this.temp, num, this.filePath, types).then(r => {
         if (r.data.status === 'success') {
           this.ProcessingGeneralReportDialog = false
@@ -336,7 +336,7 @@ export default {
     },
     // 添加报告
     addReport (num, type) {
-      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
       addReport(this.oid, this.temp, num, type, this.filePath, types).then(r => {
         if (r.data.status === 'success') {
           this.ProcessingGeneralReportDialog = false

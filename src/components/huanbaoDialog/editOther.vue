@@ -455,7 +455,7 @@ export default {
       var str = JSON.stringify(s)
       var removeOid = ''
       removeOid = this.removeOid + ',' + this.editRemoveOid
-      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
       executeEditOtherItem(this.otherOid, this.temp, removeOid, this.addOid, this.substancesRemoveOid, str, types).then(r => {
         if (r.data.status === 'success') {
           this.otherDialog = false
