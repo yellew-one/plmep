@@ -84,7 +84,7 @@
       <td
       style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:4.9pt; padding-right:4.9pt; vertical-align:top; width:415.3pt">
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span
-      style="font-family:宋体; font-size:10.5pt">1：请在系统首页下载模板《</span><a style="color:#4472c4" @click="fileDown3"><span
+      style="font-family:宋体; font-size:10.5pt">1：下载模板《</span><a style="color:#4472c4" @click="fileDown3"><span
       style="color:#4472c4; font-family:'Times New Roman'; font-size:10.5pt; text-decoration:underline">ApprovalSheet_longcheer.xls</span></a><span
       style="font-family:宋体; font-size:10.5pt">》；</span></p></td>
       </tr>
@@ -112,7 +112,7 @@
       <td
       style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:4.9pt; padding-right:4.9pt; vertical-align:top; width:415.3pt">
       <p style="line-height:13.3pt; margin:0pt 0pt 9pt"><span
-      style="font-family:宋体; font-size:10.5pt">4：封样样品【</span><span
+      style="font-family:宋体; font-size:10.5pt">4：正式承认书完整版2份，签字盖章；封样样品【</span><span
       style="font-family:'Times New Roman'; font-size:10.5pt">13</span><span
       style="font-family:微软雅黑; font-size:10.5pt">个</span><span
       style="font-family:宋体; font-size:10.5pt">】安排邮寄以下地址：</span></p>
