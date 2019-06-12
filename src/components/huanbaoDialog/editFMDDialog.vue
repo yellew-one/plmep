@@ -182,7 +182,7 @@ export default {
       })
     },
     completeFMD () {
-      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
       if (this.isSub === 'NOSUB') {
         editMaterial(this.temp, types).then(r => {
           if (r.data.status === 'success') {

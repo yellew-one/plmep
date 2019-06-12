@@ -401,7 +401,7 @@ export default {
       var str = ''
       str = this.removeOid + ',' + this.editRemoveOid
       this.temp.exemptions = this.exemptions
-      var types = sessionStorage.getItem('guojihua') === 'zh' ? 'Chinese' : 'English'
+      var types = this.$store.getters.guojihua === 'zh' ? 'Chinese' : 'English'
       execute(this.rohsOid, this.temp, str, this.addOid, types).then(r => {
         if (r.data.status === 'success') {
           this.rohsDialog = false

@@ -11,7 +11,7 @@ const app = {
     fengyangdaoqiNum: -1,
     huanbaoNum: '',
     device: 'desktop',
-    guojihua: sessionStorage.getItem('guojihua') || 'zh',
+    guojihua: sessionStorage.getItem('guojihua') === null ? 'zh' : sessionStorage.getItem('guojihua') || 'zh',
     loading: false,
     baseUrl: '',
     filesPath: '',

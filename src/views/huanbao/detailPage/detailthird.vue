@@ -56,7 +56,7 @@
               <template slot-scope="scope">
                 <el-button @click="toRelatedClick(scope.row)" type="text" size="small">{{$t('formButton.relatedMaterials')}}</el-button>
                 <el-button @click="toEditReport(scope.row)" type="text" size="small">{{$t('formButton.edit')}}</el-button>
-                <el-button @click="downLoad(scope.row)" type="text" size="small">下载</el-button>
+                <el-button @click="downLoad(scope.row)" type="text" size="small">{{$t('huanbaoTable.MSDS.download')}}</el-button>
               </template>
             </el-table-column>
           </el-table>
