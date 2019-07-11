@@ -251,7 +251,9 @@ export default {
           }
         }
       }
-      this.totalReport.push(e)
+      var temp = {}
+      temp = Object.assign({}, e)
+      this.totalReport.push(temp)
     },
     addRoHSReport () {
       var temp = {}
