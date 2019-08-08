@@ -15,9 +15,13 @@ const app = {
     loading: false,
     baseUrl: '',
     filesPath: '',
-    websiteType: ''
+    websiteType: '',
+    ifpcn: false
   },
   mutations: {
+    SET_IFPCN: (state, ifpcn) => {
+      state.ifpcn = ifpcn
+    },
     SET_BASEURL: (state, baseUrl) => {
       state.baseUrl = baseUrl
     },

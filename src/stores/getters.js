@@ -18,6 +18,7 @@ const getters = {
   huanbaoNum: state => state.app.huanbaoNum,
   baseUrl: state => state.app.baseUrl,
   filesPath: state => state.app.filesPath,
-  websiteType: state => state.app.websiteType
+  websiteType: state => state.app.websiteType,
+  IFPCN: state => state.app.ifpcn
 }
 export default getters

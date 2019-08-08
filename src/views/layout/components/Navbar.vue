@@ -2,6 +2,7 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb class="breadcrumb-container"></breadcrumb>
+    <a v-if="$store.getters.IFPCN" style="right: 100px;display: inline-block;position: absolute;height: 50px;color:#D13139; font-family:宋体; font-size:12.5pt; text-decoration:underline;font-weight: bold" @click="fileDown">PCN提交资料请参考附件要求</a>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img :title="loginName" class="user-avatar" src="../../../assets/image/userDefualt.jpg">
@@ -118,6 +119,11 @@ export default {
     ])
   },
   methods: {
+    fileDown () {
+      var path = 'PCN交付要求.docx'
+      path = 'dev/plmsupplierfiles/files/' + path
+      window.open(this.$store.state.filePath + '/files/getFile?route=' + encodeURIComponent(path) + '&userName=' + this.$store.getters.userInfo.username, '_blank')
+    },
     initUsetInfo () {
     },
     toggleSideBar () {

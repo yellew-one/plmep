@@ -11,6 +11,15 @@ export default {
     if (this.$store.getters.guojihua) {
       this.$i18n.locale = this.$store.getters.guojihua
     }
+  },
+  watch: {
+    '$route.path': function (newVal, oldVal) {
+      if (newVal.indexOf('/createPcn/createPcn') !== -1) {
+        this.$store.commit('SET_IFPCN', true)
+      } else {
+        this.$store.commit('SET_IFPCN', false)
+      }
+    }
   }
 }
 </script>
