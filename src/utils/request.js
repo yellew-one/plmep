@@ -9,10 +9,10 @@ const service = axios.create({
   // baseURL: 'http://plmtest.longcheer.com',
   // baseURL: 'http://172.16.9.159:80',
   // 170 测试
-  baseURL: 'http://' + arr[0] + ':8082',
+  // baseURL: 'http://' + arr[0] + ':8082',
   // 170  正式
-  // baseURL: 'http://' + arr[0] + ':8084',
-  timeout: 15000 // 请求超时时间
+  baseURL: 'http://' + arr[0] + ':8084',
+  timeout: 60000 // 请求超时时间
 })
 
 // request拦截器
